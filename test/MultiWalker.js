@@ -67,6 +67,9 @@ describe('MultiWalker', function() {
 
   });
 
-
+  it('should exclude substrings with #exclude', function() {
+    var w = new MultiWalker([w1, w2, w3, w4]);
+    assert.equal(w.exclude(4, 10).toString(), "The fox jumps over the brown cat.");
+  });
 
 });
