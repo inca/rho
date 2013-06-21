@@ -72,4 +72,10 @@ describe('MultiWalker', function() {
     assert.equal(w.exclude(4, 10).toString(), "The fox jumps over the brown cat.");
   });
 
+  it('should match chars from array', function() {
+    var w = new MultiWalker([w1, w2, w3, w4]).startFrom(10);
+    assert.equal(w.atSome(['a', 'b', 'f', 'c']), true);
+    assert.equal(w.atSome(['1', '2', '3', '4']), false);
+  });
+
 });
