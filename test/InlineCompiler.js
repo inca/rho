@@ -18,7 +18,7 @@ describe('InlineCompiler', function() {
       assert.equal(c.compile("\\Test\\."), "\\Test.");
     });
 
-    it('should escape &, unless they are part of entity reference', function() {
+    it('should escape &amp;, except in entity references', function() {
       assert.equal(c.compile("this & that"), "this &amp; that");
       assert.equal(c.compile("this &amp; that"), "this &amp; that");
       assert.equal(c.compile("this &#026; that"), "this &#026; that");
@@ -27,6 +27,11 @@ describe('InlineCompiler', function() {
       var input = "This & that; A&B, but leave &amp;, &#095; and &#x09a; alone.";
       var output = "This &amp; that; A&amp;B, but leave &amp;, &#095; and &#x09a; alone.";
       assert.equal(c.compile(input), output);
+    });
+
+    it('should escape &lt;, except in HTML tags', function() {
+      assert.equal(c.compile("a < b"), "a &lt; b");
+      assert.equal(c.compile("a <b>c</b>"), "a <b>c</b>");
     });
 
   });
