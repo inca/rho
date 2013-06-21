@@ -78,4 +78,20 @@ describe('MultiWalker', function() {
     assert.equal(w.atSome(['1', '2', '3', '4']), false);
   });
 
+  it('should match chars from another string', function() {
+    var w = new MultiWalker([w1, w2, w3, w4]).startFrom(10);
+    assert.equal(w.atSome('abfc'), true);
+    assert.equal(w.atSome('1234'), false);
+  });
+
+  it('should return strings with #emitUntil', function() {
+    var w = new MultiWalker([w1, w2, w3, w4]).startFrom(10);
+    var result = w.emitUntil(9);
+    assert.equal(result, "");
+    assert.equal(w.position, 10);
+    result = w.emitUntil(19);
+    assert.equal(result, "fox jumps");
+    assert.equal(w.position, 19);
+  });
+
 });
