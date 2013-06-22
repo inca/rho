@@ -40,6 +40,12 @@ describe('InlineCompiler', function() {
       assert.equal(c.compile(input), output);
     });
 
+    it('should escape &gt; chars', function() {
+      var input = "A < B; B > C";
+      var output = "A &lt; B; B &gt; C";
+      assert.equal(c.compile(input), output);
+    });
+
   });
 
 
