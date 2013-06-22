@@ -46,6 +46,12 @@ describe('InlineCompiler', function() {
       assert.equal(c.compile(input), output);
     });
 
+    it('should process HTML tags coarsely, without real HTML semantics', function() {
+      var input = "A<B *hello* A>B";
+      var output = "A<B *hello* A>B";
+      assert.equal(c.compile(input), output);
+    });
+
   });
 
 
