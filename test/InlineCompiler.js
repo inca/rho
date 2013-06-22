@@ -34,6 +34,12 @@ describe('InlineCompiler', function() {
       assert.equal(c.compile("a <b>c</b>"), "a <b>c</b>");
     });
 
+    it('should leave HTML comments unprocessed', function() {
+      var input = "This & <!-- this text is *unprocessed* --> that.";
+      var output = "This &amp; <!-- this text is *unprocessed* --> that.";
+      assert.equal(c.compile(input), output);
+    });
+
   });
 
 
