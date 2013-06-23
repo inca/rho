@@ -52,6 +52,38 @@ describe('InlineCompiler', function() {
       assert.equal(c.compile(input), output);
     });
 
+    it('should process ems and strongs', function() {
+      assert.equal(c.compile("Text *_ * _*"), "Text <strong>_ </strong> _*");
+      assert.equal(c.compile("Text _ * _*"), "Text <em> * </em>*");
+    });
+
+    it('should respect backslashes while on ems/strongs', function() {
+      assert.equal(
+        c.compile("Text *_ \\* _*"),
+        "Text <strong><em> * </em></strong>");
+    });
+
+    it('should process triple code spans', function() {
+      assert.equal(
+        c.compile("Code with ```<b>tags</b> & SGMLs &#095;```"),
+        "Code with <code><b>tags</b> &amp; SGMLs &#095;</code>");
+    });
+
+    it('should process regular code spans', function() {
+      assert.equal(
+        c.compile("Code with `<b>tags</b> & SGMLs &#095;`"),
+        "Code with <code>&lt;b&gt;tags&lt;/b&gt; &amp; SGMLs &#095;</code>");
+    });
+
+    it('should process MathJax formulas', function() {
+      assert.equal(
+        c.compile("%%e^i\\varphi = \\cos{\\varphi} + i\\sin{\\varphi}%%"),
+        "%%e^i\\varphi = \\cos{\\varphi} + i\\sin{\\varphi}%%");
+      assert.equal(c.compile("$$a<b>c<d>f$$"), "$$a&lt;b&gt;c&lt;d&gt;f$$");
+    });
+
+
+
   });
 
 
