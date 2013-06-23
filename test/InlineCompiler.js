@@ -85,8 +85,19 @@ describe('InlineCompiler', function() {
     it('should process typographics out-of-box', function() {
       assert.equal(
         c.compile("This -> that, except in code `foo -> bar`"),
-        "This &rarr; that, except in code <code>foo -&gt; bar</code>"
-      )
+        "This &rarr; that, except in code <code>foo -&gt; bar</code>");
+    });
+
+    it('should leave link definitions and media without processing', function() {
+      assert.equal(
+        c.compile("Headless [[link]]"),
+        "Headless [[link]]");
+      assert.equal(
+        c.compile("Referenced [link][id]"),
+        "Referenced [link][id]");
+      assert.equal(
+        c.compile("Referenced ![media][id]"),
+        "Referenced ![media][id]");
     });
 
   });
