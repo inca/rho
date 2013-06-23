@@ -82,7 +82,12 @@ describe('InlineCompiler', function() {
       assert.equal(c.compile("$$a<b>c<d>f$$"), "$$a&lt;b&gt;c&lt;d&gt;f$$");
     });
 
-
+    it('should process typographics out-of-box', function() {
+      assert.equal(
+        c.compile("This -> that, except in code `foo -> bar`"),
+        "This &rarr; that, except in code <code>foo -&gt; bar</code>"
+      )
+    });
 
   });
 
