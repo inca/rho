@@ -102,5 +102,32 @@ describe('InlineCompiler', function() {
 
   });
 
+  describe("with some test links and media", function() {
+
+    var links = {
+      rho: {
+        href: "http://github.io/inca/rho",
+        title: "Rho — text2html processing tool for Node"
+      },
+      gh: "http://github.com",
+      bb: "http://bitbucket.org"
+    };
+
+    var c = new InlineCompiler({
+      resolveLink: function(id) {
+        return links[id];
+      }
+    });
+
+    it("should resolve headless links", function() {
+      assert.equal(
+        c.compile("Everybody like [[rho]]"),
+        "Everybody like <a href=\"http://github.io/inca/rho\"" +
+          " title=\"Rho — text2html processing tool for Node\">" +
+          "Rho — text2html processing tool for Node</a>");
+    });
+
+  });
+
 
 });
