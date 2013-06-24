@@ -113,11 +113,10 @@ describe('InlineCompiler', function() {
 
     var links = {
       rho: {
-        href: "http://github.io/inca/rho",
+        href: "http://github.com/inca/rho",
         title: "Rho — text2html processing tool for Node"
       },
-      gh: "http://github.com",
-      bb: "http://bitbucket.org"
+      node: "http://nodejs.org"
     };
 
     var c = new InlineCompiler({
@@ -129,9 +128,23 @@ describe('InlineCompiler', function() {
     it("should resolve headless links", function() {
       assert.equal(
         c.compile("Everybody like [[rho]]"),
-        "Everybody like <a href=\"http://github.io/inca/rho\"" +
+        "Everybody like <a href=\"http://github.com/inca/rho\"" +
           " title=\"Rho — text2html processing tool for Node\">" +
           "Rho — text2html processing tool for Node</a>");
+    });
+
+    it("should resolve reference links", function() {
+      assert.equal(
+        c.compile("[Rho][rho] -- text2html processing tool for [Node][node]."),
+        "<a href=\"http://github.com/inca/rho\"" +
+          " title=\"Rho — text2html processing tool for Node\">Rho</a> &mdash; " +
+          "text2html processing tool for <a href=\"http://nodejs.org\">Node</a>.");
+    });
+
+    it("should process inline links", function() {
+      assert.equal(
+        c.compile("[Rho](https://github.com/inca/rho) is awesome!"),
+        "<a href=\"https://github.com/inca/rho\">Rho</a> is awesome!");
     });
 
   });
