@@ -88,6 +88,13 @@ describe('InlineCompiler', function() {
         "This &rarr; that, except in code <code>foo -&gt; bar</code>");
     });
 
+    it('should emit opening and closing quotes', function() {
+      assert.equal(
+        c.compile("\"Rho\" is awesome;\n\"This\" works \"too\"."),
+        "&ldquo;Rho&rdquo; is awesome;\n" +
+          "&ldquo;This&rdquo; works &ldquo;too&rdquo;.");
+    });
+
     it('should leave link definitions and media without processing', function() {
       assert.equal(
         c.compile("Headless [[link]]"),
