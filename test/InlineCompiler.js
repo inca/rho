@@ -186,5 +186,20 @@ describe('InlineCompiler', function() {
 
   });
 
+  describe("with custom macros", function() {
+
+    var c = new InlineCompiler({}, {
+      "smiley": {
+        match: [":)", ":-)"],
+        emit: "<img src=\"/smiley.png\"/>"
+      }
+    });
+
+    it("should match simple macro", function() {
+      assert.equal(c.compile("Hey there :)"),
+        "Hey there <img src=\"/smiley.png\"/>");
+    });
+
+  });
 
 });
