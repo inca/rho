@@ -171,6 +171,19 @@ describe('InlineCompiler', function() {
           " alt=\"\"/>");
     });
 
+    it("should process cool things inside inline link texts", function() {
+      assert.equal(
+        c.compile("[The `code` inside a link](#) is cool."),
+          "<a href=\"#\">The <code>code</code> inside a link</a> is cool.");
+    });
+
+    it("should process cool things inside reference link texts", function() {
+      assert.equal(
+        c.compile("[The `code` inside a link][node] is cool."),
+        "<a href=\"http://nodejs.org\">The <code>code</code> inside a link</a>" +
+          " is cool.");
+    });
+
   });
 
 
