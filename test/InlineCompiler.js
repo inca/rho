@@ -184,6 +184,12 @@ describe('InlineCompiler', function() {
           " is cool.");
     });
 
+    it("should resolve links inside HTML attributes", function() {
+      assert.equal(
+        c.compile("<a href=\"[node]\">NodeJS</a>."),
+        "<a href=\"http://nodejs.org\">NodeJS</a>.");
+    });
+
   });
 
   describe("with custom macros", function() {
