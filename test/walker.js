@@ -63,4 +63,10 @@ describe('Walker', function() {
     }, "ERR_RANGE_OUT_OF_BOUNDS");
   });
 
+  it('should recognize block ends', function() {
+    var w = new Walker("Block\n   \nAnother block.\n\nThird block.");
+    assert.equal(w.scrollToTerm().position, 5);
+    assert.equal(w.skipWhitespaces().scrollToTerm().position, 24);
+  });
+
 });

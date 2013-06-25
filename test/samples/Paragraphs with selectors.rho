@@ -1,0 +1,16 @@
+
+
+Howdy!
+
+{#hello}
+I have an id!
+
+Me too, and a couple of classes    {#howdy.class1.class2}
+
+
+I have a couple of classes,        {.class1.class2}
+too!.
+
+
+My selector is {invalid}
+so it is left in my body.
