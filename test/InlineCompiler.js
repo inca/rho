@@ -113,15 +113,25 @@ describe('InlineCompiler', function() {
 
     var links = {
       rho: {
-        href: "http://github.com/inca/rho",
+        url: "http://github.com/inca/rho",
         title: "Rho — text2html processing tool for Node"
       },
       node: "http://nodejs.org"
     };
 
+    var images = {
+      gravatar: {
+        url: 'http://gravatar.com/avatar/e1e3018a2ed287d8bae27bacdabefcb6',
+        title: "Look at me!"
+      }
+    };
+
     var c = new InlineCompiler({
       resolveLink: function(id) {
         return links[id];
+      },
+      resolveImage: function(id) {
+        return images[id];
       }
     });
 
@@ -145,6 +155,20 @@ describe('InlineCompiler', function() {
       assert.equal(
         c.compile("[Rho](https://github.com/inca/rho) is awesome!"),
         "<a href=\"https://github.com/inca/rho\">Rho</a> is awesome!");
+    });
+
+    it("should resolve reference images", function() {
+      assert.equal(
+        c.compile("Me: ![Boris Okunskiy][gravatar]"),
+        "Me: <img src=\"http://gravatar.com/avatar/e1e3018a2ed287d8bae27bacdabefcb6\"" +
+          " alt=\"Boris Okunskiy\" title=\"Look at me!\"/>");
+    });
+
+    it("should process inline images", function() {
+      assert.equal(
+        c.compile("Me: ![](http://gravatar.com/avatar/e1e3018a2ed287d8bae27bacdabefcb6)"),
+        "Me: <img src=\"http://gravatar.com/avatar/e1e3018a2ed287d8bae27bacdabefcb6\"" +
+          " alt=\"\"/>");
     });
 
   });
