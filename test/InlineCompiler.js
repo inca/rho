@@ -127,8 +127,8 @@ describe('InlineCompiler', function() {
 
     it("should resolve headless links", function() {
       assert.equal(
-        c.compile("Everybody like [[rho]]"),
-        "Everybody like <a href=\"http://github.com/inca/rho\"" +
+        c.compile("Everybody likes [[rho]]"),
+        "Everybody likes <a href=\"http://github.com/inca/rho\"" +
           " title=\"Rho — text2html processing tool for Node\">" +
           "Rho — text2html processing tool for Node</a>");
     });
