@@ -82,19 +82,6 @@ describe('InlineCompiler', function() {
       assert.equal(c.compile("$$a<b>c<d>f$$"), "$$a&lt;b&gt;c&lt;d&gt;f$$");
     });
 
-    it('should process typographics out-of-box', function() {
-      assert.equal(
-        c.compile("This -> that, except in code `foo -> bar`"),
-        "This &rarr; that, except in code <code>foo -&gt; bar</code>");
-    });
-
-    it('should emit opening and closing quotes', function() {
-      assert.equal(
-        c.compile("\"Rho\" is awesome;\n\"This\" works \"too\"."),
-        "&ldquo;Rho&rdquo; is awesome;\n" +
-          "&ldquo;This&rdquo; works &ldquo;too&rdquo;.");
-    });
-
     it('should leave link definitions and media without processing', function() {
       assert.equal(
         c.compile("Headless [[link]]"),
@@ -145,9 +132,9 @@ describe('InlineCompiler', function() {
 
     it("should resolve reference links", function() {
       assert.equal(
-        c.compile("[Rho][rho] -- text2html processing tool for [Node][node]."),
+        c.compile("[Rho][rho] — text2html processing tool for [Node][node]."),
         "<a href=\"http://github.com/inca/rho\"" +
-          " title=\"Rho — text2html processing tool for Node\">Rho</a> &mdash; " +
+          " title=\"Rho — text2html processing tool for Node\">Rho</a> — " +
           "text2html processing tool for <a href=\"http://nodejs.org\">Node</a>.");
     });
 
@@ -188,22 +175,6 @@ describe('InlineCompiler', function() {
       assert.equal(
         c.compile("<a href=\"[node]\">NodeJS</a>."),
         "<a href=\"http://nodejs.org\">NodeJS</a>.");
-    });
-
-  });
-
-  describe("with custom macros", function() {
-
-    var c = new InlineCompiler({}, {
-      "smiley": {
-        match: [":)", ":-)"],
-        emit: "<img src=\"/smiley.png\"/>"
-      }
-    });
-
-    it("should match simple macro", function() {
-      assert.equal(c.compile("Hey there :)"),
-        "Hey there <img src=\"/smiley.png\"/>");
     });
 
   });
