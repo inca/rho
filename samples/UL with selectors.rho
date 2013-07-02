@@ -5,3 +5,9 @@ Paragraph.
 * List item 2   {.my-item}
 
 * List item 3
+
+Another one, LI only.
+
+* List item 1   {}{.my-item}
+* List item 2
+* List item 3   {.my-item}
