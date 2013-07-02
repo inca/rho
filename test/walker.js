@@ -51,18 +51,6 @@ describe('Walker', function() {
 
   });
 
-  it('should throw ERR_INDEX_OUT_OF_BOUNDS on failed #checkIndex', function() {
-    assert.throws(function() {
-      new Walker(pangram).checkIndex(100)
-    }, "ERR_INDEX_OUT_OF_BOUNDS");
-  });
-
-  it('should throw ERR_INDEX_OUT_OF_BOUNDS on failed #checkRange', function() {
-    assert.throws(function() {
-      new Walker(pangram).checkRange(0, 100)
-    }, "ERR_RANGE_OUT_OF_BOUNDS");
-  });
-
   it('should recognize block ends', function() {
     var w = new Walker("Block\n   \nAnother block.\n\nThird block.");
     assert.equal(w.scrollToTerm().position, 5);
