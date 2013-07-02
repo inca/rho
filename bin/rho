@@ -15,6 +15,10 @@ var opts = require("nomnom")
     flag: true,
     help: "print some statistics (document length, time taken)"
   })
+  .option('pretty', {
+    flag: true,
+    help: "pretty-print HTML (very slow)"
+  })
   .option('inline', {
     flag: true,
     help: "inline compilation only (do not process blocks)"
@@ -25,9 +29,13 @@ var compiler = null;
 if (opts.inline) compiler = require("../lib/inline");
 else compiler = require("../lib/block");
 
+var compilerOptions = {
+  pretty: opts.pretty
+};
+
 return readData(function(err, data) {
   var startTime = process.hrtime();
-  var result = new compiler().compile(data);
+  var result = new compiler(compilerOptions).toHtml(data);
   var timeTaken = process.hrtime(startTime);
   if (opts.output)
     fs.writeFile(opts.output, result, over);

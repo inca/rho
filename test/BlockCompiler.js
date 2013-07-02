@@ -7,7 +7,7 @@ describe('BlockCompiler', function() {
 
   describe('with default configuration', function() {
 
-    var c = new BlockCompiler();
+    var c = new BlockCompiler({ pretty: true });
 
     var samplesDir = __dirname + "/samples";
     var samples = fs.readdirSync(samplesDir);
@@ -21,7 +21,7 @@ describe('BlockCompiler', function() {
             samplesDir + "/" + filename, { encoding: 'utf-8' });
           var expectedHtml = fs.readFileSync(
             samplesDir + "/" + sample + ".html", { encoding: 'utf-8'});
-          var actualHtml = c.compile(text);
+          var actualHtml = c.toHtml(text);
           assert.equal(expectedHtml.replace(/\s+/g, " "), actualHtml.replace(/\s+/g, " "));
         });
       }
