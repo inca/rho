@@ -1,0 +1,33 @@
+Okay, now it's time for crazy nesting.
+
+  1. List 1
+
+    1. List 1-1
+
+    2. List 1-2
+
+      1. List 1-2-1
+
+      2. List 1-2-2
+
+        1. List 1-2-2-1
+
+          1. List 1-2-2-1-1
+          100. List 1-2-2-1-2
+          1000. List 1-2-2-1-3
+
+        2. List 1-2-2-2
+
+          1. List 1-2-2-2-1
+          2. List 1-2-2-2-2
+          3. List 1-2-2-2-3
+
+            1. List 1-2-2-2-3-1
+            1. List 1-2-2-2-3-2
+            1. List 1-2-2-2-3-3
+
+      1. List 1-2-3
+
+1. List 2
+
+Can you figure the result?
