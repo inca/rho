@@ -1,0 +1,22 @@
+Here's some Javascript:
+
+  ``` {.hl.javascript}
+  var obj = {
+    "one": 1,
+    "two:" 2,
+    "three": 3
+  };
+
+  var html = "<h1>Hello & world!</h1>";
+  ```
+
+Here's some HTML:
+
+```
+<h1>Heading!</h1>
+<header>
+  <hgroup>
+    <a href="javascript:;">This & that</a>
+  </hgroup>
+</header>
+```
