@@ -26,8 +26,8 @@ describe('BlockCompiler', function() {
           samplesDir + "/" + filename, { encoding: 'utf-8' });
         var expectedHtml = fs.readFileSync(
           samplesDir + "/" + sample + ".html",
-          { encoding: 'utf-8'}).trim();
-        var actualHtml = c.toHtml(text).trim();
+          { encoding: 'utf-8'}).trim().replace(/\r\n|\r/g, "\n");
+        var actualHtml = c.toHtml(text).trim().replace(/\r\n|\r/g, "\n");
         assert.equal(expectedHtml, actualHtml);
       });
     }
