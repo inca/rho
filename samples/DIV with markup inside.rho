@@ -1,0 +1,18 @@
+Okay, here's a section:
+
+~~~ {.section}
+{.para}
+Paragraph inside section.
+~~~
+
+Now another one:
+
+~~~ {.section}
+
+Paragraph.
+
+  ``` {.js}
+  // And some *code*
+  ```
+
+~~~
