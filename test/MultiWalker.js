@@ -74,14 +74,14 @@ describe('MultiWalker', function() {
 
   it('should match chars from array', function() {
     var w = new MultiWalker([w1, w2, w3, w4]).startFrom(10);
-    assert.equal(w.atSome(['a', 'b', 'f', 'c']), true);
-    assert.equal(w.atSome(['1', '2', '3', '4']), false);
+    assert.equal(w.matchSome(['a', 'b', 'f', 'c']), "f");
+    assert.equal(w.matchSome(['1', '2', '3', '4']), null);
   });
 
   it('should match chars from another string', function() {
     var w = new MultiWalker([w1, w2, w3, w4]).startFrom(10);
-    assert.equal(w.atSome('abfc'), true);
-    assert.equal(w.atSome('1234'), false);
+    assert.equal(w.matchSome('abfc'), "f");
+    assert.equal(w.matchSome('1234'), null);
   });
 
   it('should return strings with #yieldUntil', function() {
