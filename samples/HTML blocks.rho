@@ -8,8 +8,9 @@ Paragraph.
 
   This & *that*.
 
+    <!-- Look ma! HTML comment *inside* -->
+
   <div class="section">
   </div></div>
 
 Another *paragraph*.
-
