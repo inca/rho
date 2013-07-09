@@ -1,0 +1,49 @@
+Table oneliner:
+
+---- One | Two | Three
+
+Now more like a table:
+
+---------------------
+|  A  |  B  | A ^ B |
+------|-----|--------
+|  0  |  0  |   0   |
+|  0  |  1  |   1   |
+|  1  |  0  |   1   |
+|  1  |  1  |   0   |
+---------------------
+
+With alignment attributes:
+
+-------------------->
+|  A  |  B  | A ^ B |
+|----:|:---:|:------|
+|  0  |  0  |   0   |
+|  0  |  1  |   1   |
+|  1  |  0  |   1   |
+|  1  |  1  |   0   |
+---------------------
+
+Malformed a bit:
+
+---------------
+ 1 | 2 | 3 | 4
+---|:-:|:--|--:
+one two three
+one | two three
+one | two | three
+---------------
+
+Inline markup inside and selectors:
+
+-------------------------------------------->  {.bordered.rows.cols}
+   This   |   That   |   This `code` That
+---------------------------------------------
+   foo    |   foo    |   Hello, *WORLD*!
+   bar    |   baz    |   Bye, `WORLD`!
+---------------------------------------------
+
+This is HR:
+
+--- {.clear}
+
