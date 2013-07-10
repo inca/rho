@@ -28,7 +28,7 @@ describe('BlockCompiler', function() {
           samplesDir + "/" + sample + ".html",
           { encoding: 'utf-8'}).trim().replace(/\r\n|\r/g, "\n");
         var actualHtml = c.toHtml(text).trim().replace(/\r\n|\r/g, "\n");
-        assert.equal(expectedHtml, actualHtml);
+        assert.equal(actualHtml, expectedHtml);
       });
     }
 
