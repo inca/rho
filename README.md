@@ -1,4 +1,4 @@
-# Rho semantic markup language for Node
+# Rho — semantic markup language for Node
 
 Rho is easy-to-{read,write,understand} semantic plain text markup language for Node.
 
