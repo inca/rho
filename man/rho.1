@@ -1,0 +1,101 @@
+.TH rho 1
+
+.SH NAME
+rho \- easy-to-{read,write,understand} semantic plain text markup language for Node
+
+.SH SYNOPSIS
+.B rho
+[\fB\-\-input\fR=\fIinput_file\fR | \fB\-i\fR \fIinput_file\fR]
+.RS 4
+[\fB\-\-output\fR=\fIoutput_file\fR | \fB\-o\fR \fIoutput_file\fR]
+.RE
+.RS 4
+[\fB\-\-pretty\fR]
+[\fB\-\-inline\fR]
+[\fB\-\-stats\fR]
+[\fB\-\-version\fR]
+[\fB\-\-help\fR]
+.RE
+
+.SH DESCRIPTION
+.B rho
+converts semantic plain text from \fIinput_file\fR (or \fIstdin\fR
+if no input file is specified) into a valid semantic HTML markup which is
+written into \fIoutput_file\fR (or \fIstdout\fR if no output file is specified).
+
+.SH OPTIONS
+.TP
+.BR \-i ", " \-\-input =\fIinput_file\fR
+
+Read plain text from specified \fIinput_file\fR. If no input file is
+specified, reads from \fIstdin\fR.
+
+Use pipes to consume output from another process, e.g.:
+
+    cat myfile.txt | rho
+
+When started in terminal without pipes or input file, \fBrho\fR waits for input
+from \fIstdin\fR. In typical shells you should type your text and then press
+\fBCtrl+D\fR to consume the input.
+
+.TP
+.BR \-o ", " \-\-output =\fIoutput_file\fR
+
+Writes HTML markup into specified \fIoutput_file\fR. If no output file is
+specified, the markup is written into \fIstdout\fR.
+
+.TP
+.BR \-\-pretty
+
+Nicely format and indent the resulting HTML markup. For performance reasons
+this option is disabled by default, resulting in rather ugly markup.
+
+.TP
+.BR \-\-inline
+
+Turn on inline mode: the whole input text is treated as a single sequence
+of inline elements, no block-level elements (e.g. paragraphs, headings, lists, etc.)
+are recognized.
+
+.TP
+.BR \-\-stats
+
+Outputs some statistics to \fIstderr\fR: the number of characters in input text,
+the number of characters in resulting markup and the time taken for rendering.
+
+Use I/O redirection to output this information into the file:
+
+    cat myfile.txt | rho --stats 2> stats.log
+
+.TP
+.BR \-\-version
+
+Print the current version of \fBrho\fR and exit immediately.
+
+.TP
+.BR \-\-help
+
+Display short usage cheatsheet and exit immediately.
+
+.SH CONTRIBUTING
+
+The source repository is hosted at GitHub:
+
+    \fBhttps://github.com/inca/rho\fR
+
+Patches and fork requests are welcome!
+
+.SH BUGS
+
+Please report your issues to:
+
+    \fBhttps://github.com/inca/rho/issues\fR
+
+.SH LICENSE
+
+\fBrho\fR is freely distributed under MIT-like license.
+
+    \fBhttps://github.com/inca/rho/tree/master/LICENSE.md\fR
+
+2013 (c) Boris Okunskiy <boris@okunskiy.name>
+

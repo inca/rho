@@ -36,6 +36,10 @@
     "rho": "./bin/rho"
   },
 
+  "main": "./lib/rho",
+
+  "man": "./man/rho.1",
+
   "keywords": [
     "rho", "semantic", "html", "markup", "language",
     "plain text", "tool", "api", "parser"],
@@ -48,10 +52,7 @@
 
   "license": {
     "type": "MIT-like",
-    "url": "https://github.com/inca/rho/tree/master/LICENSE.rho"
-  },
-
-  "readme": {
-
+    "url": "https://github.com/inca/rho/tree/master/LICENSE.md"
   }
+
 }
