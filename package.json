@@ -1,9 +1,57 @@
 {
+
   "name": "rho",
+
   "version": "0.0.1",
-  "private": true,
+
+  "description": "Easy-to-{read,write,understand} semantic plain text markup language for Node",
+
+  "author": "Boris Okunskiy <boris@okunskiy.name>",
+
+  "contributors": [
+    {
+      "name": "Boris Okunskiy",
+      "email": "boris@okunskiy.name"
+    },
+    {
+      "name": "Valery Aligorsky",
+      "email": "stdammit@gmail.com"
+    },
+    {
+      "name": "Andrey Semenov",
+      "email": ""
+    }
+  ],
+
   "dependencies": {
     "nomnom": "*",
     "html": "*"
+  },
+
+  "devDependencies": {
+    "mocha": "*"
+  },
+
+  "bin": {
+    "rho": "./bin/rho"
+  },
+
+  "keywords": [
+    "rho", "semantic", "html", "markup", "language",
+    "plain text", "tool", "api", "parser"],
+
+  "repository": "https://github.com/inca/rho",
+
+  "bugs": {
+    "url": "https://github.com/inca/rho/issues"
+  },
+
+  "license": {
+    "type": "MIT-like",
+    "url": "https://github.com/inca/rho/tree/master/LICENSE.rho"
+  },
+
+  "readme": {
+
   }
 }

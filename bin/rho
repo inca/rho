@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-var fs = require("fs");
+var fs = require("fs")
+  , pkg = require("../package.json")
+  , os = require("os");
 
 var opts = require("nomnom")
   .option('input', {
@@ -23,7 +25,17 @@ var opts = require("nomnom")
     flag: true,
     help: "inline compilation only (do not process blocks)"
   })
+  .option('version', {
+    abbr: 'v',
+    flag: true,
+    help: "print current version of Rho"
+  })
   .parse();
+
+if (opts.version) {
+  process.stdout.write("rho v." + pkg.version + os.EOL);
+  return;
+}
 
 var compiler = null;
 if (opts.inline) compiler = require("../lib/inline");
@@ -45,9 +57,9 @@ return readData(function(err, data) {
       var time = (timeTaken[1] * 1e-6).toString() + " ms";
       if (timeTaken[0] > 1)
         time = timeTaken[0].toString() + " s " + time;
-      process.stderr.write("Input:\t\t" + data.length + " chars\n");
-      process.stderr.write("Output:\t\t" + result.length + " chars\n");
-      process.stderr.write("Time:\t\t" + time + "\n");
+      process.stderr.write("Input:\t\t" + data.length + " chars" + os.EOL);
+      process.stderr.write("Output:\t\t" + result.length + " chars" + os.EOL);
+      process.stderr.write("Time:\t\t" + time + os.EOL);
     }
     mainCallback(err);
   }
