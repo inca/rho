@@ -6,6 +6,13 @@ with special symbols which designate its _semantics_.
 The semantics represent the _meaning_ of what you write. Rho operates
 on this meaning to produce meaningful HTML markup.
 
+**About the examples.** This documentation is written in
+[GFM](https://help.github.com/articles/github-flavored-markdown).
+Due to some constraints of this markup language (specifically, not being
+able to backslash-escape the `\`\`\`` sequence inside code blocks)
+we've cheated a bit: zero-width spaces were used to prevent GFM from parsing
+special chars in our examples. Be careful when you copy-paste!
+
 ## Blocks
 
 Rho sees source text as a sequence of _blocks_. Blocks are delimited by
@@ -275,4 +282,126 @@ is rendered as HTML `<hr>` element:
 ```
 <hr class="clear"/>
 ```
+
+### Tables
+
+Rho supports [GFM](https://help.github.com/articles/github-flavored-markdown)-style
+tables, with a bit of modifications:
+
+1. Table blocks should start with at least three minus characters.
+
+2. All minus characters are stripped from the first and the last line. What's left
+   inside is the contents of the table.
+
+    This essentially allows you to create tables in a single line:
+
+    ```
+    --- One | Two | Three
+    ```
+
+    ```
+    <table>
+      <tbody>
+        <tr>
+          <td>One</td>
+          <td>Two</td>
+          <td>Three</td>
+        </tr>
+      </tbody>
+    </table>
+    ```
+
+3. Every line inside becomes a table row. Cells are delimited with pipes `|`.
+
+    ```
+    ---------------------
+     One  | Two  | Three
+     Four | Five | Six
+    ---------------------
+    ```
+
+    Trailing and leading pipes are ignored:
+
+    ```
+    -----------------------
+    | One  | Two  | Three |
+    | Four | Five | Six   |
+    -----------------------
+    ```
+
+
+4. Table head can be added by separating the first row with a separator line:
+
+    ```
+    ---------------------
+     Col1 | Col2 | Col3
+    ---------------------
+     One  | Two  | Three
+     Four | Five | Six
+    ---------------------
+    ```
+
+    Or like this:
+
+    ```
+    ---------------------
+     Col1 | Col2 | Col3
+    ------|------|-------
+     One  | Two  | Three
+     Four | Five | Six
+    ---------------------
+    ```
+
+    Or even like this (with redundant decorative pipes):
+
+    ```
+    -----------------------
+    | Col1 | Col2 | Col3  |
+    |------|------|-------|
+    | One  | Two  | Three |
+    | Four | Five | Six   |
+    -----------------------
+    ```
+
+5. Alignment attributes can be added to head separation line:
+
+    * a colon at the left side designates the left alignment,
+    * a colon at the right side designates the right alignment,
+    * colons at both sides designate the center alignment.
+
+    ```
+    -----------------------
+    | Col1 | Col2 | Col3  |
+    |:-----|:----:|------:|
+    | One  | Two  | Three |
+    | Four | Five | Six   |
+    -----------------------
+    ```
+
+    In this example `Col1` will be aligned to the left, `Col2` -- to the center
+    and `Col3` -- to the right.
+
+6. A single `>` character can be added to the end of the first line of minus
+   characters, resulting in addition of `width="100%"` attribute to the table.
+
+    ```
+    -------------------->
+     Col1 | Col2 | Col3
+    ---------------------
+     One  | Two  | Three
+     Four | Five | Six
+    ---------------------
+    ```
+
+7. Selectors can be applied to `<table>` element by placing the selector expression
+   at the end of the first line (like with any other blocks).
+
+    ```
+    ---------------------      {.rows.cols.striped}
+     Col1 | Col2 | Col3
+    ---------------------
+     One  | Two  | Three
+     Four | Five | Six
+    ---------------------
+    ```
 
