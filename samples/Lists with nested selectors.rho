@@ -1,0 +1,17 @@
+* List item 1   {.ul}{.li}{.p}
+
+  Para          {.p}
+
+* List item 2   {.li}{.p}
+
+  Para          {.p}
+
+---
+
+* List item 1   {}{}{.p}
+
+  Para          {.p}
+
+* List item 2   {}{.p}
+
+  Para          {.p}

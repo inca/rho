@@ -16,7 +16,15 @@ Compared to Markdown, Rho features:
 
   * API-level extensibility by providing `resolveLink(id)` and `resolveImage(id)`
     which can use data sources for resolving `[reference-style links][id]` and
-    `![reference-style images][id]`.
+    `![reference-style images][id]`;
+
+  * reduced feature set: no blockquotes, no reference-style links in document,
+    no whitespace-indented code blocks, no variations in list markers and
+    heading styles, no line breaks syntax.
+
+## Syntax
+
+Please check out the [Rho Syntax Reference](https://github.com/inca/rho/blob/master/SYNTAX.md).
 
 ## Installing
 

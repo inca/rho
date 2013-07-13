@@ -39,11 +39,6 @@ describe('MultiWalker', function() {
       assert.equal(w.substring(0, w.length), w.toString());
     });
 
-    it('should evaluate proper #absoluteIndex', function() {
-      assert.equal(w.absoluteIndex(29), 10);
-      assert.equal(w.absoluteIndex(10), 16);
-    });
-
   });
 
   describe('when composed from nested multi-walkers', function() {

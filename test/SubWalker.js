@@ -46,10 +46,6 @@ describe('SubWalker', function() {
       assert.equal(w3.toString(), "brown");
     });
 
-    it('should evaluate proper #absoluteIndex', function() {
-      assert.equal(w3.absoluteIndex(2), 12);
-    });
-
   });
 
   it('should iterate over characters', function() {
