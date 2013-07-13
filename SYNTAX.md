@@ -103,15 +103,15 @@ Rho supports [GFM](https://help.github.com/articles/github-flavored-markdown)-st
 code blocks.
 
 ```
-\`\`\`
+`​`​`
 <a href='javascript:;'>Load more</a>
-\`\`\`
+`​`​`
 ```
 
 The above text is rendered into the following markup:
 
 ```
-&amp;lt;a href='javascript:;'&amp;gt;Load more&amp;lt;/a&amp;gt;
+&lt;a href='javascript:;'&gt;Load more&lt;/a&gt;
 ```
 
 HTML markup inside code blocks is escaped.
@@ -119,11 +119,11 @@ HTML markup inside code blocks is escaped.
 The selector expression should be written on the line with markers:
 
 ```
-\`\`\` {.scala}
+`​`​` {.scala}
 def main(args: Array[String]) {
   println("Hello World!")
 }
-\`\`\`
+`​`​`
 ```
 
 ### Divs
