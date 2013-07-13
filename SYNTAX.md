@@ -133,11 +133,11 @@ element. You will find divs extremely useful in combination with selectors --
 whenever you wish to group some blocks under a custom class.
 
 ```
-~~~ {.note}
+~​~​~ {.note}
 This is a note.
 
 This paragraph is inside a note.
-~~~
+~​~​~
 ```
 
 ### Lists
