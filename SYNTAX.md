@@ -438,7 +438,7 @@ Inline compiler operates in following modes: `normal`, `code` and `plain`.
 In normal mode text is emitted to the output buffer with following
 processing features.
 
-  * _Backslash escaping_ causes following chars: `\.+*[]()`{}_!-|~'"`
+  * _Backslash escaping_ causes following chars: ``\.+*[]()`{}_!-|~'"``
     to loose their special meaning as markup elements when they occur
     immediately after backslash `\`.
 
@@ -490,16 +490,16 @@ processing features.
 
   * Additionally, following typographic enhancements are applied:
 
-        ```
-        --           ->      &mdash;
-        (c), (C)     ->      &copy;
-        (r), (R)     ->      &reg;
-        (tm), (TM)   ->      &trade;
-        ->           ->      &rarr;
-        <-           ->      &larr;
-        "            ->      &ldquo; or &rdquo;
-        '            ->      &lsquo; or &rsquo;
-        ```
+    ```
+    --           ->      &mdash;
+    (c), (C)     ->      &copy;
+    (r), (R)     ->      &reg;
+    (tm), (TM)   ->      &trade;
+    ->           ->      &rarr;
+    <-           ->      &larr;
+    "            ->      &ldquo; or &rdquo;
+    '            ->      &lsquo; or &rsquo;
+    ```
 
 ### Code mode
 
