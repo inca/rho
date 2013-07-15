@@ -481,6 +481,10 @@ processing features.
       the `resolveLink(id)` function defined in `options` and are emitted like
       inline links above;
 
+    * _headless reference links_ `[[id]]` are pretty much like reference links,
+      but the link text is resolved from the `title` property of the returned
+      link definition;
+
     * _inline images_ like `![Alt text](http://myurl.com/myimg.png)`
       are rendered as HTML `<img>` element;
 

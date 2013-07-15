@@ -75,6 +75,12 @@ rho.toInlineHtml(sourceText);
 In inline mode all block-level elements (paragraphs, headings, lists, etc.)
 are not recognized. Inline mode is always synchronous.
 
+### API
+
+Rho is designed for embedding into your applications. To learn more
+about all the cool things you can do with Rho please check out the
+sources and [API docs](https://github.com/inca/rho/blob/master/API.md).
+
 ### Command-line interface
 
 To make things sweet, Rho comes bundled with command-line tool:

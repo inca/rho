@@ -2,7 +2,7 @@
 
   "name": "rho",
 
-  "version": "0.1.0",
+  "version": "0.1.1",
 
   "description": "Easy-to-{read,write,understand} semantic markup language for Node",
 
