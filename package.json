@@ -4,7 +4,7 @@
 
   "version": "0.1.0",
 
-  "description": "Easy-to-{read,write,understand} semantic plain text markup language for Node",
+  "description": "Easy-to-{read,write,understand} semantic markup language for Node",
 
   "author": "Boris Okunskiy <boris@okunskiy.name>",
 

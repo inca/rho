@@ -455,10 +455,10 @@ processing features.
 
   * At this point various markup elements are recognized:
 
-    * _triple code spans_ are surrounded with three backticks <code>```</code>,
+    * _triple code spans_ are surrounded with three backticks ```` ``` ````,
       their contents is emitted using `plain` mode;
 
-    * _code spans_ are surrounded by a single backtick <code>`</code>,
+    * _code spans_ are surrounded by a single backtick `` ` ``,
       their contents is emitted using `code` mode;
 
     * _MathJAX-compatible formulas_ are LaTeX text surrounded with double
