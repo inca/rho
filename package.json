@@ -43,7 +43,7 @@
 
   "keywords": [
     "rho", "semantic", "html", "markup", "language",
-    "plain text", "tool", "api", "parser"],
+    "plain text", "tool", "api", "parser", "markdown"],
 
   "repository": "https://github.com/inca/rho",
 
