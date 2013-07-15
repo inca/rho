@@ -1,6 +1,7 @@
 # Rho — semantic markup language for Node
 
-Rho is easy-to-{read,write,understand} semantic markup language for Node.
+Rho is easy-to-{read,write,understand} semantic markup language written
+in [Node](http://nodejs.org), available both for server and browser runtime.
 
 Rho *is not Markdown*, although it takes a lot of ideas from modern
 plain-text-to-html conversion tools.
@@ -98,7 +99,7 @@ refer to `man rho` for complete walkthrough.
 
 [ ] support for macros
 
-[ ] browser version
+[+] browser version
 
 ## License
 

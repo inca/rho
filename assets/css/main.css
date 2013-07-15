@@ -16,7 +16,7 @@ body {
 
 #footer {
   margin-left:40%;
-  padding:16px;
+  padding:16px 0;
   font-size:12px;
   text-shadow: 0 1px 1px rgba(255,255,255,.1);
   color: #222;
@@ -26,6 +26,32 @@ body {
   color:#a33;
   text-decoration: none;
   text-shadow: 0 1px 1px rgba(0,0,0,.75);
+}
+
+#footer img {
+  position: relative;
+  top:-2px;
+  left:-12px;
+  vertical-align:middle;
+  border-radius:4px;
+}
+
+#fixnav {
+  position:fixed;
+  top:8px;
+  left:40%;
+}
+
+#fixnav a {
+  display:block;
+  position:relative;
+  left:-32px;
+  width:64px;
+  height:64px;
+}
+
+#fixnav a + a {
+  margin-top:32px;
 }
 
 #editpane {
@@ -68,15 +94,98 @@ body {
 
 /* Content */
 
-a { color: #a00 }
-a:visited { color: #800 }
+a, a:visited { color: #a00 }
 a:hover { color: #b00 }
+em { color: #c00 }
 
 p, li, ol, ul, h1, h2, h3, pre {
-  margin: .75em 0;
+  margin: 1em 0;
 }
 
 h1 {
   font-size: 28px;
   line-height: 1.2em;
+}
+
+h2 {
+  font-size: 26px;
+  font-weight: normal;
+}
+
+h3 {
+  font-size: 20px;
+  color: #c00;
+}
+
+hr {
+  border:0;
+  border-bottom:1px dashed #dda;
+  box-shadow: 0 0 8px rgba(0,0,0,.25);
+}
+
+code {
+  background: #777;
+  padding: 2px 6px;
+  border-radius:4px;
+  box-shadow: 0 1px 3px #000 inset;
+  color: #fff;
+  text-shadow: 0 1px 1px #000;
+  font-size: 14px;
+  font-family: Monaco, Courier New, Courier, monospace;
+}
+
+pre {
+  box-shadow: 0 1px 3px #000 inset;
+  border-radius:4px;
+  padding:8px;
+  background: #555;
+  font-size:12px;
+  line-height: 1.5em;
+}
+
+pre code {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  font-size:12px;
+}
+
+.note {
+  background:#ffd;
+  padding:2px 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.25)
+}
+
+.subtle {
+  font-size:14px;
+  color: #555;
+  line-height:1.5em;
+}
+
+.example {
+  position:relative;
+  margin: 1em 0;
+  padding:16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.75),
+              0 -48px 128px rgba(48,48,0,.25) inset;
+  border-radius:4px;
+  background: #eeeee5;
+}
+
+.example::after {
+  content:'example';
+  display: block;
+  position:absolute;
+  right:6px;
+  top:0;
+  color:#887;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+  font-size: 12px;
+}
+
+.amp {
+  font-family: Baskerville, "Goudy Old Style", "Palatino", "Book Antiqua", serif !important;
+  font-weight: normal !important;
+  font-style: italic !important;
 }

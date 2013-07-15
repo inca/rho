@@ -9,31 +9,279 @@
     </script>
     <script src="./assets/js/jquery.autosize.min.js">
     </script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+      jax: ["input/TeX", "output/HTML-CSS"],
+      extensions: ["tex2jax.js","MathMenu.js","MathZoom.js"],
+      TeX: {
+      extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+      },
+      tex2jax: {
+      inlineMath: [ ['%%','%%'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true
+      },
+      "HTML-CSS": { availableFonts: ["TeX"] },
+      "messageStyle": "none"
+      });
+    </script>
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
     <script>
       $(function() {
+        var t = null;
+        var src = $("#src");
         var out = $("#out");
-        $("#src").autosize().keyup(function(ev) {
-          var text = $(this).val();
+
+        function compile() {
+          var text = src.val();
           out.html(rho.toHtml(text));
-        }).keyup();
+        }
+
+        // The compilation is delayed a bit to prevent overwhelming
+        // the system with lots of unnecessary operations.
+        function scheduleUpdates() {
+          if (t) clearTimeout(t);
+          t = setTimeout(function() {
+            compile();
+          }, 200);
+        }
+        src.autosize().keyup(scheduleUpdates);
+
+        // Compile initially
+        compile();
       });
     </script>
   </head>
   <body>
+    <div id="fixnav">
+      <a href="http://inca.github.io/rho"
+         title="Rho — semantic markup language">
+        <img src="./assets/img/rho.png"
+             width="64"
+             height="64"/>
+      </a>
+      <a href="https://github.com/inca/rho"
+         title="Check out the source code at GitHub">
+        <img src="./assets/img/gh.png"
+             width="64"
+             height="64"/>
+      </a>
+      <a href="https://raw.github.com/inca/rho/master/build/rho-0.1.2.min.js"
+         title="Download minified Rho v.0.1.2 for browser">
+        <img src="./assets/img/dl.png"
+             width="64"
+             height="64"/>
+      </a>
+      <a href="https://inca.github.io/rho/love.html"
+         title="You like Rho? Help spread the love!">
+        <img src="./assets/img/luv.png"
+             width="64"
+             height="64"/>
+      </a>
+    </div>
     <div id="editpane">
       <div class="col">
         <textarea id="src"
                   cols="80"
                   rows="24"># Rho -- semantic markup language
 
-Welcome to Rho, easy-to-{read,write,understand} semantic markup language for Node.</textarea>
+Welcome to Rho, easy-to-{read,write,understand} semantic markup language written in [Node](http://nodejs.org), available both for server and browser runtime.
+
+~~~ {.note}
+
+## <- Try it right here!
+
+The text you see is written in Rho. Click on the source text on the left to edit it.
+
+---
+
+{.subtle}
+*Heads up!* Don't worry, your changes won't be saved. We've set up this static page as a playground for learning the simple rules of Rho syntax.
+~~~
+
+## Features
+
+  * Asynchronous compilation in Node.
+
+  * Syntax for adding `id` and `class` attributes on blocks.
+
+  * More strict rules -- there is only one way of doing each feature.
+
+  * API-level extensibility.
+
+  * Both client-side and server-side maintained together.
+
+  * [MathJAX support](http://mathjax.com) out-of-box: $$e = \lim_{x\to\infty} \left(1+\frac{1}{x}\right)^x$$
+
+## Installation <span class="amp">&</span> usage
+
+### Node
+
+To use Rho with Node, simply install it using [npm](http://npmjs.org):
+
+```
+npm install rho
+```
+
+Then require it and you're all set:
+
+```
+var html = require("rho").toHtml(text);
+```
+
+### Browser version
+
+Full-featured Rho processor is available for browser.
+
+1. Download the latest version.
+
+2. Include it on your page:
+
+   ```
+   <script type="text/javascipt" src="/js/rho.min.js">
+   </script>
+   ```
+3. Profit!
+
+   ```
+   var html = rho.toHtml(text);
+   ```
+
+Be sure to check out the [README](https://github.com/inca/rho#README)
+to learn more about using Rho.
+
+## Syntax cheat-sheet    {#syntax}
+
+The text consists of blocks. Blocks are separated from each other with at least one blank line. _Paragraph_ is the most generic block.
+
+Whitespace inside
+blocks
+is condensed.
+
+### Selectors
+
+Selectors let you define `id` and `class` attributes on blocks.
+Just include _selector expression_ on the first line of your block:
+
+~~~ {.example}
+```
+Paragraph with id.            {#para}
+
+Paragraph with classes.       {.class1.class2}
+
+{#another.class1.class2}
+Another paragraph, both with id and classes.
+```
+~~~
+
+### Headings
+
+_Headings_ start with one or more `#`. The amount of hashes
+determine the heading level (1 to 6):
+
+~~~ {.example}
+# Heading 1
+
+## Heading 2
+
+### Heading 3
+
+#### Heading 4
+
+##### Heading 5
+
+##### Heading 6
+~~~
+
+### Code blocks
+
+_Code blocks_ start and end with `\`\`\``.
+
+~~~ {.example}
+```
+<a href="#">Learn more</a>
+```
+~~~
+
+### Unordered lists
+
+_Unordered lists_ start with `* `, each list item should start with the
+same marker and maintain the same indentation:
+
+~~~ {.example}
+* List item 1
+
+* List item 2
+
+* List item 3
+~~~
+
+Blocks indented beyond the marker are included into the list item.
+The amount of nesting is unconstrained -- just make sure to maintain proper
+indentation:
+
+~~~ {.example}
+* List item 1
+
+  Paragraph inside list item 1
+
+* List item 2
+
+  * Sub-list inside list item 2
+
+    * Sub-sub list, item 1
+
+    * Sub-sub list, item 2
+
+    * Sub-sub list, item 3
+
+      ```
+      Even code inside sub-sub list!
+      ```
+~~~
+
+### Ordered lists
+
+Ordered lists start with `1.`, every subsequent list item should start
+with a number followed by a period -- and maintain the same indentation:
+
+~~~ {.example}
+1. List item 1
+
+   Paragraph inside list item 1
+
+2. List item 2
+
+   1. Sub-list inside list item 2
+
+      1. Sub-sub list, item 1
+
+      2. Sub-sub list, item 2
+
+      3. Sub-sub list, item 3
+
+         ```
+         Even code inside sub-sub list!
+         ```
+~~~
+
+### Learn more
+
+Please check out the [Rho Syntax Reference](https://github.com/inca/rho/blob/master/SYNTAX.md) to learn more about the syntax.
+
+</textarea>
       </div>
       <div id="out" class="col"></div>
     </div>
     <div id="footer">
-      <span>2013</span>
-      <span>&copy;</span>
+      <img src="https://secure.gravatar.com/avatar/e1e3018a2ed287d8bae27bacdabefcb6?s=24"
+           width="24"
+           height="24"/>
+      <span>Created by</span>
       <a href="https://github.com/inca">Boris Okunskiy</a>
+      <span>in 2013</span>
     </div>
   </body>
 </html>
