@@ -30,7 +30,11 @@
   },
 
   "devDependencies": {
-    "mocha": "*"
+    "mocha": "*",
+    "grunt": "*",
+    "grunt-browserify": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-uglify": "*"
   },
 
   "bin": {

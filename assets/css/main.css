@@ -1,0 +1,82 @@
+html, body, form, img {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+body {
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light",
+  "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue",
+  "Segoe UI", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight:300;
+  font-size:16px;
+  line-height:1.5em;
+  background:#444;
+}
+
+#footer {
+  margin-left:40%;
+  padding:16px;
+  font-size:12px;
+  text-shadow: 0 1px 1px rgba(255,255,255,.1);
+  color: #222;
+}
+
+#footer a {
+  color:#a33;
+  text-decoration: none;
+  text-shadow: 0 1px 1px rgba(0,0,0,.75);
+}
+
+#editpane {
+  display:table;
+  width:100%;
+  background:#ddd;
+  overflow:hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,.6);
+}
+
+#editpane .col {
+  display:table-cell;
+  vertical-align:top;
+  width:40%;
+}
+
+#editpane .col:last-child {
+  width:60%;
+}
+
+#src {
+  font: 12px Monaco, Courier New, monospace;
+  background: transparent;
+  border:0;
+  margin:0;
+  padding:32px 48px;
+  outline:0;
+  resize:none;
+  display:block;
+  box-sizing: border-box;
+  width:100%;
+}
+
+#out {
+  background:#fff;
+  padding: 0 48px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.5),
+              0 0 128px rgba(0,0,0,.1) inset;
+}
+
+/* Content */
+
+a { color: #a00 }
+a:visited { color: #800 }
+a:hover { color: #b00 }
+
+p, li, ol, ul, h1, h2, h3, pre {
+  margin: .75em 0;
+}
+
+h1 {
+  font-size: 28px;
+  line-height: 1.2em;
+}

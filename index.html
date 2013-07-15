@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Rho — easy-to-{read,write,understand} semantic markup language for Node</title>
+    <link rel="stylesheet" href="./assets/css/main.css"/>
+    <script src="./build/rho-0.1.1.min.js">
+    </script>
+    <script src="./assets/js/jquery-2.0.3.min.js">
+    </script>
+    <script src="./assets/js/jquery.autosize.min.js">
+    </script>
+    <script>
+      $(function() {
+        var out = $("#out");
+        $("#src").autosize().keyup(function(ev) {
+          var text = $(this).val();
+          out.html(rho.toHtml(text));
+        }).keyup();
+      });
+    </script>
+  </head>
+  <body>
+    <div id="editpane">
+      <div class="col">
+        <textarea id="src"
+                  cols="80"
+                  rows="24"># Rho -- semantic markup language
+
+Welcome to Rho, easy-to-{read,write,understand} semantic markup language for Node.</textarea>
+      </div>
+      <div id="out" class="col"></div>
+    </div>
+    <div id="footer">
+      <span>2013</span>
+      <span>&copy;</span>
+      <a href="https://github.com/inca">Boris Okunskiy</a>
+    </div>
+  </body>
+</html>
