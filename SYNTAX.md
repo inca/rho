@@ -9,7 +9,7 @@ on this meaning to produce meaningful HTML markup.
 **About the examples.** This documentation is written in
 [GFM](https://help.github.com/articles/github-flavored-markdown).
 Due to some constraints of this markup language (specifically, not being
-able to backslash-escape the `\`\`\`` sequence inside code blocks)
+able to backslash-escape special chars inside code blocks)
 we've cheated a bit: zero-width spaces were used to prevent GFM from parsing
 special chars in our examples. Be careful when you copy-paste!
 
@@ -405,3 +405,8 @@ tables, with a bit of modifications:
     ---------------------
     ```
 
+<style type="text/css">
+h3 {
+  color: #4183c4
+}
+</style>

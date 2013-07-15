@@ -1,6 +1,6 @@
 # Rho — semantic markup language for Node
 
-Rho is easy-to-{read,write,understand} semantic plain text markup language for Node.
+Rho is easy-to-{read,write,understand} semantic markup language for Node.
 
 Rho *is not Markdown*, although it takes a lot of ideas from modern
 plain-text-to-html conversion tools.
@@ -53,7 +53,7 @@ var html = rho.toHtml(sourceText);
 
 ### Asynchronous rendering
 
-With large documents in concurrent environment (e.g. in a web application)
+With large documents in a concurrent environment (e.g. in a web application)
 it might be a good idea to stick with asynchronous rendering:
 
 ```
@@ -62,7 +62,7 @@ rho.render(sourceText, function(err, html) {
 });
 ```
 
-In asynchronous mode each block-level element is emitted at every tick.
+In asynchronous mode each block-level element is emitted every tick.
 
 ### Inline rendering
 
