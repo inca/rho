@@ -92,11 +92,39 @@ body {
               0 0 128px rgba(0,0,0,.1) inset;
 }
 
+.modal {
+  position:relative;
+  z-index:2;
+  width: 640px;
+  background: #eee;
+  border-radius: 4px;
+  margin: 32px auto 0;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.6)
+}
+
+.modal .logo {
+  position:absolute;
+  top:-24px;
+  right:-24px;
+}
+
+.shadow {
+  position:relative;
+  top:-64px;
+  z-index:1;
+  border-radius: 64px/16px;
+  box-shadow: 0 0 24px rgba(0,0,0,.5);
+  height:64px;
+  width:480px;
+  margin:0 auto;
+}
+
 /* Content */
 
 a, a:visited { color: #a00 }
 a:hover { color: #b00 }
-em { color: #c00 }
+em, .em { color: #c00 }
 
 p, li, ol, ul, h1, h2, h3, pre {
   margin: 1em 0;
@@ -119,8 +147,7 @@ h3 {
 
 hr {
   border:0;
-  border-bottom:1px dashed #dda;
-  box-shadow: 0 0 8px rgba(0,0,0,.25);
+  border-bottom:1px dashed #ccc;
 }
 
 code {
@@ -161,6 +188,19 @@ pre code {
   font-size:14px;
   color: #555;
   line-height:1.5em;
+}
+
+.kicker {
+  font-size: 20px;
+  color: #c00;
+}
+
+.lead {
+  font-size: 20px
+}
+
+.centered {
+  text-align:center;
 }
 
 .example {
