@@ -1,0 +1,33 @@
+1. `--` is rendered as `&mdash;`:
+
+   This -- that.
+
+2. `(c)` or `(C)` is rendered as `&copy;`:
+
+   This (c) that.
+
+3. `(r)` or `(R)` is rendered as `&reg;`:
+
+   This (r) that.
+
+4. `(tm)` or `(TM)` is rendered as `&trade;`:
+
+   This (tm) that.
+
+5. `<-` is rendered as `&larr;`:
+
+   This <- that; this &lt;- that;
+
+6. `->` is rendered as `&rarr;`:
+
+   This -> that; this -&gt; that;
+
+7. `"` is rendered as `&ldquo;` or `&rdquo`:
+
+   "This" and "that".
+
+
+
+
+
+

@@ -13,7 +13,7 @@ able to backslash-escape special chars inside code blocks)
 we've cheated a bit: zero-width spaces were used to prevent GFM from parsing
 special chars in our examples. Be careful when you copy-paste!
 
-## Blocks
+## Basic concepts
 
 Rho sees source text as a sequence of _blocks_. Blocks are delimited by
 at least one blank line. Consecutive whitespace characters inside a single
@@ -52,6 +52,9 @@ Rho recognizes following kinds of blocks:
  * tables;
  * arbitrary block-level HTML elements.
 
+Text inside blocks can contain _inline markup_ -- special bits of syntax
+for creating links, emphasizing words, marking the code, etc.
+
 ### Selectors
 
 Rho features very powerful feature called _selectors_ which allows
@@ -72,6 +75,8 @@ This example is rendered into the following markup:
 
 Selectors allow text authors to define their own set of semantic blocks,
 e.g. notes, warnings, sidenotes, kickers, etc.
+
+## Block elements
 
 ### Paragraphs
 
@@ -146,6 +151,9 @@ This is a note.
 This paragraph is inside a note.
 ~​~​~
 ```
+
+Divs combined with CSS classes give you the possibility to create your
+own set of semantic elements.
 
 ### Lists
 
@@ -393,8 +401,8 @@ tables, with a bit of modifications:
     ---------------------
     ```
 
-7. Selectors can be applied to `<table>` element by placing the selector expression
-   at the end of the first line (like with any other blocks).
+7. Selectors can be applied to the `<table>` element by placing the selector
+   expression at the end of the first line (like with any other blocks).
 
     ```
     ---------------------      {.rows.cols.striped}
@@ -405,8 +413,104 @@ tables, with a bit of modifications:
     ---------------------
     ```
 
-<style type="text/css">
-h3 {
-  color: #4183c4
-}
-</style>
+### HTML
+
+When the block starts with an opening block-level HTML tag, Rho searches
+recursively for the matching closing tag, emitting the markup without
+much processing.
+
+Rho recognizes following HTML tags as block-level:
+
+`address`, `article`, `aside`, `blockquote`, `canvas`,
+`dd`, `div`, `dl`, `dt`, `fieldset`, `figcaption`, `figure`, `footer`,
+`form`, `h1`, `h2`, `h3`, `h4`, `h5`, `h6`, `header`, `hgroup`, `hr`,
+`noscript`, `ol`, `output`, `p`, `pre`, `section`, `table`, `ul`,
+`style`, `script`
+
+## Inline markup
+
+As said above, text inside the blocks is processed with inline compiler.
+
+Inline compiler operates in following modes: `normal`, `code` and `plain`.
+
+### Normal mode
+
+In normal mode text is emitted to the output buffer with following
+processing features.
+
+  * _Backslash escaping_ causes following chars: `\.+*[]()`{}_!-|~'"`
+    to loose their special meaning as markup elements when they occur
+    immediately after backslash `\`.
+
+  * _Ampersand escaping_: ampersand characters `&` have special meaning in SGML
+    documents and are escaped as `&amp;` as long as they are not a part of
+    an SGML entity reference themselves.
+
+  * _HTML tags_: when inline HTML tags (like `<a>`, `<span>`, etc.) are
+    encountered, they are emitted using `plain` mode.
+
+  * _HTML escaping_: the `<` and `>` chars, which have a special meaning in
+    HTML documents, are escaped as `&lt;` and `&gt;` respectively (as long
+    as they are not a part of the previous rule).
+
+  * At this point various markup elements are recognized:
+
+    * _triple code spans_ are surrounded with three backticks <code>```</code>,
+      their contents is emitted using `plain` mode;
+
+    * _code spans_ are surrounded by a single backtick <code>`</code>,
+      their contents is emitted using `code` mode;
+
+    * _MathJAX-compatible formulas_ are LaTeX text surrounded with double
+      `%%` or `$$` characters, they contents is HTML-escaped and emitted
+      with corresponding markers (so that they can be processed with
+      [MathJax](http://mathjax.com)).
+
+    * _emphasized text_ is surrounded with single underscore characters `_`
+      and is emitted as HTML `<em>` element with its contents processed
+      in `normal` mode;
+
+    * _strong emphasize_ is surrounded with single asterisk characters `*`
+      and are emitted as HTML `<strong>` element with its contents
+      processed in `normal` mode;
+
+    * _inline links_ like `[Link text](http://myurl.com)` are rendered
+      as HTML `<a>` element; link text is processed in `normal` mode;
+
+    * _reference links_ like `[Link text][id]` are resolved using
+      the `resolveLink(id)` function defined in `options` and are emitted like
+      inline links above;
+
+    * _inline images_ like `![Alt text](http://myurl.com/myimg.png)`
+      are rendered as HTML `<img>` element;
+
+    * _reference images_ like `![Alt text][id]` are resolved using
+      the `resolveImage(id)` function defined in `options` and are emitted
+      like inline images above.
+
+  * Additionally, following typographic enhancements are applied:
+
+        ```
+        --           ->      &mdash;
+        (c), (C)     ->      &copy;
+        (r), (R)     ->      &reg;
+        (tm), (TM)   ->      &trade;
+        ->           ->      &rarr;
+        <-           ->      &larr;
+        "            ->      &ldquo; or &rdquo;
+        '            ->      &lsquo; or &rsquo;
+        ```
+
+### Code mode
+
+Regular code spans and code blocks are emitted by applying following processing
+features:
+
+  * backslash escaping;
+  * ampersand escaping;
+  * HTML escaping.
+
+### Plain mode
+
+In plain mode only ampersand escaping occurs.
+

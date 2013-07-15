@@ -88,9 +88,11 @@ refer to `man rho` for complete walkthrough.
 
 ## Things to come
 
-[ ] common typographic enhancements
+[+] common typographic enhancements
 
 [ ] support for macros
+
+[ ] browser version
 
 ## License
 
