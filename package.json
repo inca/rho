@@ -51,6 +51,8 @@
 
   "repository": "https://github.com/inca/rho",
 
+  "homepage": "http://rhojs.org",
+
   "bugs": {
     "url": "https://github.com/inca/rho/issues"
   },
