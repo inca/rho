@@ -38,6 +38,7 @@
         function compile() {
           var text = src.val();
           out.html(rho.toHtml(text));
+          MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
         }
 
         // The compilation is delayed a bit to prevent overwhelming
