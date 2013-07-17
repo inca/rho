@@ -1,12 +1,20 @@
+var fs = require("fs")
+  , rho = require("./lib/rho");
+
+var texts = {
+  src: function(filename) {
+    return fs.readFileSync(filename, { encoding: 'utf-8' });
+  },
+  html: function(filename) {
+    return rho.toHtml(texts.src(filename));
+  }
+};
+
 module.exports = function(grunt) {
 
   grunt.initConfig({
 
     pkg: grunt.file.readJSON('package.json'),
-
-    jshint: {
-      all: ['Gruntfile.js', 'lib/*.js', 'test/*.js']
-    },
 
     browserify: {
       basic: {
@@ -25,11 +33,28 @@ module.exports = function(grunt) {
       }
     },
 
+    jade: {
+      compile: {
+        options: {
+          pretty: true,
+          data: {
+            texts: texts
+          }
+        },
+        files: {
+          "index.html": "pages/index.jade",
+          "love.html": "pages/love.jade",
+          "thankyou.html": "pages/thankyou.jade"
+        }
+      }
+    }
+
   });
 
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-jade');
 
-  grunt.registerTask('default', ['browserify', 'uglify']);
+  grunt.registerTask('default', ['browserify', 'uglify', 'jade']);
 
 };

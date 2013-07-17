@@ -1,0 +1,42 @@
+## Passionate about Rho? {.em}
+
+If you find our project useful, please help us by supporting it
+in any way you can:
+
+* give us an npm-star:
+
+  ```
+  npm star rho
+  ```
+
+* give us a [star at GitHub](https://github.com/inca/rho/star)
+
+* write an article about Rho in your blog
+
+* [tweet](http://twitter.com) about Rho
+
+* tell your friends on [Stackoverflow](http://stackoverflow.com)
+
+* contribute to [Rho development](https://github.com/inca/rho)
+
+* integrate Rho with your favorite engine and blog about it
+
+* buy some pizza and beer for the author:
+
+<form action="https://www.paypal.com/cgi-bin/webscr"
+      method="post"
+      target="_top"
+      class="centered">
+  <input type="hidden" name="cmd" value="_s-xclick">
+  <input type="hidden" name="hosted_button_id" value="RQ8RCNFXTLQUW">
+  <input type="image"
+         src="./assets/img/donate.png"
+         name="submit"
+         alt="Donate with PayPal">
+</form>
+
+---
+
+{.kicker.centered}
+Thank you!
+

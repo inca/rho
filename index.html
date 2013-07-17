@@ -1,15 +1,16 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <title>Rho — easy-to-{read,write,understand} semantic markup language for Node</title>
-    <link rel="stylesheet" href="./assets/css/main.css"/>
-    <link rel="shortcut icon" href="./assets/img/favicon.ico"/>
-    <script src="./build/rho-0.1.2.min.js">
-    </script>
-    <script src="./assets/js/jquery-2.0.3.min.js">
-    </script>
-    <script src="./assets/js/jquery.autosize.min.js">
-    </script>
+    <title>
+      Rho — easy-to-{read,write,understand} semantic markup language
+      written in Node, available both for server-side and browser runtime.
+    </title>
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <link rel="shortcut icon" href="./assets/img/favicon.ico">
+    <script src="./build/rho-0.1.2.min.js"></script>
+    <script src="./assets/js/jquery-2.0.3.min.js"></script>
+    <script src="./assets/js/jquery.autosize.min.js"></script>
+    <script src="./assets/js/jquery.autosize.min.js"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
       jax: ["input/TeX", "output/HTML-CSS"],
@@ -22,72 +23,16 @@
       displayMath: [ ['$$','$$'] ],
       processEscapes: true
       },
-      "HTML-CSS": { availableFonts: ["TeX"] },
-      "messageStyle": "none"
+      "HTML-CSS": { availableFonts: ["TeX"] }
       });
     </script>
-    <script type="text/javascript"
-            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-    </script>
-    <script>
-      $(function() {
-        var t = null;
-        var src = $("#src");
-        var out = $("#out");
-
-        function compile() {
-          var text = src.val();
-          out.html(rho.toHtml(text));
-          MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-        }
-
-        // The compilation is delayed a bit to prevent overwhelming
-        // the system with lots of unnecessary operations.
-        function scheduleUpdates() {
-          if (t) clearTimeout(t);
-          t = setTimeout(function() {
-            compile();
-          }, 200);
-        }
-        src.autosize().keyup(scheduleUpdates);
-
-        // Compile initially
-        compile();
-      });
-    </script>
+    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </head>
   <body>
-    <div id="fixnav">
-      <a href="http://rhojs.org"
-         title="Rho — semantic markup language">
-        <img src="./assets/img/rho.png"
-             width="64"
-             height="64"/>
-      </a>
-      <a href="https://github.com/inca/rho"
-         title="Check out the source code at GitHub">
-        <img src="./assets/img/gh.png"
-             width="64"
-             height="64"/>
-      </a>
-      <a href="https://raw.github.com/inca/rho/master/build/rho-0.1.2.min.js"
-         title="Download minified Rho v.0.1.2 for browser">
-        <img src="./assets/img/dl.png"
-             width="64"
-             height="64"/>
-      </a>
-      <a href="http://rhojs.org/love.html"
-         title="You like Rho? Help spread the love!">
-        <img src="./assets/img/luv.png"
-             width="64"
-             height="64"/>
-      </a>
-    </div>
+    <div id="fixnav"><a href="http://rhojs.org" title="Rho — semantic markup language"><img src="./assets/img/rho.png" width="64" height="64"></a><a href="https://github.com/inca/rho" title="Check out the source code at GitHub"><img src="./assets/img/gh.png" width="64" height="64"></a><a href="https://raw.github.com/inca/rho/master/build/rho-0.1.2.min.js" title="Download minified Rho v.0.1.2 for browser"><img src="./assets/img/dl.png" width="64" height="64"></a><a href="http://rhojs.org/love.html" title="You like Rho? Help spread the love!"><img src="./assets/img/luv.png" width="64" height="64"></a></div>
     <div id="editpane">
       <div class="col">
-        <textarea id="src"
-                  cols="80"
-                  rows="24"># Rho -- semantic markup language
+        <textarea id="src" cols="80" rows="24"># Rho -- semantic markup language
 
 Welcome to Rho, easy-to-{read,write,understand} semantic markup language written in [Node](http://nodejs.org), available both for server and browser runtime.
 
@@ -147,15 +92,15 @@ Full-featured Rho processor is available for browser.
 
 2. Include it on your page:
 
-   ```
-   <script type="text/javascipt" src="/js/rho.min.js">
-   </script>
-   ```
+  ```
+  <script type="text/javascipt" src="/js/rho.min.js">
+  </script>
+  ```
 3. Profit!
 
-   ```
-   var html = rho.toHtml(text);
-   ```
+  ```
+  var html = rho.toHtml(text);
+  ```
 
 Be sure to check out the [README](https://github.com/inca/rho#README)
 to learn more about using Rho.
@@ -280,21 +225,21 @@ with a number followed by a period -- and maintain the same indentation:
 ~~~ {.example}
 1. List item 1
 
-   Paragraph inside list item 1
+  Paragraph inside list item 1
 
 2. List item 2
 
-   1. Sub-list inside list item 2
+  1. Sub-list inside list item 2
 
-      1. Sub-sub list, item 1
+    1. Sub-sub list, item 1
 
-      2. Sub-sub list, item 2
+    2. Sub-sub list, item 2
 
-      3. Sub-sub list, item 3
+    3. Sub-sub list, item 3
 
-         ```
-         Even code inside sub-sub list!
-         ```
+      ```
+      Even code inside sub-sub list!
+      ```
 ~~~
 
 
@@ -308,23 +253,139 @@ Please check out the [Rho Syntax Reference](https://github.com/inca/rho/blob/mas
 
 </textarea>
       </div>
-      <div id="out" class="col"></div>
+      <div id="out" class="col"><h1>Rho &mdash; semantic markup language</h1><p>Welcome to Rho, easy-to-{read,write,understand} semantic markup language written in <a href="http://nodejs.org">Node</a>, available both for server and browser runtime.</p>
+<div class="note"><h2>&larr; Try it right here!</h2><p>The text you see is written in Rho. Click on the source text on the left to edit it.</p>
+<hr/><p class="subtle">
+<strong>Heads up!</strong> Don't worry, your changes won't be saved. We've set up this static page as a playground for learning the simple rules of Rho syntax.
+</p>
+</div>
+<h2>Features</h2><ul><li>Asynchronous compilation in Node.
+
+  </li><li>Syntax for adding <code>id</code> and <code>class</code> attributes on blocks.
+
+  </li><li>More strict rules &mdash; there is only one way of doing each feature.
+
+  </li><li>API-level extensibility.
+
+  </li><li>Both client-side and server-side maintained together.
+
+  </li><li><a href="http://mathjax.com">MathJAX support</a> out-of-box: $$e = \lim_{x\to\infty} \left(1+\frac{1}{x}\right)^x$$
+
+
+
+
+
+
+
+</li></ul>
+<h2>Installation <span class="amp">&amp;</span> usage</h2><h3>Node</h3><p>To use Rho with Node, simply install it using <a href="http://npmjs.org">npm</a>:</p>
+<pre><code>npm install rho</code></pre><p>Then require it and you're all set:</p>
+<pre><code>var html = require("rho").toHtml(text);</code></pre><h3>Browser version</h3><p>Full-featured Rho processor is available for browser.</p>
+<ol><li>Download the latest version.
+
+</li><li><p>Include it on your page:</p>
+<pre><code>&lt;script type="text/javascipt" src="/js/rho.min.js"&gt;
+&lt;/script&gt;</code></pre></li><li><p>Profit!</p>
+<pre><code>var html = rho.toHtml(text);</code></pre></li></ol>
+<p>Be sure to check out the <a href="https://github.com/inca/rho#README">README</a>
+to learn more about using Rho.</p>
+<h2 id="syntax">Syntax cheat-sheet    </h2><p>The text consists of blocks. Blocks are separated from each other with at least one blank line. <em>Paragraph</em> is the most generic block.</p>
+<p>Whitespace inside
+blocks
+is condensed.</p>
+<h3>Selectors</h3><p>Selectors let you define <code>id</code> and <code>class</code> attributes on blocks.
+Just include <em>selector expression</em> on the first line of your block:</p>
+<div class="example"><pre><code>Paragraph with id.            {#para}
+
+Paragraph with classes.       {.class1.class2}
+
+{#another.class1.class2}
+Another paragraph, both with id and classes.</code></pre></div>
+<h3>Headings</h3><p><em>Headings</em> start with one or more <code>#</code>. The amount of hashes
+determine the heading level (1 to 6):</p>
+<div class="example"><h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3><h4>Heading 4</h4><h5>Heading 5</h5><h5>Heading 6
+</h5></div>
+<h3>Code blocks</h3><p><em>Code blocks</em> start and end with <code>```</code>.</p>
+<div class="example"><pre><code>&lt;a href="#"&gt;Learn more&lt;/a&gt;</code></pre></div>
+<h3>Unordered lists</h3><p><em>Unordered lists</em> start with <code>* </code>, each list item should start with the
+same marker and maintain the same indentation:</p>
+<div class="example"><ul><li>List item 1
+
+</li><li>List item 2
+
+</li><li>List item 3
+</li></ul>
+</div>
+<p>Blocks indented beyond the marker are included into the list item.
+The amount of nesting is unconstrained &mdash; just make sure to maintain proper
+indentation:</p>
+<div class="example"><ul><li><p>List item 1</p>
+<p>Paragraph inside list item 1</p>
+</li><li><p>List item 2</p>
+<ul><li><p>Sub-list inside list item 2</p>
+<ul><li>Sub-sub list, item 1
+
+    </li><li>Sub-sub list, item 2
+
+    </li><li><p>Sub-sub list, item 3</p>
+<pre><code>Even code inside sub-sub list!</code></pre></li></ul>
+</li></ul>
+</li></ul>
+</div>
+<h3>Ordered lists</h3><p>Ordered lists start with <code>1.</code>, every subsequent list item should start
+with a number followed by a period &mdash; and maintain the same indentation:</p>
+<div class="example"><ol><li><p>List item 1</p>
+<p>Paragraph inside list item 1</p>
+</li><li><p>List item 2</p>
+<ol><li><p>Sub-list inside list item 2</p>
+<ol><li>Sub-sub list, item 1
+
+    </li><li>Sub-sub list, item 2
+
+    </li><li><p>Sub-sub list, item 3</p>
+<pre><code>Even code inside sub-sub list!</code></pre></li></ol>
+</li></ol>
+</li></ol>
+</div>
+<h3>Learn more</h3><p>Please check out the <a href="https://github.com/inca/rho/blob/master/SYNTAX.md">Rho Syntax Reference</a> to learn more about the syntax.</p>
+</div>
     </div>
-    <div id="footer">
-      <span>Created by</span>
-      <a href="https://github.com/inca">Boris Okunskiy</a>
-      <span>in 2013</span>
-    </div>
-
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-42498315-1', 'rhojs.org');
-      ga('send', 'pageview');
-
-    </script>
   </body>
+  <div id="footer"><span>Created by</span><a href="https://github.com/inca">Boris Okunskiy</a><span>in 2013</span></div>
+  <script>
+    $(function() {
+      var t = null;
+      var src = $("#src");
+      var out = $("#out");
+      var prev = src.val();
+      
+      function compile() {
+        var text = src.val();
+        if (text != prev) {
+          out.html(rho.toHtml(text));
+          MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+          prev = text;
+        }
+      }
+      
+      // The compilation is delayed a bit to prevent overwhelming
+      // the system with lots of unnecessary operations.
+      function scheduleUpdates() {
+        if (t) clearTimeout(t);
+        t = setTimeout(function() {
+          compile();
+        }, 200);
+      }
+      src.autosize().keyup(scheduleUpdates);
+    });
+  </script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    
+    ga('create', 'UA-42498315-1', 'rhojs.org');
+    ga('send', 'pageview');
+  </script>
 </html>

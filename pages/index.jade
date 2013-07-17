@@ -1,0 +1,56 @@
+extends wrap
+
+block body
+  #fixnav
+    a(href="http://rhojs.org",
+    title="Rho — semantic markup language")
+      img(src="./assets/img/rho.png",
+      width="64",
+      height="64")
+    a(href="https://github.com/inca/rho",
+    title="Check out the source code at GitHub")
+      img(src="./assets/img/gh.png",
+      width="64",
+      height="64")
+    a(href="https://raw.github.com/inca/rho/master/build/rho-0.1.2.min.js",
+    title="Download minified Rho v.0.1.2 for browser")
+      img(src="./assets/img/dl.png",
+      width="64",
+      height="64")
+    a(href="http://rhojs.org/love.html",
+    title="You like Rho? Help spread the love!")
+      img(src="./assets/img/luv.png",
+      width="64",
+      height="64")
+  #editpane
+    .col
+      textarea#src(cols="80", rows="24")!= texts.src("./pages/index.rho")
+    #out.col!= texts.html("./pages/index.rho")
+
+block scripts
+  script.
+    $(function() {
+      var t = null;
+      var src = $("#src");
+      var out = $("#out");
+      var prev = src.val();
+
+      function compile() {
+        var text = src.val();
+        if (text != prev) {
+          out.html(rho.toHtml(text));
+          MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+          prev = text;
+        }
+      }
+
+      // The compilation is delayed a bit to prevent overwhelming
+      // the system with lots of unnecessary operations.
+      function scheduleUpdates() {
+        if (t) clearTimeout(t);
+        t = setTimeout(function() {
+          compile();
+        }, 200);
+      }
+      src.autosize().keyup(scheduleUpdates);
+    });
