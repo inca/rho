@@ -24,7 +24,7 @@ block body
       height="64")
   #editpane
     .col
-      textarea#src(cols="80", rows="24")!= texts.src("./pages/index.rho")
+      textarea#src(cols="80", rows="24")= texts.src("./pages/index.rho")
     #out.col!= texts.html("./pages/index.rho")
 
 block scripts
