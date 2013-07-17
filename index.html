@@ -5,6 +5,7 @@
       Rho — easy-to-{read,write,understand} semantic markup language
       written in Node, available both for server-side and browser runtime.
     </title>
+    <meta charset="utf-8">
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="shortcut icon" href="./assets/img/favicon.ico">
     <script src="./build/rho-0.1.2.min.js"></script>
@@ -38,7 +39,7 @@ Welcome to Rho, easy-to-{read,write,understand} semantic markup language written
 
 ~~~ {.note}
 
-## <- Try it right here!
+## &lt;- Try it right here!
 
 The text you see is written in Rho. Click on the source text on the left to edit it.
 
@@ -68,7 +69,7 @@ The text you see is written in Rho. Click on the source text on the left to edit
 
 
 
-## Installation <span class="amp">&</span> usage
+## Installation &lt;span class=&quot;amp&quot;&gt;&amp;&lt;/span&gt; usage
 
 ### Node
 
@@ -81,7 +82,7 @@ npm install rho
 Then require it and you're all set:
 
 ```
-var html = require("rho").toHtml(text);
+var html = require(&quot;rho&quot;).toHtml(text);
 ```
 
 ### Browser version
@@ -93,8 +94,8 @@ Full-featured Rho processor is available for browser.
 2. Include it on your page:
 
   ```
-  <script type="text/javascipt" src="/js/rho.min.js">
-  </script>
+  &lt;script type=&quot;text/javascipt&quot; src=&quot;/js/rho.min.js&quot;&gt;
+  &lt;/script&gt;
   ```
 3. Profit!
 
@@ -167,7 +168,7 @@ _Code blocks_ start and end with `\`\`\``.
 
 ~~~ {.example}
 ```
-<a href="#">Learn more</a>
+&lt;a href=&quot;#&quot;&gt;Learn more&lt;/a&gt;
 ```
 ~~~
 
@@ -351,7 +352,7 @@ with a number followed by a period &mdash; and maintain the same indentation:</p
 </div>
     </div>
   </body>
-  <div id="footer"><span>Created by</span><a href="https://github.com/inca">Boris Okunskiy</a><span>in 2013</span></div>
+  <div id="footer"><span>Created by&nbsp;</span><a href="https://github.com/inca">Boris Okunskiy</a><span>&nbsp;in 2013</span></div>
   <script>
     $(function() {
       var t = null;
