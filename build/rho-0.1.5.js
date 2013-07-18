@@ -19,7 +19,7 @@ window.rho = {
 
 };
 
-},{"./block":3,"./defaults":2,"./inline":4}],2:[function(require,module,exports){
+},{"./block":2,"./defaults":3,"./inline":4}],3:[function(require,module,exports){
 "use strict";
 
 exports.options = {
@@ -50,7 +50,7 @@ exports.options = {
   }
 
 };
-},{}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 "use strict";
 
 var defaults = require("./defaults")
@@ -675,7 +675,7 @@ var htmlCommentRe = /^<!--[\s\S]*?-->$/;
 
 var tableSeparatorLineRe = /^[- :|]+$/;
 var tableEndRe = /^-{3,}$/;
-},{"./defaults":2,"./inline":4,"./walker":5,"extend":7,"html":6}],4:[function(require,module,exports){
+},{"./defaults":3,"./inline":4,"./walker":5,"extend":7,"html":6}],4:[function(require,module,exports){
 "use strict";
 
 var defaults = require("./defaults")
@@ -1348,7 +1348,7 @@ function unescapeHtml(text) {
     .replace("&#38;", "&");
 }
 
-},{"./defaults":2,"./walker":5,"extend":7}],6:[function(require,module,exports){
+},{"./defaults":3,"./walker":5,"extend":7}],6:[function(require,module,exports){
 /*
 
  Style HTML

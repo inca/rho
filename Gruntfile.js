@@ -12,9 +12,11 @@ var texts = {
 
 module.exports = function(grunt) {
 
+  var pkg = grunt.file.readJSON('package.json');
+
   grunt.initConfig({
 
-    pkg: grunt.file.readJSON('package.json'),
+    pkg: pkg,
 
     browserify: {
       basic: {
@@ -38,7 +40,8 @@ module.exports = function(grunt) {
         options: {
           pretty: true,
           data: {
-            texts: texts
+            texts: texts,
+            pkg: pkg
           }
         },
         files: {
