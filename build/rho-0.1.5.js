@@ -19,7 +19,7 @@ window.rho = {
 
 };
 
-},{"./block":2,"./defaults":3,"./inline":4}],3:[function(require,module,exports){
+},{"./block":3,"./defaults":2,"./inline":4}],2:[function(require,module,exports){
 "use strict";
 
 exports.options = {
@@ -50,7 +50,7 @@ exports.options = {
   }
 
 };
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 
 var defaults = require("./defaults")
@@ -71,17 +71,11 @@ var BlockCompiler
   = exports
   = function(options) {
 
-  this.out = [];
-
-  this.selector = {};
-
-  this.blockIndent = 0;
-
   this.options = require("extend")(true, {}, defaults.options, options);
 
   this.inline = new InlineCompiler(this.options);
 
-  this.inline.out = this.out;
+  this.reset();
 
 };
 
@@ -675,7 +669,7 @@ var htmlCommentRe = /^<!--[\s\S]*?-->$/;
 
 var tableSeparatorLineRe = /^[- :|]+$/;
 var tableEndRe = /^-{3,}$/;
-},{"./defaults":3,"./inline":4,"./walker":5,"extend":7,"html":6}],4:[function(require,module,exports){
+},{"./defaults":2,"./inline":4,"./walker":5,"extend":7,"html":6}],4:[function(require,module,exports){
 "use strict";
 
 var defaults = require("./defaults")
@@ -694,9 +688,9 @@ var InlineCompiler
   = exports
   = function(options) {
 
-  this.out = [];
-
   this.options = require("extend")(true, {}, defaults.options, options);
+
+  this.reset();
 
 };
 
@@ -1348,7 +1342,7 @@ function unescapeHtml(text) {
     .replace("&#38;", "&");
 }
 
-},{"./defaults":3,"./walker":5,"extend":7}],6:[function(require,module,exports){
+},{"./defaults":2,"./walker":5,"extend":7}],6:[function(require,module,exports){
 /*
 
  Style HTML
