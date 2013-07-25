@@ -516,5 +516,5 @@ features:
 
 ### Plain mode
 
-In plain mode only ampersand escaping occurs.
+In plain mode characters are emitted as-is, no escaping occurs.
 

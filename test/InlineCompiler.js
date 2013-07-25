@@ -66,7 +66,7 @@ describe('InlineCompiler', function() {
     it('should process triple code spans', function() {
       assert.equal(
         c.toHtml("Code with ```<b>tags</b> & SGMLs &#095;```"),
-        "Code with <code><b>tags</b> &amp; SGMLs &#095;</code>");
+        "Code with <code><b>tags</b> & SGMLs &#095;</code>");
     });
 
     it('should process regular code spans', function() {
