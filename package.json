@@ -1,6 +1,6 @@
 {
   "name": "rho",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Easy-to-{read,write,understand} semantic markup language for Node",
   "author": "Boris Okunskiy <boris@okunskiy.name>",
   "contributors": [
