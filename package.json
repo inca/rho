@@ -18,7 +18,6 @@
     }
   ],
   "dependencies": {
-    "extend": "*",
     "nomnom": "*",
     "html": "*"
   },

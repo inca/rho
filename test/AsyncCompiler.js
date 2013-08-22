@@ -6,7 +6,7 @@ var assert = require('assert')
 describe('AsyncCompiler', function() {
 
   // Block tests are prettified to save on whitespace misunderstandings
-  var c = new AsyncCompiler({ pretty: true });
+  var c = new AsyncCompiler();
 
   describe('in a simple usage scenario', function() {
 
@@ -47,7 +47,10 @@ describe('AsyncCompiler', function() {
                 if (err) throw err;
                 c.render(text, function(err, html) {
                   if (err) throw err;
-                  var ah = html.trim().replace(/\r\n|\r/g, "\n");
+                  var ah = require('html')
+                    .prettyPrint(html, { indent_size: 2 })
+                    .trim()
+                    .replace(/\r\n|\r/g, "\n");
                   var eh = expectedHtml.trim().replace(/\r\n|\r/g, "\n");
                   assert.equal(ah, eh);
                   done();

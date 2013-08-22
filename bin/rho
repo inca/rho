@@ -19,7 +19,7 @@ var opts = require("nomnom")
   })
   .option('pretty', {
     flag: true,
-    help: "pretty-print HTML (very slow)"
+    help: "pretty-print HTML (slows down a bit)"
   })
   .option('inline', {
     flag: true,
@@ -41,13 +41,11 @@ var compiler = null;
 if (opts.inline) compiler = require("../lib/inline");
 else compiler = require("../lib/block");
 
-var compilerOptions = {
-  pretty: opts.pretty
-};
-
 return readData(function(err, data) {
   var startTime = process.hrtime();
-  var result = new compiler(compilerOptions).toHtml(data);
+  var result = new compiler({}).toHtml(data);
+  if (opts.pretty)
+    result = require("html").prettyPrint(result, { indent_size: 2 }) + "\n";
   var timeTaken = process.hrtime(startTime);
   if (opts.output)
     fs.writeFile(opts.output, result, over);

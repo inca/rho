@@ -8,7 +8,7 @@ describe('BlockCompiler', function() {
   describe('with default configuration', function() {
 
     // Block tests are prettified to save on whitespace misunderstandings
-    var c = new BlockCompiler({ pretty: true });
+    var c = new BlockCompiler();
 
     var samplesDir = __dirname + "/../samples";
     var samples = fs.readdirSync(samplesDir);
@@ -27,7 +27,11 @@ describe('BlockCompiler', function() {
         var expectedHtml = fs.readFileSync(
           samplesDir + "/" + sample + ".html",
           { encoding: 'utf-8'}).trim().replace(/\r\n|\r/g, "\n");
-        var actualHtml = c.toHtml(text).trim().replace(/\r\n|\r/g, "\n");
+        var result = c.toHtml(text);
+        var actualHtml = require('html')
+          .prettyPrint(result, { indent_size: 2 })
+          .trim()
+          .replace(/\r\n|\r/g, "\n");
         assert.equal(actualHtml, expectedHtml);
       });
     }
