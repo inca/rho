@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="shortcut icon" href="./assets/img/favicon.ico">
-    <script src="./build/rho-0.1.8.min.js"></script>
+    <script src="./build/rho-0.1.9.min.js"></script>
     <script src="./assets/js/jquery-2.0.3.min.js"></script>
     <script src="./assets/js/jquery.autosize.min.js"></script>
     <script src="./assets/js/jquery.autosize.min.js"></script>
@@ -351,42 +351,42 @@ with a number followed by a period &mdash; and maintain the same indentation:</p
 <h3>Learn more</h3><p>Please check out the <a href="https://github.com/inca/rho/blob/master/SYNTAX.md">Rho Syntax Reference</a> to learn more about the syntax.</p>
 </div>
     </div>
-  </body>
-  <div id="footer"><span>Created by&nbsp;</span><a href="https://github.com/inca">Boris Okunskiy</a><span>&nbsp;in 2013</span></div>
-  <script>
-    $(function() {
-      var t = null;
-      var src = $("#src");
-      var out = $("#out");
-      var prev = src.val();
-      
-      function compile() {
-        var text = src.val();
-        if (text != prev) {
-          out.html(rho.toHtml(text));
-          MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-          prev = text;
+    <div id="footer"><span>Created by&nbsp;</span><a href="https://github.com/inca">Boris Okunskiy</a><span>&nbsp;in 2013</span></div>
+    <script>
+      $(function() {
+        var t = null;
+        var src = $("#src");
+        var out = $("#out");
+        var prev = src.val();
+        
+        function compile() {
+          var text = src.val();
+          if (text != prev) {
+            out.html(rho.toHtml(text));
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            prev = text;
+          }
         }
-      }
+        
+        // The compilation is delayed a bit to prevent overwhelming
+        // the system with lots of unnecessary operations.
+        function scheduleUpdates() {
+          if (t) clearTimeout(t);
+          t = setTimeout(function() {
+            compile();
+          }, 200);
+        }
+        src.autosize().keyup(scheduleUpdates);
+      });
+    </script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
       
-      // The compilation is delayed a bit to prevent overwhelming
-      // the system with lots of unnecessary operations.
-      function scheduleUpdates() {
-        if (t) clearTimeout(t);
-        t = setTimeout(function() {
-          compile();
-        }, 200);
-      }
-      src.autosize().keyup(scheduleUpdates);
-    });
-  </script>
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-    
-    ga('create', 'UA-42498315-1', 'rhojs.org');
-    ga('send', 'pageview');
-  </script>
+      ga('create', 'UA-42498315-1', 'rhojs.org');
+      ga('send', 'pageview');
+    </script>
+  </body>
 </html>
