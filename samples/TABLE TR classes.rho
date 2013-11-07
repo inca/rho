@@ -1,0 +1,25 @@
+Imagine if you could give classes straight to `<tr>` tags of your simple tables!
+
+Now you can do it with Rho:
+
+------------------------------------- {.bordered.rows.cols}
+  1        |  2         |  3          {.lighter}
+  10       |  20        |  30         {.light}
+  100      |  200       |  300
+  1000     |  2000      |  3000       {.dark}
+  10000    |  20000     |  30000      {.darker}
+-------------------------------------
+
+Combine with `<td>`/`<th>` align classes for the real magic:
+
+------------------------------------- {.bordered.rows.cols}
+ Column 1  |  Column 2  |  Column 3   {.dark}
+----------:|:----------:|:-----------
+  -1       |  2
+  1        |  2         |  3          {.lighter}
+  10       |  20        |  30         {.light}
+  100      |  200       |  300
+  1000     |  2000      |  3000       {.dark}
+  10000    |  20000     |  30000      {.darker}
+-------------------------------------
+
