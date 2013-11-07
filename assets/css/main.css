@@ -38,6 +38,7 @@ body {
   position:fixed;
   top:8px;
   left:40%;
+  z-index:100;
 }
 
 #fixnav a {
@@ -90,10 +91,50 @@ body {
               0 0 128px rgba(0,0,0,.1) inset;
 }
 
+@media screen and (max-width: 960px) {
+
+  #fixnav {
+    left: 0;
+    top: 0;
+    right:0;
+    text-align: center;
+    background: rgba(255,255,255,.9);
+    height: 48px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.5);
+  }
+
+  #fixnav a {
+    display:inline-block;
+    left: 0;
+    top: 0;
+    width: auto;
+    height: auto;
+    margin:0 !important;
+  }
+
+  #editpane {
+    display: block;
+  }
+
+  #editpane .col {
+    display: block;
+    width: auto !important;
+  }
+
+  #src {
+    display:none;
+  }
+
+  #out {
+    padding: 48px 16px;
+  }
+
+}
+
 .modal {
   position:relative;
   z-index:2;
-  width: 640px;
+  max-width: 640px;
   background: #eee;
   border-radius: 4px;
   margin: 32px auto 0;
@@ -286,6 +327,11 @@ table.bordered {
 table.alt tbody tr:nth-child(2n + 1) td,
 table.alt tbody tr:nth-child(2n + 1) th {
   background: rgba(0,0,0,.03);
+}
+
+tr.strawberry {
+  background: #fdd;
+  color: #a55;
 }
 
 tr.banana {

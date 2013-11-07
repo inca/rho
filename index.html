@@ -37,7 +37,7 @@
 
 Welcome to Rho, easy-to-{read,write,understand} semantic markup language written in [Node](http://nodejs.org), available both for server and browser runtime.
 
-~~~ {.note}
+~~~ {.note.}
 
 ## &lt;- Try it right here!
 
@@ -276,6 +276,7 @@ Tables can go without any heading, it just needs to be started with a couple of 
 Furthermore, each table row can have its very own selector!
 
 ---------------------------- {.centered}
+  Strawberry    |  6 boxes   {.strawberry}
   Bananas       |  500 kg    {.banana}
   Oranges       |  20 boxes  {.orange}
   Kiwi          |  100 packs {.kiwi}
@@ -288,7 +289,7 @@ Please check out the [Rho Syntax Reference](https://github.com/inca/rho/blob/mas
 </textarea>
       </div>
       <div id="out" class="col"><h1>Rho &mdash; semantic markup language</h1><p>Welcome to Rho, easy-to-{read,write,understand} semantic markup language written in <a href="http://nodejs.org">Node</a>, available both for server and browser runtime.</p>
-<div class="note"><h2>&larr; Try it right here!</h2><p>The text you see is written in Rho. Click on the source text on the left to edit it.</p>
+<div class="note "><h2>&larr; Try it right here!</h2><p>The text you see is written in Rho. Click on the source text on the left to edit it.</p>
 <hr/><p class="subtle">
 <strong>Heads up!</strong> Don't worry, your changes won't be saved. We've set up this static page as a playground for learning the simple rules of Rho syntax.
 </p>
@@ -387,7 +388,7 @@ The syntax is rather sparse and can forgive many of your common mistakes.</p>
 <table class="centered bordered rows alt"><thead><tr><th>  A  </th><th>  B  </th><th> A ^ B </th></tr></thead><tbody><tr><td>  0  </td><td>  0  </td><td>   0   </td></tr><tr><td>  0  </td><td>  1  </td><td>   1   </td></tr><tr><td>  1  </td><td>  0  </td><td>   1   </td></tr><tr><td>  1  </td><td>  1  </td><td>   0   </td></tr></tbody></table><p>Columns alignment can be controlled using colons <code>:</code> in the separator line (below heading).</p>
 <table class="centered rows"><thead><tr><th class="align-right">Right-align   </th><th class="align-center">    Centered   </th><th class="align-left">Left-align</th></tr></thead><tbody><tr><td class="align-right">0             </td><td class="align-center"> 0             </td><td class="align-left">0</td></tr><tr><td class="align-right">10            </td><td class="align-center"> 10            </td><td class="align-left">10</td></tr><tr><td class="align-right">100           </td><td class="align-center"> 100           </td><td class="align-left">100</td></tr><tr><td class="align-right">1000          </td><td class="align-center"> 1000          </td><td class="align-left">1000</td></tr></tbody></table><p>Tables can go without any heading, it just needs to be started with a couple of minus signs.
 Furthermore, each table row can have its very own selector!</p>
-<table class="centered"><tbody><tr class="banana"><td>Bananas       </td><td>500 kg</td></tr><tr class="orange"><td>Oranges       </td><td>20 boxes</td></tr><tr class="kiwi"><td>Kiwi          </td><td>100 packs</td></tr></tbody></table><h3>Learn more</h3><p>Please check out the <a href="https://github.com/inca/rho/blob/master/SYNTAX.md">Rho Syntax Reference</a> to learn more about the syntax.</p>
+<table class="centered"><tbody><tr class="strawberry"><td>Strawberry    </td><td>6 boxes</td></tr><tr class="banana"><td>Bananas       </td><td>500 kg</td></tr><tr class="orange"><td>Oranges       </td><td>20 boxes</td></tr><tr class="kiwi"><td>Kiwi          </td><td>100 packs</td></tr></tbody></table><h3>Learn more</h3><p>Please check out the <a href="https://github.com/inca/rho/blob/master/SYNTAX.md">Rho Syntax Reference</a> to learn more about the syntax.</p>
 </div>
     </div>
     <div id="footer"><span>Created by&nbsp;</span><a href="https://github.com/inca">Boris Okunskiy</a><span>&nbsp;in 2013</span></div>

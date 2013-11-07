@@ -2,7 +2,7 @@
 
 Welcome to Rho, easy-to-{read,write,understand} semantic markup language written in [Node](http://nodejs.org), available both for server and browser runtime.
 
-~~~ {.note}
+~~~ {.note.}
 
 ## <- Try it right here!
 
@@ -241,6 +241,7 @@ Tables can go without any heading, it just needs to be started with a couple of 
 Furthermore, each table row can have its very own selector!
 
 ---------------------------- {.centered}
+  Strawberry    |  6 boxes   {.strawberry}
   Bananas       |  500 kg    {.banana}
   Oranges       |  20 boxes  {.orange}
   Kiwi          |  100 packs {.kiwi}
