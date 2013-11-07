@@ -6,6 +6,11 @@
       <td>Two</td>
       <td>Three</td>
     </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
   </tbody>
 </table>
 <p>Now more like a table:</p>
@@ -41,34 +46,34 @@
   </tbody>
 </table>
 <p>With alignment attributes:</p>
-<table>
+<table width="100%">
   <thead>
     <tr>
-      <th style="text-align:right">A</th>
-      <th style="text-align:center">B</th>
-      <th style="text-align:left">A ^ B</th>
+      <th class="align-right">A</th>
+      <th class="align-center">B</th>
+      <th class="align-left">A ^ B</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style="text-align:right">0</td>
-      <td style="text-align:center">0</td>
-      <td style="text-align:left">0</td>
+      <td class="align-right">0</td>
+      <td class="align-center">0</td>
+      <td class="align-left">0</td>
     </tr>
     <tr>
-      <td style="text-align:right">0</td>
-      <td style="text-align:center">1</td>
-      <td style="text-align:left">1</td>
+      <td class="align-right">0</td>
+      <td class="align-center">1</td>
+      <td class="align-left">1</td>
     </tr>
     <tr>
-      <td style="text-align:right">1</td>
-      <td style="text-align:center">0</td>
-      <td style="text-align:left">1</td>
+      <td class="align-right">1</td>
+      <td class="align-center">0</td>
+      <td class="align-left">1</td>
     </tr>
     <tr>
-      <td style="text-align:right">1</td>
-      <td style="text-align:center">1</td>
-      <td style="text-align:left">0</td>
+      <td class="align-right">1</td>
+      <td class="align-center">1</td>
+      <td class="align-left">0</td>
     </tr>
   </tbody>
 </table>
@@ -77,34 +82,35 @@
   <thead>
     <tr>
       <th>1</th>
-      <th style="text-align:center">2</th>
-      <th style="text-align:left">3</th>
-      <th style="text-align:right">4</th>
+      <th class="align-center">2</th>
+      <th class="align-left">3</th>
+      <th class="align-right">4</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>one two three</td>
-      <td style="text-align:center"></td>
-      <td style="text-align:left"></td>
-      <td style="text-align:right"></td>
+      <td class="align-center"></td>
+      <td class="align-left"></td>
+      <td class="align-right"></td>
     </tr>
     <tr>
       <td>one</td>
-      <td style="text-align:center">two three</td>
-      <td style="text-align:left"></td>
-      <td style="text-align:right"></td>
+      <td class="align-center">two three</td>
+      <td class="align-left"></td>
+      <td class="align-right"></td>
     </tr>
     <tr>
       <td>one</td>
-      <td style="text-align:center">two</td>
-      <td style="text-align:left">three</td>
-      <td style="text-align:right"></td>
+      <td class="align-center">two</td>
+      <td class="align-left">three</td>
+      <td class="align-right"></td>
     </tr>
   </tbody>
 </table>
 <p>Inline markup inside and selectors:</p>
-<table class="bordered rows cols">
+<table class="bordered rows cols"
+width="100%">
   <thead>
     <tr>
       <th>This</th>
