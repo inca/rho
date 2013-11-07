@@ -103,7 +103,7 @@ refer to `man rho` for complete walkthrough.
 
 ## License
 
-Copyright (C) 2013 Boris Okunskiy <boris@okunskiy.name> (MIT license)
+2013 — ∞ Copyright (C) Boris Okunskiy <boris@okunskiy.name> (MIT license)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
