@@ -5,9 +5,7 @@ html, body, form, img {
 }
 
 body {
-  font-family: "HelveticaNeueLight", "HelveticaNeue-Light",
-  "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue",
-  "Segoe UI", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-family: "Helvetica Neue", "Segoe UI", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
   font-weight:300;
   font-size:16px;
   line-height:1.5em;
@@ -105,8 +103,8 @@ body {
 
 .modal .logo {
   position:absolute;
-  top:-24px;
-  right:-24px;
+  top:-4px;
+  right:-4px;
 }
 
 .shadow {
@@ -207,8 +205,6 @@ pre code {
   position:relative;
   margin: 1em 0;
   padding:16px;
-  box-shadow: 0 1px 3px rgba(0,0,0,.75),
-              0 -48px 128px rgba(48,48,0,.25) inset;
   border-radius:4px;
   background: #eeeee5;
 }
@@ -228,4 +224,81 @@ pre code {
   font-family: Baskerville, "Goudy Old Style", "Palatino", "Book Antiqua", serif !important;
   font-weight: normal !important;
   font-style: italic !important;
+}
+
+table {
+  border-collapse: collapse;
+  max-width: 100%;
+  margin: 0;
+  border-spacing:0;
+}
+
+table.centered {
+  margin: 0 auto;
+}
+
+table td, table th {
+  padding: 4px 12px;
+  margin: 0;
+  text-align: left;
+}
+
+table th {
+  font-weight: 400;
+  font-size: 18px;
+}
+
+table td.align-left,
+table th.align-left {
+  text-align: left;
+}
+
+table td.align-right,
+table th.align-right {
+  text-align: right;
+}
+
+table td.align-center,
+table th.align-center {
+  text-align: center;
+}
+
+table.rows td, table.rows th {
+  border-top: 1px solid #ddd;
+}
+
+table.rows tr:first-child td,
+table.rows tr:first-child th {
+  border-top-width: 0;
+}
+
+table.rows thead + tbody tr:first-child td,
+table.rows thead + tbody tr:first-child th {
+  border-top-width: 1px
+}
+
+table.bordered {
+  border-collapse: separate;
+  border-radius: 4px;
+  border: 1px solid #bbb;
+}
+
+table.alt tbody tr:nth-child(2n + 1) td,
+table.alt tbody tr:nth-child(2n + 1) th {
+  background: rgba(0,0,0,.03);
+}
+
+tr.banana {
+  background: #ffc;
+  color: #aa5;
+}
+
+tr.orange {
+  background: #fe8;
+  color: #a70;
+}
+
+tr.kiwi {
+  background: #cfa;
+  color: #4a2;
 }

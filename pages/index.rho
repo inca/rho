@@ -211,7 +211,40 @@ with a number followed by a period -- and maintain the same indentation:
 
 
 
+### Simple tables
 
+Rho allows you to compose simple tables — without even knowing about HTML nightmares.
+The syntax is rather sparse and can forgive many of your common mistakes.
+
+Just like with any other block, you can enhance your tables with selectors.
+
+--------------------- {.centered.bordered.rows.alt}
+|  A  |  B  | A ^ B |
+|-----|-----|-------|
+|  0  |  0  |   0   |
+|  0  |  1  |   1   |
+|  1  |  0  |   1   |
+|  1  |  1  |   0   |
+---------------------
+
+Columns alignment can be controlled using colons `:` in the separator line (below heading).
+
+------------------------------------------------ {.centered.rows}
+  Right-align   |    Centered   |   Left-align
+---------------:|:-------------:|:--------------
+  0             | 0             | 0
+  10            | 10            | 10
+  100           | 100           | 100
+  1000          | 1000          | 1000
+
+Tables can go without any heading, it just needs to be started with a couple of minus signs.
+Furthermore, each table row can have its very own selector!
+
+---------------------------- {.centered}
+  Bananas       |  500 kg    {.banana}
+  Oranges       |  20 boxes  {.orange}
+  Kiwi          |  100 packs {.kiwi}
+----------------------------
 
 ### Learn more
 
