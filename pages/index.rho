@@ -2,7 +2,7 @@
 
 Welcome to Rho, easy-to-{read,write,understand} semantic markup language written in [Node](http://nodejs.org), available both for server and browser runtime.
 
-~~~ {.note.}
+~~~ {.note}
 
 ## <- Try it right here!
 
