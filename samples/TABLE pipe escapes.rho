@@ -1,0 +1,12 @@
+Let's look at the truth table for disjunction.
+
+Note that pipes should be escaped.
+
+--- {.rows.centered}
+ A  |  B  | A \|\| B
+--------------------
+ 0  |  0  | 0
+ 0  |  1  | 1
+ 1  |  0  | 1
+ 1  |  1  | 1
+--------------------
