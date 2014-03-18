@@ -30,6 +30,12 @@
     "benchmark",
     "samples",
     "pages",
-    "*.html"
+    "*.html",
+    "package.json",
+    "*.md",
+    "CNAME",
+    "Gruntfile.js",
+    "man",
+    "bin"
   ]
 }
