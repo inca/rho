@@ -1,0 +1,35 @@
+{
+  "name": "rho",
+  "version": "0.1.14",
+  "homepage": "http://rhojs.org",
+  "authors": [
+    "Boris Okunskiy <boris@okunskiy.name>"
+  ],
+  "description": "Easy-to-{read,write,understand} semantic markup language",
+  "main": "lib/amd.js",
+  "keywords": [
+    "rho",
+    "semantic",
+    "markup",
+    "html",
+    "parser",
+    "tool",
+    "plain",
+    "text",
+    "language",
+    "api"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "assets",
+    "benchmark",
+    "samples",
+    "pages",
+    "*.html"
+  ]
+}
