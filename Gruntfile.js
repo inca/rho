@@ -21,7 +21,7 @@ module.exports = function(grunt) {
     browserify: {
       basic: {
         src: ['lib/browser.js'],
-        dest: 'build/rho-<%=pkg.version%>.js'
+        dest: 'build/rho.js'
       }
     },
 
@@ -30,8 +30,8 @@ module.exports = function(grunt) {
         banner: '/*! Rho v.<%=pkg.version%> by <%=pkg.author%> */\n'
       },
       build: {
-        src: 'build/rho-<%=pkg.version%>.js',
-        dest: 'build/rho-<%=pkg.version%>.min.js'
+        src: 'build/rho.js',
+        dest: 'build/rho.min.js'
       }
     },
 

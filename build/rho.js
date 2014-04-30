@@ -1143,12 +1143,15 @@ InlineCompiler.prototype = {
   /* Links and images are resolved from supplied `options`. */
 
   emitLink: function(text, link) {
-    var href = link.url;
+    var href = link.url
+      , external = link.external || this.options.externalLinks;
     if (!href)
       href = link.toString();
     this.out.push("<a href=\"" + href + "\"");
     if (link.title)
       this.out.push(" title=\"" + escapeHtml(link.title) + "\"");
+    if (external)
+      this.out.push(" target=\"_blank\"");
     // Link text is rendered separately with the same options
     var html = new InlineCompiler(this.options).toHtml(text);
     this.out.push(">" + html + "</a>");
