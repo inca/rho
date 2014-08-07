@@ -1306,11 +1306,9 @@ InlineCompiler.prototype = {
         var url = link.url;
         if (!url)
           url = link.toString();
-        if (link) {
-          this.out.push(url);
-          walk.skip();
-          return true;
-        }
+        this.out.push(url);
+        walk.skip();
+        return true;
       }
     }
     // Not a reference link, rolling back
