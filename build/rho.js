@@ -1,4 +1,4 @@
-;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
 var defaults = require("./defaults")
@@ -73,6 +73,7 @@ BlockCompiler.prototype = {
     this.countBlockIndent(walk);
     if (this.tryUnorderedList(walk)) return;
     if (this.tryOrderedList(walk)) return;
+    if (this.tryDefinitionList(walk)) return;
     if (this.tryHeading(walk)) return;
     if (this.tryCodeBlock(walk)) return;
     if (this.tryDiv(walk)) return;
@@ -366,6 +367,80 @@ BlockCompiler.prototype = {
     this.out.push("</li>");
   },
 
+  /* Definition lists start with either `= ` or `- ` which are rendered as
+  `dt` and `dd` respectively. Indentation is required for nested blocks. */
+
+  tryDefinitionList: function(walk) {
+    if (!walk.at("= ") && !walk.at('- ')) return false;
+    var startIdx = walk.position;
+    var found = false;
+    // Find the end of the block, checking for nested subblocks
+    while (!found && walk.hasCurrent()) {
+      walk.scrollToTerm().skipBlankLines();
+      if (walk.atSpaces(this.blockIndent)) {
+        var i = walk.position;
+        walk.skip(this.blockIndent);
+        if (!walk.at("= ") && !walk.at('- ') && !walk.atSpace()) {
+          found = true;
+          walk.startFrom(i);
+        }
+      } else found = true;
+    }
+    // We got DL region, emit it
+    var dl = this.stripSelector(new SubWalker(walk, startIdx, walk.position));
+    this.emitDl(dl);
+    return true;
+  },
+
+  emitDl: function(walk) {
+    this.out.push("<dl");
+    this.emitSelector();
+    this.out.push(">");
+    // Parsing dt and dd
+    var startIdx = walk.position;
+    while (walk.hasCurrent()) {
+      walk.scrollToEol().skipBlankLines();
+      if (walk.atSpaces(this.blockIndent)) {
+        walk.skip(this.blockIndent);
+        if (walk.at('= ') || walk.at('- ')) {
+          var elem = this.stripSelector(new SubWalker(walk, startIdx, walk.position));
+          this.emitDtDd(elem);
+          startIdx = walk.position;
+        }
+      }
+    }
+    // Emit last element
+    var last = this.stripSelector(new SubWalker(walk, startIdx, walk.position));
+    this.emitDtDd(last);
+    // All items emitted
+    this.out.push("</dl>\n");
+  },
+
+  // emits either `dt` or `dd` depending on the marker
+
+  emitDtDd: function(walk) {
+    var tag = walk.at('= ') ? 'dt' : 'dd';
+    walk.skip(2);
+    this.out.push("<");
+    this.out.push(tag);
+    this.emitSelector();
+    this.out.push(">");
+    // Determine, whether the contents is inline or block
+    var b = walk.lookahead(function(w) {
+      w.scrollToTerm().skipWhitespaces();
+      return w.hasCurrent(); // In other words, there is a blank line inside
+    });
+    var indent = this.blockIndent;
+    if (b) {
+      while (walk.hasCurrent())
+        this.emitBlock(walk);
+      this.blockIndent = indent;
+    } else this.emitInline(walk);
+    this.out.push('</');
+    this.out.push(tag);
+    this.out.push('>');
+  },
+
   /* Headings start with `#`, the amount of pounds designate the level. */
 
   tryHeading: function(walk) {
@@ -622,6 +697,7 @@ var htmlCommentRe = /^<!--[\s\S]*?-->$/;
 
 var tableSeparatorLineRe = /^[- :|]+$/;
 var tableEndRe = /^-{3,}$/;
+
 },{"./defaults":3,"./extend":4,"./inline":5,"./walker":6}],2:[function(require,module,exports){
 /* # Rho for browser */
 
@@ -1520,9 +1596,9 @@ Walker.prototype = {
     while(!found && this.hasCurrent()) {
       var c = this.current();
       found = c == "" || c == "\\" || c == "&" || c == "<" ||
-        c == ">" || c == "`" || c == "$" || c == '%' || c == "_" ||
+        c == ">" || c == "`" || c == "$" || c == "%" || c == "_" ||
         c == "*" || c == "!" || c == "[" || c == "(" || c == "{" ||
-        c == "-" || c == "\"";
+        c == "-" || c == "\"" || c == "=";
       if (!found)
         this.skip();
     }
@@ -1564,8 +1640,8 @@ Walker.prototype = {
     return this.lookahead(function(w) {
       var found = false;
       while (!found && w.hasCurrent()) {
-        if (w.at("\\" + marker))
-          w.skip(marker.length + 1);
+        if (w.at("\\"))
+          w.skip(2);
         else if (w.at(marker))
           found = true;
         else w.skip();
@@ -1817,5 +1893,4 @@ MultiWalker.prototype = extend({}, new Walker, {
 });
 
 
-},{"./extend":4}]},{},[2])
-;
+},{"./extend":4}]},{},[2]);
