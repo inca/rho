@@ -571,7 +571,10 @@ BlockCompiler.prototype = {
     var line = walk.readLine();
     if (tableSeparatorLineRe.test(line.toString().trim())) {
       hasHead = true;
+      // stash selector, b/c it is overwritten by readCells
+      var selector = this.selector;
       var separators = this.readCells(line);
+      this.selector = selector;
       separators.forEach(function(e, i) {
         var m = e.trim();
         var left = m[0] == ":";
