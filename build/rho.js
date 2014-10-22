@@ -1260,7 +1260,27 @@ InlineCompiler.prototype = {
     // Try to find the ]
     walk.skip();
     var start = walk.position;
-    var end = walk.indexOf("]");
+    // Also support nesting with images
+    var end = walk.lookahead(function(w) {
+      var nested = 0;
+      var found = false;
+      while (!found && w.hasCurrent()) {
+        if (w.at("\\"))
+          w.skip(2);
+        else if (w.at('![')) {
+          nested += 1;
+          w.skip(2);
+        } else if (w.at(']')) {
+          if (nested == 0)
+            found = true;
+          else {
+            nested -= 1;
+            w.skip()
+          }
+        } else w.skip();
+      }
+      return found ? w.position : null;
+    });
     if (end === null) {
       this.out.push("[");
       return true;
