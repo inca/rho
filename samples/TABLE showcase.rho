@@ -36,7 +36,7 @@ one | two | three
 
 Inline markup inside and selectors:
 
--------------------------------------------->  {.bordered.rows.cols}
+-------------------------------------------->  {.bordered.rows.cols;border-collapse: collapse}
    This   |   That   |   This `code` That
 ---------------------------------------------
    foo    |   foo    |   Hello, *WORLD*!
@@ -46,4 +46,3 @@ Inline markup inside and selectors:
 This is HR:
 
 --- {.clear}
-
