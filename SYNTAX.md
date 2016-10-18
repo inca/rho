@@ -58,7 +58,7 @@ for creating links, emphasizing words, marking the code, etc.
 ### Selectors
 
 Rho features very powerful feature called _selectors_ which allows
-attaching HTML attributes `id` and `class` to any kind of block.
+attaching HTML attributes `id`, `class`, and `style` to any kind of block.
 
 The selector expression must be written on the first line of a block.
 It looks pretty much like CSS selectors (hence the name) enclosed in curly braces:
@@ -72,6 +72,23 @@ This example is rendered into the following markup:
 ```
 <p id="special" class="emphasized">This paragraph is special!</p>
 ```
+
+Style selector introduced with ";" and must follow `id` and `class` selectors,
+if they are present:
+
+```
+This paragraph is red. {.emphasized;color: red}
+
+This paragraph is smaller. {;font-size: smaller}
+```
+
+This is rendered as
+
+```
+<p class="emphasized" style="color: red">This paragraph is red.</p>
+<p style="font-size: smaller">This paragraph is smaller.</p>
+```
+
 
 Selectors allow text authors to define their own set of semantic blocks,
 e.g. notes, warnings, sidenotes, kickers, etc.
@@ -517,4 +534,3 @@ features:
 ### Plain mode
 
 In plain mode characters are emitted as-is, no escaping occurs.
-

@@ -115,6 +115,7 @@ BlockCompiler.prototype = {
         walk.skip();
         this.trySelectorId(walk);
         while(this.trySelectorClass(walk)) {}
+        this.trySelectorStyle(walk);
         if (!walk.at("}")) // invalid selector
           break;
         // Selector matched, exclude it
@@ -141,6 +142,18 @@ BlockCompiler.prototype = {
     return true;
   },
 
+  trySelectorStyle: function(walk) {
+    if (!walk.at(";")) return false;
+    walk.skip();
+    var end = walk.lookahead(function(w) {
+      while (w.hasCurrent() && !w.at('}'))
+        w.skip();
+      return w.position;
+    });
+    this.selector.style = walk.yieldUntil(end);
+    return true;
+  },
+
   trySelectorClass: function(walk) {
     if (!walk.at(".")) return false;
     walk.skip();
@@ -162,10 +175,15 @@ BlockCompiler.prototype = {
     if (typeof this.selector.id == "string") {
       this.out.push(" id=\"" + this.selector.id + "\"");
     }
+    // emit style
+    if (typeof this.selector.style == "string") {
+      this.out.push(" style=\"" + this.selector.style + "\"");
+    }
     // emit class
     if (Array.isArray(this.selector.classes)) {
       this.out.push(" class=\"");
-      for (var i in this.selector.classes) {
+      var totalSel = this.selector.classes.length;
+      for (var i = 0; i < totalSel; i++) {
         if (i > 0) this.out.push(" ");
         this.out.push(this.selector.classes[i]);
       }

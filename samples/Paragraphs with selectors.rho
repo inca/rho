@@ -12,5 +12,11 @@ I have a couple of classes,        {.class1.class2}
 too!.
 
 
+I have style.              {;color: LavenderBlush; border-collapse: collapse}
+
+
+I am classy and stylish!   {.class1;float: left; font: bold 15px Georgia}
+
+
 My selector is {invalid}
 so it is left in my body.
