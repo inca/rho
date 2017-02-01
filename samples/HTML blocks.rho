@@ -17,3 +17,8 @@ Another *paragraph*.
 
 <!-- HTML comment, just like *this*-->
 
+A third paragraph
+
+<custom-element>
+  Some contents
+</custom-element>
