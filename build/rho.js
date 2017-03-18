@@ -102,7 +102,7 @@ BlockCompiler.prototype = {
 
   /* Selector expression is stripped from each block, if it exists,
    resulting in a new walker with excluded region. */
-  stripSelector: function(walk) {
+  stripSelector: function(walk, allowMultipleSelectors) {
     this.selector = {};
     var start = walk.position;
     while (walk.hasCurrent() && !walk.atNewLine()) {
@@ -120,8 +120,12 @@ BlockCompiler.prototype = {
           break;
         // Selector matched, exclude it
         walk.skip().skipSpaces();
-        var e = walk.position;
-        return walk.startFrom(start).exclude(s, e);
+        // Only match if the selector was at the end of the line
+        // or we allow multiple selectors on a line and the next char is "{"
+        if (!walk.hasCurrent() || walk.atNewLine() || (allowMultipleSelectors && walk.at("{"))) {
+          var e = walk.position;
+          return walk.startFrom(start).exclude(s, e);
+        }
       } else walk.skip();
     }
     // Selector not found
@@ -277,7 +281,7 @@ BlockCompiler.prototype = {
       } else found = true;
     }
     // We got UL region, emit it
-    var ul = this.stripSelector(new SubWalker(walk, startIdx, walk.position));
+    var ul = this.stripSelector(new SubWalker(walk, startIdx, walk.position), true);
     this.emitUl(ul);
     return true;
   },
@@ -293,7 +297,7 @@ BlockCompiler.prototype = {
       walk.scrollToEol().skipBlankLines();
       if (walk.atSpaces(this.blockIndent) &&
         walk.skip(this.blockIndent).at("* ")) {
-        var li = this.stripSelector(new SubWalker(walk, startIdx, walk.position));
+        var li = this.stripSelector(new SubWalker(walk, startIdx, walk.position), true);
         this.emitLi(li);
         // Skip next marker
         walk.skip(2);
@@ -301,7 +305,7 @@ BlockCompiler.prototype = {
       }
     }
     // Emit last li
-    var last = this.stripSelector(new SubWalker(walk, startIdx, walk.position));
+    var last = this.stripSelector(new SubWalker(walk, startIdx, walk.position), true);
     this.emitLi(last);
     // All items emitted
     this.out.push("</ul>\n");
@@ -326,7 +330,7 @@ BlockCompiler.prototype = {
       } else found = true;
     }
     // We got UL region, emit it
-    var ol = this.stripSelector(new SubWalker(walk, startIdx, walk.position));
+    var ol = this.stripSelector(new SubWalker(walk, startIdx, walk.position), true);
     this.emitOl(ol);
     return true;
   },
@@ -351,7 +355,7 @@ BlockCompiler.prototype = {
       walk.scrollToEol().skipBlankLines();
       if (walk.atSpaces(this.blockIndent) &&
         this.lookingAtOlMarker(walk.skip(this.blockIndent))) {
-        var li = this.stripSelector(new SubWalker(walk, startIdx, walk.position));
+        var li = this.stripSelector(new SubWalker(walk, startIdx, walk.position), true);
         this.emitLi(li);
         // Skip next marker
         walk.skipDigits().skip(2);
@@ -359,7 +363,7 @@ BlockCompiler.prototype = {
       }
     }
     // Emit last li
-    var last = this.stripSelector(new SubWalker(walk, startIdx, walk.position));
+    var last = this.stripSelector(new SubWalker(walk, startIdx, walk.position), true);
     this.emitLi(last);
     // All items emitted
     this.out.push("</ol>\n");
@@ -513,7 +517,7 @@ BlockCompiler.prototype = {
     }
     // Only block tags are accepted
     var tagName = m[1].toLowerCase();
-    if (blockTags.indexOf(tagName) == -1) {
+    if (inlineTags.indexOf(tagName) !== -1) {
       // Seems like it's a paragraph starting with inline element
       return false;
     }
@@ -706,12 +710,10 @@ BlockCompiler.prototype = {
 };
 
 /* ## Constants */
-
-var blockTags = ["address", "article", "aside", "blockquote", "canvas",
-  "dd", "div", "dl", "dt", "fieldset", "figcaption", "figure", "footer",
-  "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hgroup", "hr",
-  "noscript", "ol", "output", "p", "pre", "section", "table", "ul",
-  "style", "script"];
+var inlineTags = ["a", "b", "big", "i", "small", "tt", "abbr", "acronym",
+  "cite", "code", "dfn", "em", "kbd", "strong", "samp", "time", "var",
+  "a", "bdo", "br", "img", "map", "object", "q", "script", "span", "sub",
+  "sup", "button", "input", "label", "select", "textarea"];
 
 var htmlTagRe = /^<\/?([a-zA-Z]+)\b[\s\S]*?(\/)?>$/;
 var htmlCommentRe = /^<!--[\s\S]*?-->$/;
