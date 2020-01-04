@@ -7,7 +7,7 @@ import { HtmlEscapeNode } from '../../nodes/html-escape';
 
 export class HtmlEntityRule extends ParseRule {
 
-    parseNext(cursor: Cursor): Node | null {
+    parse(cursor: Cursor): Node | null {
         return this.tryAmp(cursor) ||
             this.tryLt(cursor) ||
             this.tryGt(cursor);

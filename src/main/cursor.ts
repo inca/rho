@@ -56,7 +56,7 @@ export class Cursor {
      * Indicates whether cursor points within the source.
      */
     hasCurrent() {
-        return (this.pos + 1) < this.region.length;
+        return this.pos < this.region.length;
     }
 
     /**

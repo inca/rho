@@ -15,9 +15,9 @@ export class HtmlEscapeNode extends Node {
             case '&':
                 return '&amp;';
             case '<':
-                return '&lt';
-            case '<':
-                return '&gt';
+                return '&lt;';
+            case '>':
+                return '&gt;';
             default:
                 return '';
         }
