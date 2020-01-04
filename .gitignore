@@ -1,0 +1,15 @@
+node_modules/
+*.log
+yarn.lock
+.eslintcache
+.DS_Store
+static/build
+out/
+
+.env*
+!.env.example
+!.env.test
+keyfile.json
+plaintext.*
+
+.tmp*

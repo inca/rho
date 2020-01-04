@@ -1,0 +1,23 @@
+{
+  "name": "rho",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "run-p dev:*",
+    "dev:ts": "tsc -w",
+    "dev:test": "NODE_ENV=test mocha -w --opts=./mocha.opts",
+    "test": "NODE_ENV=test mocha --opts=./mocha.opts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^13.1.2",
+    "mocha": "^6.2.2",
+    "npm-run-all": "^4.1.5",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.4"
+  }
+}

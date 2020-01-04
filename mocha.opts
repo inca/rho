@@ -1,0 +1,4 @@
+-R spec
+--slow=100
+--timeout=1000
+./out/**/*.test.js
