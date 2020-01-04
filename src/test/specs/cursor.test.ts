@@ -15,7 +15,7 @@ describe('Cursor', () => {
             const cursor = createCursor(5);
             const clone = cursor.clone();
             assert.notStrictEqual(clone, cursor);
-            assert.equal(cursor.source, clone.source);
+            assert.equal(cursor.region, clone.region);
             assert.equal(cursor.config, clone.config);
             assert.equal(cursor.position(), clone.position());
         });
@@ -160,11 +160,20 @@ describe('Cursor', () => {
         });
     });
 
+    describe('skipToEndOfBlock', () => {
+        it('skips to the end of current block', () => {
+            const cursor = new Cursor(DEFAULT_CONFIG, 'Hello\r\n    World\r\n  \r\n    Hi again!');
+            cursor.skipToEndOfBlock();
+            assert.equal(cursor.position(), 16);
+            assert(cursor.at('\r\n  \r\n    Hi again!'));
+        });
+    });
+
     describe('readInlineText', () => {
         it('returns text up to the next control character', () => {
             const cursor = new Cursor(DEFAULT_CONFIG, 'Hello [World]()');
             const text = cursor.readInlineText();
-            assert.equal(text, 'Hello ');
+            assert.equal(text.toString(), 'Hello ');
             assert.equal(cursor.position(), 6);
         });
     });
@@ -173,10 +182,9 @@ describe('Cursor', () => {
         it('returns a substring and advances position', () => {
             const cursor = createCursor(8);
             const text = cursor.readUntil(13);
-            assert.equal(text, 'brown');
+            assert.equal(text.toString(), 'brown');
             assert.equal(cursor.position(), 13);
         });
     });
-
 
 });

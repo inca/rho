@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { StringRegion } from '../../main/source';
+import { StringRegion } from '../../main/region';
 
 describe('StringRegion', () => {
 
@@ -35,6 +35,13 @@ describe('StringRegion', () => {
     describe('toString', () => {
         it('materializes the region', () => {
             assert.equal(region.toString(), 'brown fox jumps over');
+        });
+    });
+
+    describe('subRegion', () => {
+        it('returns a subregion', () => {
+            const sub = region.subRegion(6, 9);
+            assert.equal(sub.toString(), 'fox');
         });
     });
 

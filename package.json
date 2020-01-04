@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "clean": "rm -rf out/",
     "dev": "tsc -w",
     "dev:test": "NODE_ENV=test mocha -w --opts=./mocha.opts",
     "test": "NODE_ENV=test mocha --opts=./mocha.opts"

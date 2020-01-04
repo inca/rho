@@ -1,16 +1,20 @@
-import { StringSource, StringRegion } from './source';
+import { StringRegion } from './region';
 import { CursorConfig } from './config';
 
 /**
  * Cursor tracks a position `pos` within a string source.
  */
 export class Cursor {
+    readonly region: StringRegion;
+    protected pos: number = 0;
 
     constructor(
         readonly config: CursorConfig,
-        readonly source: StringSource,
-        protected pos: number = 0,
+        source: string | StringRegion,
+        pos: number = 0,
     ) {
+        this.region = source instanceof StringRegion ? source : new StringRegion(source);
+        this.pos = pos;
     }
 
     /**
@@ -24,28 +28,28 @@ export class Cursor {
      * Returns a copy of this cursor.
      */
     clone() {
-        return new Cursor(this.config, this.source, this.pos);
+        return new Cursor(this.config, this.region, this.pos);
     }
 
     /**
      * Returns next character without advancing cursor position.
      */
     peek(offset: number = 1) {
-        return this.source.charAt(this.pos + offset);
+        return this.region.charAt(this.pos + offset);
     }
 
     /**
      * Returns character at current cursor position.
      */
     current() {
-        return this.source.charAt(this.pos);
+        return this.region.charAt(this.pos);
     }
 
     /**
      * Indicates whether cursor points within the source.
      */
     hasCurrent() {
-        return (this.pos + 1) < this.source.length;
+        return (this.pos + 1) < this.region.length;
     }
 
     /**
@@ -53,11 +57,11 @@ export class Cursor {
      */
     at(str: string): boolean {
         const end = this.pos + str.length;
-        if (end > this.source.length) {
+        if (end > this.region.length) {
             return false;
         }
         for (let i = 0; i < str.length; i++) {
-            if (str[i] !== this.source.charAt(this.pos + i)) {
+            if (str[i] !== this.region.charAt(this.pos + i)) {
                 return false;
             }
         }
@@ -70,10 +74,10 @@ export class Cursor {
      */
     atInsensitive(str: string): boolean {
         const end = this.pos + str.length;
-        if (end > this.source.length) {
+        if (end > this.region.length) {
             return false;
         }
-        return this.source.substring(this.pos, end).toLowerCase() ===
+        return this.region.substring(this.pos, end).toLowerCase() ===
             str.toLowerCase();
     }
 
@@ -236,8 +240,25 @@ export class Cursor {
     /**
      * Skips up to the closest newline character, or to the end of source.
      */
-    skipToEol() {
+    skipToEol(): this {
         while (this.hasCurrent() && !this.atNewLine()) {
+            this.skip();
+        }
+        return this;
+    }
+
+    /**
+     * Skips to the end of current block, which is EOL followed by EOF or a blank line.
+     */
+    skipToEndOfBlock(): this {
+        while (this.hasCurrent()) {
+            if (this.atNewLine()) {
+                const i = this.pos;
+                if (this.skipNewLine().skipSpaces().atNewLine()) {
+                    this.set(i);
+                    break;
+                }
+            }
             this.skip();
         }
         return this;
@@ -247,20 +268,18 @@ export class Cursor {
      * Advances the cursor to specified position, and returns the substring traversed
      * from old position to new position.
      */
-    readUntil(newPos: number): string {
-        if (newPos <= this.pos) {
-            return '';
-        }
-        const result = this.source.substring(this.pos, newPos);
+    readUntil(newPos: number): StringRegion {
+        newPos = Math.max(this.pos, newPos);
+        const result = this.region.subRegion(this.pos, newPos);
         this.set(newPos);
         return result;
     }
 
     /**
-     * Scans till next inline control character (as specified in `config`)
+     * Skips to the next inline control character (as specified in `config`)
      * and returns the traversed substring.
      */
-    readInlineText() {
+    readInlineText(): StringRegion {
         const start = this.pos;
         let found = false;
         while (!found && this.hasCurrent()) {
@@ -270,7 +289,17 @@ export class Cursor {
                 this.skip();
             }
         }
-        return this.source.substring(start, this.pos);
+        return this.region.subRegion(start, this.pos);
+    }
+
+    /**
+     * Skips to the end of current line, returning it.
+     * The newline character on current line is also skipped.
+     */
+    readLine(): StringRegion {
+        const start = this.pos;
+        this.skipToEol().skipNewLine();
+        return this.region.subRegion(start, this.pos);
     }
 
 }
