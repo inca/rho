@@ -89,6 +89,19 @@ export class Cursor {
     }
 
     /**
+     * Tests if cursor is positioned at any of the specified strings.
+     * If a single string is specified, each of its character is matched instead.
+     */
+    atSome(strings: string[] | string) {
+        for (const s of strings) {
+            if (this.at(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Tests if cursor is currently positioned at decimal digit.
      */
     atDigit(): boolean {
@@ -280,6 +293,13 @@ export class Cursor {
         const result = this.region.subRegion(this.pos, newPos);
         this.set(newPos);
         return result;
+    }
+
+    /**
+     * Same as `readUntil`, but new position is relative to current cursor position.
+     */
+    readForward(relNewPos: number): StringRegion {
+        return this.readUntil(this.position() + relNewPos);
     }
 
     /**
