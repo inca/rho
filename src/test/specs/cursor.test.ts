@@ -1,11 +1,10 @@
 import assert from 'assert';
 import { Cursor } from '../../main/cursor';
-import { DEFAULT_CONFIG } from '../../main/config';
 
 const str = 'A quick brown fox jumps over the lazy dog';
 
 function createCursor(pos: number = 0) {
-    return new Cursor(DEFAULT_CONFIG, str, pos);
+    return new Cursor(str, pos);
 }
 
 describe('Cursor', () => {
@@ -16,7 +15,6 @@ describe('Cursor', () => {
             const clone = cursor.clone();
             assert.notStrictEqual(clone, cursor);
             assert.equal(cursor.region, clone.region);
-            assert.equal(cursor.config, clone.config);
             assert.equal(cursor.position(), clone.position());
         });
     });
@@ -79,7 +77,7 @@ describe('Cursor', () => {
 
     describe('atSpaces', () => {
         it('returns true if cursor is at specified number of spaces', () => {
-            const cursor = new Cursor(DEFAULT_CONFIG, 'Hello\n    World', 6);
+            const cursor = new Cursor('Hello\n    World', 6);
             assert(cursor.atSpaces(4));
             assert(!cursor.atSpaces(5));
         });
@@ -114,7 +112,7 @@ describe('Cursor', () => {
 
     describe('skipSpaces', () => {
         it('skips spaces and tabs', () => {
-            const cursor = new Cursor(DEFAULT_CONFIG, '  \t \r\n Hello');
+            const cursor = new Cursor('  \t \r\n Hello');
             cursor.skipSpaces();
             assert(cursor.at('\r\n Hello'));
         });
@@ -122,7 +120,7 @@ describe('Cursor', () => {
 
     describe('skipWhitespaces', () => {
         it('skips spaces, tabs and newline characters', () => {
-            const cursor = new Cursor(DEFAULT_CONFIG, '  \t \r\n Hello');
+            const cursor = new Cursor('  \t \r\n Hello');
             cursor.skipWhitespaces();
             assert(cursor.at('Hello'));
         });
@@ -130,7 +128,7 @@ describe('Cursor', () => {
 
     describe('skipNewline', () => {
         it('skips a single newline character', () => {
-            const cursor = new Cursor(DEFAULT_CONFIG, '\r\n\n\n Hello');
+            const cursor = new Cursor('\r\n\n\n Hello');
             cursor.skipNewLine();
             assert(cursor.at('\n\n Hello'));
         });
@@ -138,7 +136,7 @@ describe('Cursor', () => {
 
     describe('skipNewlines', () => {
         it('skips all newline characters', () => {
-            const cursor = new Cursor(DEFAULT_CONFIG, '\r\n\n\n Hello');
+            const cursor = new Cursor('\r\n\n\n Hello');
             cursor.skipNewLines();
             assert(cursor.at(' Hello'));
         });
@@ -146,7 +144,7 @@ describe('Cursor', () => {
 
     describe('skipBlankLines', () => {
         it('skips blank lines, leaving the indentation intact', () => {
-            const cursor = new Cursor(DEFAULT_CONFIG, '\r\n\r\n    \r\n    Hello');
+            const cursor = new Cursor('\r\n\r\n    \r\n    Hello');
             cursor.skipBlankLines();
             assert(cursor.at('    Hello'));
         });
@@ -154,7 +152,7 @@ describe('Cursor', () => {
 
     describe('skipToEol', () => {
         it('skips to the end of current line', () => {
-            const cursor = new Cursor(DEFAULT_CONFIG, 'Hello\r\n    World');
+            const cursor = new Cursor('Hello\r\n    World');
             cursor.skipToEol();
             assert.equal(cursor.position(), 5);
         });
@@ -162,19 +160,10 @@ describe('Cursor', () => {
 
     describe('skipToEndOfBlock', () => {
         it('skips to the end of current block', () => {
-            const cursor = new Cursor(DEFAULT_CONFIG, 'Hello\r\n    World\r\n  \r\n    Hi again!');
+            const cursor = new Cursor('Hello\r\n    World\r\n  \r\n    Hi again!');
             cursor.skipToEndOfBlock();
             assert.equal(cursor.position(), 16);
             assert(cursor.at('\r\n  \r\n    Hi again!'));
-        });
-    });
-
-    describe('readInlineText', () => {
-        it('returns text up to the next control character', () => {
-            const cursor = new Cursor(DEFAULT_CONFIG, 'Hello [World]()');
-            const text = cursor.readInlineText();
-            assert.equal(text.toString(), 'Hello ');
-            assert.equal(cursor.position(), 6);
         });
     });
 

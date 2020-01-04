@@ -1,5 +1,4 @@
 import { StringRegion } from './region';
-import { CursorConfig } from './config';
 
 /**
  * Cursor tracks a position `pos` within a string source.
@@ -18,7 +17,6 @@ export class Cursor {
     protected pos: number = 0;
 
     constructor(
-        readonly config: CursorConfig,
         source: string | StringRegion,
         pos: number = 0,
     ) {
@@ -37,7 +35,7 @@ export class Cursor {
      * Returns a copy of this cursor.
      */
     clone() {
-        return new Cursor(this.config, this.region, this.pos);
+        return new Cursor(this.region, this.pos);
     }
 
     /**
@@ -282,23 +280,6 @@ export class Cursor {
         const result = this.region.subRegion(this.pos, newPos);
         this.set(newPos);
         return result;
-    }
-
-    /**
-     * Skips to the next inline control character (as specified in `config`)
-     * and returns the traversed substring.
-     */
-    readInlineText(): StringRegion {
-        const start = this.pos;
-        let found = false;
-        while (!found && this.hasCurrent()) {
-            const c = this.current();
-            found = this.config.inlineControlChars.indexOf(c) > -1;
-            if (!found) {
-                this.skip();
-            }
-        }
-        return this.region.subRegion(start, this.pos);
     }
 
     /**
