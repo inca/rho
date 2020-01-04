@@ -3,6 +3,15 @@ import { CursorConfig } from './config';
 
 /**
  * Cursor tracks a position `pos` within a string source.
+ *
+ * Implementation note: normally it is preferable to use high order functions like
+ * `lookahead` for traversal to avoid side effects. However, simple profiling shows that
+ * manually setting `pos` variable and using imperative loops like `while` nets around
+ * 10x performance boost compared to functional approach which relies on call stacks not
+ * optimizable (e.g. inline-able) in runtime.
+ * This is obviously a huge deal in text traversal/parsing, so it is encouraged that
+ * methods defined here rely as much as possible on imperative programming and
+ * contracts covered by tests.
  */
 export class Cursor {
     readonly region: StringRegion;
