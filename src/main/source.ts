@@ -10,8 +10,8 @@ export class StringRegion implements StringSource {
 
     constructor(
         readonly str: string,
-        readonly start: number,
-        readonly end: number,
+        readonly start: number = 0,
+        readonly end: number = str.length,
     ) {
         this.length = this.end - this.start;
     }
@@ -32,5 +32,4 @@ export class StringRegion implements StringSource {
     toString() {
         return this.substring(0);
     }
-
 }

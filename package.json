@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "run-p dev:*",
-    "dev:ts": "tsc -w",
+    "dev": "tsc -w",
     "dev:test": "NODE_ENV=test mocha -w --opts=./mocha.opts",
     "test": "NODE_ENV=test mocha --opts=./mocha.opts"
   },
