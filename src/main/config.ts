@@ -4,7 +4,7 @@ export interface CursorConfig {
 
 export type RhoConfig = CursorConfig;
 
-export const DEFAULT_RHO_CONFIG: RhoConfig = {
+export const DEFAULT_CONFIG: RhoConfig = {
     /**
      * Characters used to demarcate plain text from inline semantic constructs.
      */

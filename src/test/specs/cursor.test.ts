@@ -1,11 +1,11 @@
 import assert from 'assert';
 import { Cursor } from '../../main/cursor';
-import { DEFAULT_RHO_CONFIG } from '../../main/config';
+import { DEFAULT_CONFIG } from '../../main/config';
 
 const str = 'A quick brown fox jumps over the lazy dog';
 
 function createCursor(pos: number = 0) {
-    return new Cursor(DEFAULT_RHO_CONFIG, str, pos);
+    return new Cursor(DEFAULT_CONFIG, str, pos);
 }
 
 describe('Cursor', () => {
@@ -62,14 +62,26 @@ describe('Cursor', () => {
         });
     });
 
-    describe('skip', () => {
-        it('increments position', () => {
-            const cursor = createCursor();
-            assert.equal(cursor.position(), 0);
-            assert.equal(cursor.current(), 'A');
-            cursor.skip();
-            assert.equal(cursor.position(), 1);
-            assert.equal(cursor.current(), ' ');
+    describe('at', () => {
+        it('returns true if cursor is looking at string', () => {
+            const cursor = createCursor(8);
+            assert(cursor.at('brown'));
+        });
+        it('returns false if cursor is not looking at string', () => {
+            const cursor = createCursor(8);
+            assert(!cursor.at('broWn'));
+        });
+        it('returns false if cursor is finished', () => {
+            const cursor = createCursor(str.length);
+            assert(!cursor.at('.'));
+        });
+    });
+
+    describe('atSpaces', () => {
+        it('returns true if cursor is at specified number of spaces', () => {
+            const cursor = new Cursor(DEFAULT_CONFIG, 'Hello\n    World', 6);
+            assert(cursor.atSpaces(4));
+            assert(!cursor.atSpaces(5));
         });
     });
 
@@ -89,13 +101,82 @@ describe('Cursor', () => {
         });
     });
 
-    describe('yieldInlineText', () => {
+    describe('skip', () => {
+        it('increments position', () => {
+            const cursor = createCursor();
+            assert.equal(cursor.position(), 0);
+            assert.equal(cursor.current(), 'A');
+            cursor.skip();
+            assert.equal(cursor.position(), 1);
+            assert.equal(cursor.current(), ' ');
+        });
+    });
+
+    describe('skipSpaces', () => {
+        it('skips spaces and tabs', () => {
+            const cursor = new Cursor(DEFAULT_CONFIG, '  \t \r\n Hello');
+            cursor.skipSpaces();
+            assert(cursor.at('\r\n Hello'));
+        });
+    });
+
+    describe('skipWhitespaces', () => {
+        it('skips spaces, tabs and newline characters', () => {
+            const cursor = new Cursor(DEFAULT_CONFIG, '  \t \r\n Hello');
+            cursor.skipWhitespaces();
+            assert(cursor.at('Hello'));
+        });
+    });
+
+    describe('skipNewline', () => {
+        it('skips a single newline character', () => {
+            const cursor = new Cursor(DEFAULT_CONFIG, '\r\n\n\n Hello');
+            cursor.skipNewLine();
+            assert(cursor.at('\n\n Hello'));
+        });
+    });
+
+    describe('skipNewlines', () => {
+        it('skips all newline characters', () => {
+            const cursor = new Cursor(DEFAULT_CONFIG, '\r\n\n\n Hello');
+            cursor.skipNewLines();
+            assert(cursor.at(' Hello'));
+        });
+    });
+
+    describe('skipBlankLines', () => {
+        it('skips blank lines, leaving the indentation intact', () => {
+            const cursor = new Cursor(DEFAULT_CONFIG, '\r\n\r\n    \r\n    Hello');
+            cursor.skipBlankLines();
+            assert(cursor.at('    Hello'));
+        });
+    });
+
+    describe('skipToEol', () => {
+        it('skips to the end of current line', () => {
+            const cursor = new Cursor(DEFAULT_CONFIG, 'Hello\r\n    World');
+            cursor.skipToEol();
+            assert.equal(cursor.position(), 5);
+        });
+    });
+
+    describe('readInlineText', () => {
         it('returns text up to the next control character', () => {
-            const cursor = new Cursor(DEFAULT_RHO_CONFIG, 'Hello [World]()');
-            const text = cursor.yieldInlineText();
+            const cursor = new Cursor(DEFAULT_CONFIG, 'Hello [World]()');
+            const text = cursor.readInlineText();
             assert.equal(text, 'Hello ');
             assert.equal(cursor.position(), 6);
         });
     });
+
+    describe('readUntil', () => {
+        it('returns a substring and advances position', () => {
+            const cursor = createCursor(8);
+            const text = cursor.readUntil(13);
+            assert.equal(text, 'brown');
+            assert.equal(cursor.position(), 13);
+        });
+    });
+
 
 });
