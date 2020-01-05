@@ -10,7 +10,6 @@ export abstract class Node {
         readonly children: Node[] = [],
     ) {}
 
-    // TODO consider changing to Visitor if it's more convenient
     abstract render(processor: Processor): string;
 
     renderChildren(processor: Processor): string {

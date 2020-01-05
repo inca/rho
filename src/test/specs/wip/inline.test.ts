@@ -5,14 +5,11 @@ describe('Inline parser', () => {
     const processor = new DefaultProcessor();
     const parser = processor.getParser('inline');
 
-    it('parses inline string', () => {
-        const str = 'This & that';
-        console.log(parser.parseString(str).debug());
-    });
-
     it('parses em', () => {
-        const str = 'This _and_ that';
-        console.log(parser.parseString(str).debug());
+        const str = 'This _and_ that; this *&* that.';
+        const node = parser.parseString(str);
+        console.log(node.debug());
+        console.log(node.render(processor));
     });
 
 });
