@@ -1,8 +1,8 @@
-export interface RhoConfig {
+export interface Configuration {
     inlineControlChars: string;
 }
 
-export const DEFAULT_CONFIG: RhoConfig = {
+export const DEFAULT_CONFIGURATION: Configuration = {
     /**
      * Characters used to demarcate plain text from inline semantic constructs.
      */

@@ -1,13 +1,14 @@
 import assert from 'assert';
 import { Cursor } from '../../../main/cursor';
-import { HtmlEntityRule } from '../../../main/rules/inline/html-entity';
-import { DEFAULT_CONFIG } from '../../../main/config';
-import { HtmlEscapeNode } from '../../../main/nodes/html-escape';
+import { HtmlEntityRule, HtmlEscapeNode } from '../../../main/rules/inline/html-entity';
 import { TextNode } from '../../../main/nodes/text';
+import { DefaultProcessor } from '../../../main/default';
+
+const processor = new DefaultProcessor();
 
 describe('HtmlEntityRule', () => {
 
-    const rule = new HtmlEntityRule(DEFAULT_CONFIG);
+    const rule = new HtmlEntityRule(processor);
 
     context('&', () => {
 
@@ -15,7 +16,7 @@ describe('HtmlEntityRule', () => {
             const cursor = new Cursor('This & that', 5);
             const node = rule.parse(cursor);
             assert(node instanceof HtmlEscapeNode);
-            assert(node?.render(DEFAULT_CONFIG), '&amp;');
+            assert(node?.render(processor), '&amp;');
             assert.equal(cursor.position(), 6);
         });
 
@@ -23,7 +24,7 @@ describe('HtmlEntityRule', () => {
             const cursor = new Cursor('100&percnt; legit', 3);
             const node = rule.parse(cursor);
             assert(node instanceof TextNode);
-            assert(node?.render(DEFAULT_CONFIG), '&percnt;');
+            assert(node?.render(processor), '&percnt;');
             assert.equal(cursor.position(), 11);
         });
 
@@ -31,7 +32,7 @@ describe('HtmlEntityRule', () => {
             const cursor = new Cursor('100&#37; legit', 3);
             const node = rule.parse(cursor);
             assert(node instanceof TextNode);
-            assert(node?.render(DEFAULT_CONFIG), '&#37;');
+            assert(node?.render(processor), '&#37;');
             assert.equal(cursor.position(), 8);
         });
 
@@ -39,7 +40,7 @@ describe('HtmlEntityRule', () => {
             const cursor = new Cursor('100&#x025; legit', 3);
             const node = rule.parse(cursor);
             assert(node instanceof TextNode);
-            assert(node?.render(DEFAULT_CONFIG), '&#x025;');
+            assert(node?.render(processor), '&#x025;');
             assert.equal(cursor.position(), 10);
         });
 
@@ -76,7 +77,7 @@ describe('HtmlEntityRule', () => {
             assert.equal(cursor.current(), '<');
             const node = rule.parse(cursor);
             assert(node instanceof HtmlEscapeNode);
-            assert(node?.render(DEFAULT_CONFIG), '&lt;');
+            assert(node?.render(processor), '&lt;');
             assert.equal(cursor.position(), 3);
         });
 
@@ -88,7 +89,7 @@ describe('HtmlEntityRule', () => {
             assert.equal(cursor.current(), '>');
             const node = rule.parse(cursor);
             assert(node instanceof HtmlEscapeNode);
-            assert.equal(node?.render(DEFAULT_CONFIG), '&gt;');
+            assert.equal(node?.render(processor), '&gt;');
             assert.equal(cursor.position(), 3);
         });
     });

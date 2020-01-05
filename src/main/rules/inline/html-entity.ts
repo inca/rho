@@ -1,11 +1,11 @@
-import { ParseRule } from '../../rule';
+import { Rule } from '../../rule';
 import { Cursor } from '../../cursor';
 import { Node } from '../../node';
 import { latinLetters, hexDigits, decimalDigits } from '../../constants';
 import { TextNode } from '../../nodes/text';
-import { HtmlEscapeNode } from '../../nodes/html-escape';
+import { StringRegion } from '../../region';
 
-export class HtmlEntityRule extends ParseRule {
+export class HtmlEntityRule extends Rule {
 
     parse(cursor: Cursor): Node | null {
         return this.tryAmp(cursor) ||
@@ -111,4 +111,27 @@ export class HtmlEntityRule extends ParseRule {
         return cursor.at('<!--');
     }
 
+}
+
+export class HtmlEscapeNode extends Node {
+
+    constructor(
+        region: StringRegion,
+        protected char: '&' | '<' | '>'
+    ) {
+        super(region);
+    }
+
+    render() {
+        switch (this.char) {
+            case '&':
+                return '&amp;';
+            case '<':
+                return '&lt;';
+            case '>':
+                return '&gt;';
+            default:
+                return '';
+        }
+    }
 }

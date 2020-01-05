@@ -60,6 +60,13 @@ export class Cursor {
     }
 
     /**
+     * Creates a subregion with specified boundaries.
+     */
+    subRegion(start: number, end: number) {
+        return this.region.subRegion(start, end);
+    }
+
+    /**
      * Tests if cursor is currently positioned at specified string.
      */
     at(str: string): boolean {

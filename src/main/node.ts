@@ -1,14 +1,33 @@
 import { StringRegion } from './region';
-import { RhoConfig } from './config';
+import { Processor } from './processor';
 
 /**
  * Represents an AST node produced by parsing rules.
  */
 export abstract class Node {
     constructor(
-        readonly region: StringRegion
+        readonly region: StringRegion,
+        readonly children: Node[] = [],
     ) {}
 
     // TODO consider changing to Visitor if it's more convenient
-    abstract render(config: RhoConfig): string;
+    abstract render(processor: Processor): string;
+
+    renderChildren(processor: Processor): string {
+        // TODO perf compare with string concat
+        let result = '';
+        for (const child of this.children) {
+            result += child.render(processor);
+        }
+        return result;
+    }
+
+    debug(indent: string = '') {
+        let lines = indent + '\u001b[33m' + this.constructor.name + '\u001b[0m' + ' ' +
+            '\u001b[37m' + '|' + '\u001b[0m' + this.region.toString() + '\u001b[37m' + '|' + '\u001b[0m';
+        for (const child of this.children) {
+            lines += `\n` + child.debug(indent + '  ');
+        }
+        return lines;
+    }
 }

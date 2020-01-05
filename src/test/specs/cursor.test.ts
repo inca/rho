@@ -83,21 +83,21 @@ describe('Cursor', () => {
         });
     });
 
-    describe('lookahead', () => {
-        it('returns result without modifying cursor', () => {
-            const cursor = createCursor();
-            const res = cursor.lookahead(cur => {
-                while (cur.hasCurrent()) {
-                    if (cur.at('lazy')) {
-                        return cur.position();
-                    }
-                    cur.skip();
-                }
-            });
-            assert.equal(cursor.position(), 0);
-            assert.equal(res, 33);
-        });
-    });
+    // describe('lookahead', () => {
+    //     it('returns result without modifying cursor', () => {
+    //         const cursor = createCursor();
+    //         const res = cursor.lookahead(cur => {
+    //             while (cur.hasCurrent()) {
+    //                 if (cur.at('lazy')) {
+    //                     return cur.position();
+    //                 }
+    //                 cur.skip();
+    //             }
+    //         });
+    //         assert.equal(cursor.position(), 0);
+    //         assert.equal(res, 33);
+    //     });
+    // });
 
     describe('skip', () => {
         it('increments position', () => {
