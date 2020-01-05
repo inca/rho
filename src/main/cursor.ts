@@ -296,7 +296,7 @@ export class Cursor {
      * from old position to new position.
      */
     readUntil(newPos: number): StringRegion {
-        newPos = Math.max(this.pos, newPos);
+        newPos = Math.max(this.pos, Math.min(newPos, this.region.length));
         const result = this.region.subRegion(this.pos, newPos);
         this.set(newPos);
         return result;

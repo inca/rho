@@ -1,9 +1,16 @@
 import { Parser } from './parser';
 import { Rule } from './rule';
 import { Exception } from './exception';
+import { Config, DEFAULT_CONFIG } from './config';
 
 export class Processor {
-    readonly parsers: Map<string, Parser> = new Map();
+    config: Config;
+
+    protected parsers: Map<string, Parser> = new Map();
+
+    constructor(config: Partial<Config> = {}) {
+        this.config = { ...DEFAULT_CONFIG, ...config };
+    }
 
     defineParser(kind: string, rules: Rule[]): this {
         const parser = new Parser(this, rules);

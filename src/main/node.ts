@@ -13,7 +13,6 @@ export abstract class Node {
     abstract render(processor: Processor): string;
 
     renderChildren(processor: Processor): string {
-        // TODO perf compare with string concat
         let result = '';
         for (const child of this.children) {
             result += child.render(processor);
