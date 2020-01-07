@@ -1,10 +1,10 @@
-import { BracketRule, Node, Processor, StringRegion } from '../../core';
+import { BracketRule, Node, Processor, Region } from '../../core';
 
 export class CodeSpanRule extends BracketRule {
     get openMarker() { return '`'; }
     get closeMarker() { return '`'; }
 
-    protected parseSubRegion(region: StringRegion): Node {
+    protected parseSubRegion(region: Region): Node {
         const codeParser = this.processor.getParser('code');
         const root = codeParser.parse(region);
         return new CodeSpanNode(region, root.children);

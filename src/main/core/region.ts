@@ -11,7 +11,7 @@ export interface StringLike {
  * (i.e. until either `substring` or `toString` are called)
  * which means most operations rely on very performant index arithmentics.
  */
-export class StringRegion implements StringLike {
+export class Region implements StringLike {
     length: number;
 
     constructor(
@@ -38,7 +38,7 @@ export class StringRegion implements StringLike {
     subRegion(start: number, end: number = this.length) {
         start = Math.max(0, start);
         end = Math.min(this.length, end);
-        return new StringRegion(this.str, this.start + start, this.start + end);
+        return new Region(this.str, this.start + start, this.start + end);
     }
 
     toString() {

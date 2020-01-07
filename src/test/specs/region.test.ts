@@ -1,10 +1,10 @@
 import assert from 'assert';
-import { StringRegion } from '../../main/core';
+import { Region } from '../../main/core';
 
 describe('StringRegion', () => {
 
     const str = 'A quick brown fox jumps over the lazy dog';
-    const region = new StringRegion(str, 8, 28);
+    const region = new Region(str, 8, 28);
 
     describe('charAt', () => {
         it('returns characters within the region', () => {

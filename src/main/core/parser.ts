@@ -3,7 +3,7 @@ import { Rule } from './rule';
 import { Cursor } from './cursor';
 import { Node } from './node';
 import { Exception } from './exception';
-import { StringRegion } from './region';
+import { Region } from './region';
 import { RootNode } from '../nodes/root';
 
 export class Parser {
@@ -14,10 +14,10 @@ export class Parser {
     }
 
     parseString(str: string) {
-        return this.parse(new StringRegion(str));
+        return this.parse(new Region(str));
     }
 
-    parse(region: StringRegion): Node {
+    parse(region: Region): Node {
         const nodes: Node[] = [];
         const cursor = new Cursor(region);
         while (cursor.hasCurrent()) {

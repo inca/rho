@@ -1,4 +1,4 @@
-import { StringRegion } from './region';
+import { Region } from './region';
 import { Processor } from './processor';
 
 /**
@@ -6,7 +6,7 @@ import { Processor } from './processor';
  */
 export abstract class Node {
     constructor(
-        readonly region: StringRegion,
+        readonly region: Region,
         readonly children: Node[] = [],
     ) {}
 

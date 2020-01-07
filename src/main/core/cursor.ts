@@ -1,4 +1,4 @@
-import { StringRegion } from './region';
+import { Region } from './region';
 
 /**
  * Cursor tracks a position `pos` within a string source.
@@ -13,14 +13,14 @@ import { StringRegion } from './region';
  * contracts covered by tests.
  */
 export class Cursor {
-    readonly region: StringRegion;
+    readonly region: Region;
     protected pos: number = 0;
 
     constructor(
-        source: string | StringRegion,
+        source: string | Region,
         pos: number = 0,
     ) {
-        this.region = source instanceof StringRegion ? source : new StringRegion(source);
+        this.region = source instanceof Region ? source : new Region(source);
         this.pos = pos;
     }
 
@@ -295,7 +295,7 @@ export class Cursor {
      * Advances the cursor to specified position, and returns the substring traversed
      * from old position to new position.
      */
-    readUntil(newPos: number): StringRegion {
+    readUntil(newPos: number): Region {
         newPos = Math.max(this.pos, Math.min(newPos, this.region.length));
         const result = this.region.subRegion(this.pos, newPos);
         this.set(newPos);
@@ -305,7 +305,7 @@ export class Cursor {
     /**
      * Same as `readUntil`, but new position is relative to current cursor position.
      */
-    readForward(relNewPos: number): StringRegion {
+    readForward(relNewPos: number): Region {
         return this.readUntil(this.position() + relNewPos);
     }
 
@@ -313,7 +313,7 @@ export class Cursor {
      * Skips to the end of current line, returning it.
      * The newline character on current line is also skipped.
      */
-    readLine(): StringRegion {
+    readLine(): Region {
         const start = this.pos;
         this.skipToEol().skipNewLine();
         return this.region.subRegion(start, this.pos);

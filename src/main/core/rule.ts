@@ -1,7 +1,7 @@
 import { Cursor } from './cursor';
 import { Node } from './node';
 import { Processor } from './processor';
-import { StringRegion } from './region';
+import { Region } from './region';
 import { Exception } from './exception';
 
 /**
@@ -64,7 +64,7 @@ export abstract class BracketRule extends Rule {
     abstract openMarker: string;
     abstract closeMarker: string;
 
-    protected abstract parseSubRegion(region: StringRegion): Node;
+    protected abstract parseSubRegion(region: Region): Node;
 
     protected parseAt(cursor: Cursor): Node | null {
         const { openMarker, closeMarker } = this;

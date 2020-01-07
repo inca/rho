@@ -1,4 +1,4 @@
-import { Rule, Node, Processor, StringRegion, Cursor } from '../../core';
+import { Rule, Node, Processor, Region, Cursor } from '../../core';
 import { latinLetters, hexDigits, decimalDigits } from '../../core/constants';
 import { TextNode } from '../../nodes/text';
 
@@ -124,7 +124,7 @@ export class HtmlEntityRule extends Rule {
 export class HtmlEscapeNode extends Node {
 
     constructor(
-        region: StringRegion,
+        region: Region,
         protected char: '&' | '<' | '>'
     ) {
         super(region);

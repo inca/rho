@@ -1,4 +1,4 @@
-import { BracketRule, Node, Processor, StringRegion, Parser } from '../../core';
+import { BracketRule, Node, Processor, Region, Parser } from '../../core';
 import { PlainTextRule } from './plain-text';
 import { HtmlEntityRule } from './html-entity';
 import { LiteralRule } from './literal';
@@ -35,7 +35,7 @@ export class FormulaRule extends BracketRule {
         return this.marker;
     }
 
-    protected parseSubRegion(region: StringRegion): Node {
+    protected parseSubRegion(region: Region): Node {
         const root = this.parser.parse(region);
         return new FormulaNode(region, root.children, this.marker);
     }
@@ -44,7 +44,7 @@ export class FormulaRule extends BracketRule {
 export class FormulaNode extends Node {
 
     constructor(
-        region: StringRegion,
+        region: Region,
         children: Node[],
         readonly marker: string
     ) {
