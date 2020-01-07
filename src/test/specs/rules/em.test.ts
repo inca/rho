@@ -8,35 +8,31 @@ describe('EmRule', () => {
     const processor = new RhoProcessor();
     const rule = new EmRule(processor);
 
-    context('_', () => {
+    context('_ pair', () => {
 
-        context('closing _ exists', () => {
-
-            it('consumes EM till end marker', () => {
-                const cursor = new Cursor('This _word_ that', 5);
-                const node = rule.parse(cursor);
-                assert(node instanceof EmNode);
-                assert.equal(node?.render(processor), '<em>word</em>');
-                assert.equal(cursor.position(), 11);
-            });
-
-            it('renders inline markup inside', () => {
-                const cursor = new Cursor('_a *&* b_', 0);
-                const node = rule.parse(cursor);
-                assert(node instanceof EmNode);
-                assert.equal(node?.render(processor), '<em>a <strong>&amp;</strong> b</em>');
-                assert(!cursor.hasCurrent());
-            });
-
+        it('consumes EM till end marker', () => {
+            const cursor = new Cursor('This _word_ that', 5);
+            const node = rule.parse(cursor);
+            assert(node instanceof EmNode);
+            assert.equal(node?.render(processor), '<em>word</em>');
+            assert.equal(cursor.position(), 11);
         });
 
-        context('closing _ does not exist', () => {
-            it('does not match', () => {
-                const cursor = new Cursor('This _and that', 5);
-                const node = rule.parse(cursor);
-                assert(node == null);
-                assert.equal(cursor.position(), 5);
-            });
+        it('renders inline markup inside', () => {
+            const cursor = new Cursor('_a *&* b_', 0);
+            const node = rule.parse(cursor);
+            assert(node instanceof EmNode);
+            assert.equal(node?.render(processor), '<em>a <strong>&amp;</strong> b</em>');
+            assert(!cursor.hasCurrent());
+        });
+    });
+
+    context('singular _', () => {
+        it('does not match', () => {
+            const cursor = new Cursor('This _and that', 5);
+            const node = rule.parse(cursor);
+            assert(node == null);
+            assert.equal(cursor.position(), 5);
         });
     });
 
