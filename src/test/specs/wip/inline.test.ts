@@ -6,7 +6,7 @@ describe('Inline parser', () => {
     const parser = processor.getParser('inline');
 
     it('works', () => {
-        const str = 'This _and_ that; this *&* that.';
+        const str = '`hello_world`';
         const node = parser.parseString(str);
         console.log(node.debug());
         console.log(node.render(processor));
