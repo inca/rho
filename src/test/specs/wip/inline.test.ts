@@ -1,8 +1,8 @@
-import { DefaultProcessor } from '../../../main/default';
+import { RhoProcessor } from '../../../main/processor';
 
 describe('Inline parser', () => {
 
-    const processor = new DefaultProcessor();
+    const processor = new RhoProcessor();
     const parser = processor.getParser('inline');
 
     it('works', () => {

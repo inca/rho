@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { Cursor } from '../../main/cursor';
+import { Cursor } from '../../main/core';
 
 const str = 'A quick brown fox jumps over the lazy dog';
 

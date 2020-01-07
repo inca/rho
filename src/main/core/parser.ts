@@ -4,7 +4,7 @@ import { Cursor } from './cursor';
 import { Node } from './node';
 import { Exception } from './exception';
 import { StringRegion } from './region';
-import { RootNode } from './nodes/root';
+import { RootNode } from '../nodes/root';
 
 export class Parser {
     constructor(

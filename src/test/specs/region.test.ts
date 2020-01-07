@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { StringRegion } from '../../main/region';
+import { StringRegion } from '../../main/core';
 
 describe('StringRegion', () => {
 

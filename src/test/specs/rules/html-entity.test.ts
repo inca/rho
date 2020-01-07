@@ -1,10 +1,10 @@
 import assert from 'assert';
-import { Cursor } from '../../../main/cursor';
+import { Cursor } from '../../../main/core';
 import { HtmlEntityRule, HtmlEscapeNode } from '../../../main/rules/inline/html-entity';
 import { TextNode } from '../../../main/nodes/text';
-import { DefaultProcessor } from '../../../main/default';
+import { RhoProcessor } from '../../../main/processor';
 
-const processor = new DefaultProcessor();
+const processor = new RhoProcessor();
 
 describe('HtmlEntityRule', () => {
 

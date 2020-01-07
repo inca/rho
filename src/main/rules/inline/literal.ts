@@ -1,7 +1,5 @@
-import { Rule } from '../../rule';
-import { Cursor } from '../../cursor';
+import { Rule, Cursor, Node } from '../../core';
 import { TextNode } from '../../nodes/text';
-import { Node } from '../../node';
 
 /**
  * Emits a single character as is. Useful as a fallback rule i.e. last rule

@@ -1,12 +1,21 @@
-import { Rule } from '../../rule';
-import { Cursor } from '../../cursor';
+import { Rule, Processor, Cursor, Node } from '../../core';
 import { TextNode } from '../../nodes/text';
-import { Node } from '../../node';
 
 /**
  * Emits plain text up to the next control character, respecting backslash-escapes.
  */
 export class PlainTextRule extends Rule {
+    controlCharacters: string;
+
+    constructor(
+        processor: Processor,
+        options: {
+            controlCharacters?: string,
+        } = {},
+    ) {
+        super(processor);
+        this.controlCharacters = options.controlCharacters ?? '\\`~!@#$%^&*()-_+="<>{}[]';
+    }
 
     parse(cursor: Cursor): Node | null {
         const start = cursor.position();
@@ -25,7 +34,7 @@ export class PlainTextRule extends Rule {
     }
 
     isControlChar(char: string) {
-        return this.processor.config.controlCharacters.indexOf(char) > -1;
+        return this.controlCharacters.indexOf(char) > -1;
     }
 
 }

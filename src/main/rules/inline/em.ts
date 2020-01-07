@@ -1,8 +1,4 @@
-import { BracketRule } from '../../rule';
-import { Cursor } from '../../cursor';
-import { Node } from '../../node';
-import { Processor } from '../../processor';
-import { StringRegion } from '../../region';
+import { BracketRule, Node, Processor, StringRegion } from '../../core';
 
 export class EmRule extends BracketRule {
     get openMarker() { return '_'; }

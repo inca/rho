@@ -1,32 +1,31 @@
-import { Parser } from './parser';
-import { Rule } from './rule';
-import { Exception } from './exception';
-import { Config, DEFAULT_CONFIG } from './config';
+import { Processor } from './core';
+import { HtmlEntityRule } from './rules/inline/html-entity';
+import { PlainTextRule } from './rules/inline/plain-text';
+import { EmRule } from './rules/inline/em';
+import { StrongRule } from './rules/inline/strong';
+import { LiteralRule } from './rules/inline/literal';
+import { BackslashEscapeRule } from './rules/inline/backslash-escape';
 
-export class Processor {
-    config: Config;
+export class RhoProcessor extends Processor {
 
-    protected parsers: Map<string, Parser> = new Map();
+    constructor() {
+        super();
 
-    constructor(config: Partial<Config> = {}) {
-        this.config = { ...DEFAULT_CONFIG, ...config };
-    }
+        this.defineParser('code', [
+            new PlainTextRule(this, { controlCharacters: '`&<>' }),
+            new BackslashEscapeRule(this, { controlCharacters: '`' }),
+            new HtmlEntityRule(this, { ignoreHtmlTags: true }),
+            new LiteralRule(this),
+        ]);
 
-    defineParser(kind: string, rules: Rule[]): this {
-        const parser = new Parser(this, rules);
-        this.parsers.set(kind, parser);
-        return this;
-    }
-
-    getParser(kind: string): Parser {
-        const parser = this.parsers.get(kind);
-        if (!parser) {
-            throw new Exception({
-                code: 'ParserNotFound',
-                message: `Parser "${kind}" not found, please update Processor configuration accordingly`
-            });
-        }
-        return parser;
+        this.defineParser('inline', [
+            new PlainTextRule(this),
+            new BackslashEscapeRule(this),
+            new HtmlEntityRule(this),
+            new EmRule(this),
+            new StrongRule(this),
+            new LiteralRule(this),
+        ]);
     }
 
 }

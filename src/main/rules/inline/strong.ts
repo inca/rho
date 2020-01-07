@@ -1,7 +1,4 @@
-import { BracketRule } from '../../rule';
-import { Node } from '../../node';
-import { Processor } from '../../processor';
-import { StringRegion } from '../../region';
+import { BracketRule, StringRegion, Processor, Node } from '../../core';
 
 export class StrongRule extends BracketRule {
     get openMarker() { return '*'; }

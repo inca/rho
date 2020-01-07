@@ -1,11 +1,19 @@
-import { Rule } from '../../rule';
-import { Cursor } from '../../cursor';
-import { Node } from '../../node';
-import { latinLetters, hexDigits, decimalDigits } from '../../constants';
+import { Rule, Node, Processor, StringRegion, Cursor } from '../../core';
+import { latinLetters, hexDigits, decimalDigits } from '../../core/constants';
 import { TextNode } from '../../nodes/text';
-import { StringRegion } from '../../region';
 
 export class HtmlEntityRule extends Rule {
+    ignoreHtmlTags: boolean;
+
+    constructor(
+        processor: Processor,
+        options: {
+            ignoreHtmlTags?: boolean
+        } = {},
+    ) {
+        super(processor);
+        this.ignoreHtmlTags = options.ignoreHtmlTags ?? false;
+    }
 
     parse(cursor: Cursor): Node | null {
         return this.tryAmp(cursor) ||
@@ -63,10 +71,10 @@ export class HtmlEntityRule extends Rule {
         if (!cursor.at('<')) {
             return null;
         }
-        if (this.isAtHtmlTag(cursor)) {
+        if (!this.ignoreHtmlTags && this.isAtHtmlTag(cursor)) {
             return null;
         }
-        if (this.isAtHtmlComment(cursor)) {
+        if (!this.ignoreHtmlTags && this.isAtHtmlComment(cursor)) {
             return null;
         }
         return new HtmlEscapeNode(cursor.readForward(1), '<');

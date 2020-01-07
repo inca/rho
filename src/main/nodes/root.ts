@@ -1,5 +1,4 @@
-import { Processor } from '../processor';
-import { Node } from '../node';
+import { Processor, Node } from '../core';
 
 export class RootNode extends Node {
     render(processor: Processor) {

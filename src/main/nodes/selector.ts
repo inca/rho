@@ -1,4 +1,4 @@
-import { Node } from '../node';
+import { Node } from '../core';
 
 export class SelectorNode extends Node {
     id: string = '';

@@ -1,12 +1,21 @@
-import { Rule } from '../../rule';
-import { Cursor } from '../../cursor';
+import { Rule, Cursor, Node, Processor } from '../../core';
 import { TextNode } from '../../nodes/text';
-import { Node } from '../../node';
 
 /**
  * Emits backslash escape of control character.
  */
 export class BackslashEscapeRule extends Rule {
+    controlCharacters: string;
+
+    constructor(
+        processor: Processor,
+        options: {
+            controlCharacters?: string,
+        } = {},
+    ) {
+        super(processor);
+        this.controlCharacters = options.controlCharacters ?? '\\`~!@#$%^&*()-_+="<>{}[]';
+    }
 
     parse(cursor: Cursor): Node | null {
         if (cursor.at('\\')) {
@@ -20,7 +29,7 @@ export class BackslashEscapeRule extends Rule {
     }
 
     isControlChar(char: string) {
-        return this.processor.config.controlCharacters.indexOf(char) > -1;
+        return this.controlCharacters.indexOf(char) > -1;
     }
 
 }
