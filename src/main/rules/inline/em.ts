@@ -4,7 +4,7 @@ export class EmRule extends BracketRule {
     get openMarker() { return '_'; }
     get closeMarker() { return '_'; }
 
-    parseSubRegion(region: StringRegion): Node {
+    protected parseSubRegion(region: StringRegion): Node {
         const inlineParser = this.processor.getParser('inline');
         const root = inlineParser.parse(region);
         return new EmNode(region, root.children);

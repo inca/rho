@@ -1,5 +1,6 @@
 import { Rule, Cursor, Node, Processor } from '../../core';
 import { TextNode } from '../../nodes/text';
+import { DEFAULT_CONTROL_CHARACTERS } from '../../util';
 
 /**
  * Emits backslash escape of control character.
@@ -14,10 +15,10 @@ export class BackslashEscapeRule extends Rule {
         } = {},
     ) {
         super(processor);
-        this.controlCharacters = options.controlCharacters ?? '\\`~!@#$%^&*()-_+="<>{}[]';
+        this.controlCharacters = options.controlCharacters ?? DEFAULT_CONTROL_CHARACTERS;
     }
 
-    parse(cursor: Cursor): Node | null {
+    protected parseAt(cursor: Cursor): Node | null {
         if (cursor.at('\\')) {
             const next = cursor.peek(1);
             if (this.isControlChar(next)) {
@@ -29,7 +30,7 @@ export class BackslashEscapeRule extends Rule {
     }
 
     isControlChar(char: string) {
-        return this.controlCharacters.indexOf(char) > -1;
+        return char && this.controlCharacters.indexOf(char) > -1;
     }
 
 }

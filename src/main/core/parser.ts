@@ -28,28 +28,14 @@ export class Parser {
 
     protected parsePass(cursor: Cursor): Node {
         for (const rule of this.rules) {
-            const pos = cursor.position();
             const node = rule.parse(cursor);
             if (node) {
-                if (cursor.position() <= pos) {
-                    throw new Exception({
-                        code: 'InvalidRule',
-                        message: 'Parse rule should advance cursor position if it emits a node',
-                        details: {
-                            parser: this,
-                            cursor,
-                            rule,
-                        }
-                    });
-                }
                 return node;
-            } else {
-                cursor.set(pos);
             }
         }
         throw new Exception({
             code: 'InvalidParser',
-            message: 'Parser should emit a node on each pass',
+            message: 'Parser must emit a node on each pass',
             details: {
                 parser: this,
                 cursor,

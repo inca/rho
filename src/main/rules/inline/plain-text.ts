@@ -1,8 +1,9 @@
 import { Rule, Processor, Cursor, Node } from '../../core';
 import { TextNode } from '../../nodes/text';
+import { DEFAULT_CONTROL_CHARACTERS } from '../../util';
 
 /**
- * Emits plain text up to the next control character, respecting backslash-escapes.
+ * Emits plain text up to the next control character, respecting backslash escapes.
  */
 export class PlainTextRule extends Rule {
     controlCharacters: string;
@@ -14,10 +15,10 @@ export class PlainTextRule extends Rule {
         } = {},
     ) {
         super(processor);
-        this.controlCharacters = options.controlCharacters ?? '\\`~!@#$%^&*()-_+="<>{}[]';
+        this.controlCharacters = options.controlCharacters ?? DEFAULT_CONTROL_CHARACTERS;
     }
 
-    parse(cursor: Cursor): Node | null {
+    protected parseAt(cursor: Cursor): Node | null {
         const start = cursor.position();
         while (cursor.hasCurrent()) {
             const current = cursor.current();
@@ -34,7 +35,7 @@ export class PlainTextRule extends Rule {
     }
 
     isControlChar(char: string) {
-        return this.controlCharacters.indexOf(char) > -1;
+        return char && this.controlCharacters.indexOf(char) > -1;
     }
 
 }

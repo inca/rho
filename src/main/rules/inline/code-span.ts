@@ -4,7 +4,7 @@ export class CodeSpanRule extends BracketRule {
     get openMarker() { return '`'; }
     get closeMarker() { return '`'; }
 
-    parseSubRegion(region: StringRegion): Node {
+    protected parseSubRegion(region: StringRegion): Node {
         const codeParser = this.processor.getParser('code');
         const root = codeParser.parse(region);
         return new CodeSpanNode(region, root.children);

@@ -1,4 +1,4 @@
-import { RhoProcessor } from '../../../main/processor';
+import { RhoProcessor } from '../../main/processor';
 
 describe('Inline parser', () => {
 

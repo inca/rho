@@ -7,8 +7,8 @@ import {
     EmRule,
     StrongRule,
     CodeSpanRule,
+    FormulaRule,
 } from './rules';
-import { FormulaRule } from './rules/inline/formula';
 
 export class RhoProcessor extends Processor {
 

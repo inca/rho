@@ -15,7 +15,7 @@ export class HtmlEntityRule extends Rule {
         this.ignoreHtmlTags = options.ignoreHtmlTags ?? false;
     }
 
-    parse(cursor: Cursor): Node | null {
+    protected parseAt(cursor: Cursor): Node | null {
         return this.tryAmp(cursor) ||
             this.tryLt(cursor) ||
             this.tryGt(cursor);

@@ -7,7 +7,7 @@ import { TextNode } from '../../nodes/text';
  */
 export class LiteralRule extends Rule {
 
-    parse(cursor: Cursor): Node | null {
+    protected parseAt(cursor: Cursor): Node | null {
         return new TextNode(cursor.readForward(1));
     }
 

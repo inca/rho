@@ -35,7 +35,7 @@ export class FormulaRule extends BracketRule {
         return this.marker;
     }
 
-    parseSubRegion(region: StringRegion): Node {
+    protected parseSubRegion(region: StringRegion): Node {
         const root = this.parser.parse(region);
         return new FormulaNode(region, root.children, this.marker);
     }
