@@ -8,6 +8,7 @@ import {
     StrongRule,
     CodeSpanRule,
 } from './rules';
+import { FormulaRule } from './rules/inline/formula';
 
 export class RhoProcessor extends Processor {
 
@@ -28,6 +29,8 @@ export class RhoProcessor extends Processor {
             new EmRule(this),
             new StrongRule(this),
             new CodeSpanRule(this),
+            new FormulaRule(this, { marker: '$$' }),
+            new FormulaRule(this, { marker: '%%' }),
             new LiteralRule(this),
         ]);
     }
