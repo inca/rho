@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { Region } from '../../main/core';
 
-describe('StringRegion', () => {
+describe('Region', () => {
 
     const str = 'A quick brown fox jumps over the lazy dog';
     const region = new Region(str, 8, 28);
@@ -43,6 +43,54 @@ describe('StringRegion', () => {
             const sub = region.subRegion(6, 9);
             assert.equal(sub.toString(), 'fox');
         });
+    });
+
+    describe('tainted region', () => {
+
+        const str = '__ABcdEFgH___';
+        const region = new Region(str, 2, 10)
+            .taint([0, 2])
+            .taint([4, 6])
+            .taint([7, 8]);
+
+        describe('charAt', () => {
+            it('returns empty string for tainted subregions', () => {
+                const expectations = ['', '', 'c', 'd', '', '', 'g', ''];
+                for (let i = 0; i < expectations.length; i++) {
+                    assert.equal(region.charAt(i), expectations[i]);
+                }
+            });
+        });
+
+        describe('substring', () => {
+            it('ignores tainted subregions', () => {
+                const expectations = [
+                    ['', '', '', 'c', 'cd', 'cd', 'cd', 'cdg', 'cdg'],
+                    ['', '', 'c', 'cd', 'cd', 'cd', 'cdg', 'cdg'],
+                    ['', 'c', 'cd', 'cd', 'cd', 'cdg', 'cdg'],
+                    ['', 'd', 'd', 'd', 'dg', 'dg'],
+                    ['', '', '', 'g', 'g'],
+                    ['', '', 'g', 'g'],
+                    ['', 'g', 'g'],
+                    ['', ''],
+                ];
+                for (let s = 0; s < expectations.length; s++) {
+                    const line = expectations[s];
+                    for (let e = 0; e < line.length; e++) {
+                        const substr = region.substring(s, s + e);
+                        assert.equal(substr, line[e],
+                            `substring(${s}, ${s + e}) should be ${line[e]}, instead got ${substr}`);
+                    }
+                }
+            });
+        });
+
+        describe('toString', () => {
+            it('ignores tainted subregions', () => {
+                assert.equal(region.toString(), 'cdg');
+            });
+        });
+
     });
 
 });

@@ -16,7 +16,7 @@ describe('HtmlEntityRule', () => {
             const node = rule.parse(cursor);
             assert(node instanceof HtmlEscapeNode);
             assert(node?.render(processor), '&amp;');
-            assert.equal(cursor.position(), 6);
+            assert.equal(cursor.pos, 6);
         });
 
         it('emits ascii entity reference', () => {
@@ -24,7 +24,7 @@ describe('HtmlEntityRule', () => {
             const node = rule.parse(cursor);
             assert(node instanceof TextNode);
             assert(node?.render(processor), '&percnt;');
-            assert.equal(cursor.position(), 11);
+            assert.equal(cursor.pos, 11);
         });
 
         it('emits decimal entity reference', () => {
@@ -32,7 +32,7 @@ describe('HtmlEntityRule', () => {
             const node = rule.parse(cursor);
             assert(node instanceof TextNode);
             assert(node?.render(processor), '&#37;');
-            assert.equal(cursor.position(), 8);
+            assert.equal(cursor.pos, 8);
         });
 
         it('emits hexadecimal entity reference', () => {
@@ -40,7 +40,7 @@ describe('HtmlEntityRule', () => {
             const node = rule.parse(cursor);
             assert(node instanceof TextNode);
             assert(node?.render(processor), '&#x025;');
-            assert.equal(cursor.position(), 10);
+            assert.equal(cursor.pos, 10);
         });
 
     });
@@ -52,7 +52,7 @@ describe('HtmlEntityRule', () => {
             assert.equal(cursor.current(), '<');
             const node = rule.parse(cursor);
             assert.equal(node, null);
-            assert.equal(cursor.position(), 6);
+            assert.equal(cursor.pos, 6);
         });
 
         it('does not match closing html tag', () => {
@@ -60,7 +60,7 @@ describe('HtmlEntityRule', () => {
             assert.equal(cursor.current(), '<');
             const node = rule.parse(cursor);
             assert.equal(node, null);
-            assert.equal(cursor.position(), 13);
+            assert.equal(cursor.pos, 13);
         });
 
         it('does not match self-closing html tag', () => {
@@ -68,7 +68,7 @@ describe('HtmlEntityRule', () => {
             assert.equal(cursor.current(), '<');
             const node = rule.parse(cursor);
             assert.equal(node, null);
-            assert.equal(cursor.position(), 0);
+            assert.equal(cursor.pos, 0);
         });
 
         it('emits &lt; when standalone', () => {
@@ -77,7 +77,7 @@ describe('HtmlEntityRule', () => {
             const node = rule.parse(cursor);
             assert(node instanceof HtmlEscapeNode);
             assert(node?.render(processor), '&lt;');
-            assert.equal(cursor.position(), 3);
+            assert.equal(cursor.pos, 3);
         });
 
     });
@@ -89,7 +89,7 @@ describe('HtmlEntityRule', () => {
             const node = rule.parse(cursor);
             assert(node instanceof HtmlEscapeNode);
             assert.equal(node?.render(processor), '&gt;');
-            assert.equal(cursor.position(), 3);
+            assert.equal(cursor.pos, 3);
         });
     });
 

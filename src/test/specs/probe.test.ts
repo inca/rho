@@ -1,6 +1,7 @@
 import { RhoProcessor } from '../../main/processor';
+import { Region } from '../../main/core';
 
-describe.only('Probe', () => {
+describe.skip('Probe', () => {
 
     const processor = new RhoProcessor();
     const parser = processor.getParser('block');

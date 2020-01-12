@@ -15,7 +15,7 @@ describe('Cursor', () => {
             const clone = cursor.clone();
             assert.notStrictEqual(clone, cursor);
             assert.equal(cursor.region, clone.region);
-            assert.equal(cursor.position(), clone.position());
+            assert.equal(cursor.pos, clone.pos);
         });
     });
 
@@ -23,13 +23,13 @@ describe('Cursor', () => {
         it('returns next character without advancing cursor position', () => {
             const cursor = createCursor(8);
             const char = cursor.peek();
-            assert.equal(cursor.position(), 8);
+            assert.equal(cursor.pos, 8);
             assert.equal(char, 'r');
         });
         it('returns empty string if cursor is finished', () => {
             const cursor = createCursor(str.length);
             const char = cursor.peek();
-            assert.equal(cursor.position(), str.length);
+            assert.equal(cursor.pos, str.length);
             assert.equal(char, '');
         });
     });
@@ -38,13 +38,13 @@ describe('Cursor', () => {
         it('returns current character', () => {
             const cursor = createCursor(8);
             const char = cursor.current();
-            assert.equal(cursor.position(), 8);
+            assert.equal(cursor.pos, 8);
             assert.equal(char, 'b');
         });
         it('returns empty string if cursor is finished', () => {
             const cursor = createCursor(str.length);
             const char = cursor.current();
-            assert.equal(cursor.position(), str.length);
+            assert.equal(cursor.pos, str.length);
             assert.equal(char, '');
         });
     });
@@ -89,12 +89,12 @@ describe('Cursor', () => {
     //         const res = cursor.lookahead(cur => {
     //             while (cur.hasCurrent()) {
     //                 if (cur.at('lazy')) {
-    //                     return cur.position();
+    //                     return cur.pos;
     //                 }
     //                 cur.skip();
     //             }
     //         });
-    //         assert.equal(cursor.position(), 0);
+    //         assert.equal(cursor.pos, 0);
     //         assert.equal(res, 33);
     //     });
     // });
@@ -102,10 +102,10 @@ describe('Cursor', () => {
     describe('skip', () => {
         it('increments position', () => {
             const cursor = createCursor();
-            assert.equal(cursor.position(), 0);
+            assert.equal(cursor.pos, 0);
             assert.equal(cursor.current(), 'A');
             cursor.skip();
-            assert.equal(cursor.position(), 1);
+            assert.equal(cursor.pos, 1);
             assert.equal(cursor.current(), ' ');
         });
     });
@@ -154,7 +154,7 @@ describe('Cursor', () => {
         it('skips to the end of current line', () => {
             const cursor = new Cursor('Hello\r\n    World');
             cursor.skipToEol();
-            assert.equal(cursor.position(), 5);
+            assert.equal(cursor.pos, 5);
         });
     });
 
@@ -162,7 +162,7 @@ describe('Cursor', () => {
         it('skips to the end of current block', () => {
             const cursor = new Cursor('Hello\r\n    World\r\n  \r\n    Hi again!');
             cursor.skipToEndOfBlock();
-            assert.equal(cursor.position(), 16);
+            assert.equal(cursor.pos, 16);
             assert(cursor.at('\r\n  \r\n    Hi again!'));
         });
     });
@@ -172,7 +172,7 @@ describe('Cursor', () => {
             const cursor = createCursor(8);
             const text = cursor.readUntil(13);
             assert.equal(text.toString(), 'brown');
-            assert.equal(cursor.position(), 13);
+            assert.equal(cursor.pos, 13);
         });
     });
 

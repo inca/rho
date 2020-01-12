@@ -16,7 +16,7 @@ describe('FormulaRule', () => {
                 const node = rule.parse(cursor);
                 assert(node instanceof FormulaNode);
                 assert(node?.render(processor), `${marker}\\frac{1}{x}${marker}`);
-                assert.equal(cursor.position(), 20);
+                assert.equal(cursor.pos, 20);
             });
         });
 
@@ -24,10 +24,10 @@ describe('FormulaRule', () => {
             it('does not match', () => {
                 const cursor = new Cursor('\\- random \\& stuff \\\\', 0);
                 while (cursor.hasCurrent()) {
-                    const pos = cursor.position();
+                    const pos = cursor.pos;
                     const node = rule.parse(cursor);
                     assert(node == null);
-                    assert.equal(cursor.position(), pos);
+                    assert.equal(cursor.pos, pos);
                     cursor.skip();
                 }
             });

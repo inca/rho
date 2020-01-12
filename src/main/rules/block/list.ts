@@ -42,9 +42,9 @@ export class ListRule extends BlockRule {
     }
 
     protected isAtMarker(cursor: Cursor) {
-        const start = cursor.position();
+        const start = cursor.pos;
         this.skipMarker(cursor);
-        const result = cursor.position() > start;
+        const result = cursor.pos > start;
         cursor.set(start);
         return result;
     }
@@ -57,10 +57,10 @@ export class ListRule extends BlockRule {
         }
         while (cursor.hasCurrent()) {
             cursor.skipToEndOfBlock();
-            const endOfBlock = cursor.position();
+            const endOfBlock = cursor.pos;
             cursor.skipBlankLines();
             // Find the end of this UL, checking nested and sibling sub-blocks
-            const startOfLine = cursor.position();
+            const startOfLine = cursor.pos;
             if (!cursor.atSpaces(this.indent)) {
                 cursor.set(startOfLine);
                 break;
@@ -73,7 +73,7 @@ export class ListRule extends BlockRule {
                 break;
             }
         }
-        return cursor.position();
+        return cursor.pos;
     }
 
     protected parseSubRegion(region: Region) {
@@ -81,7 +81,7 @@ export class ListRule extends BlockRule {
         const cursor = new Cursor(region);
         this.skipMarker(cursor);
         let hasBlocks = false;
-        let start = cursor.position();
+        let start = cursor.pos;
         while (cursor.hasCurrent()) {
             cursor.skipToEol().skipNewLine();
             if (cursor.atBlankLine()) {
@@ -94,14 +94,14 @@ export class ListRule extends BlockRule {
                 cursor.skip(this.indent);
             }
             if (this.isAtMarker(cursor)) {
-                const region = cursor.subRegion(start, cursor.position());
+                const region = cursor.subRegion(start, cursor.pos);
                 regions.push(region);
                 this.skipMarker(cursor);
-                start = cursor.position();
+                start = cursor.pos;
             }
         }
         // Emit last li
-        const lastRegion = cursor.subRegion(start, cursor.position());
+        const lastRegion = cursor.subRegion(start, cursor.pos);
         regions.push(lastRegion);
         const children = this.parseLiRegions(regions, hasBlocks);
         return new HtmlElementNode(lastRegion, children, this.tagName);
@@ -124,10 +124,10 @@ export class ListRule extends BlockRule {
         // Anything else should not exist, as per parseSubRegion's contract.
         const listParser = this.processor.getParser('list');
         // Always skip first new line
-        let inlineStart = cursor.position();
+        let inlineStart = cursor.pos;
         cursor.skipToEol().skipNewLine();
         while (cursor.hasCurrent()) {
-            const pos = cursor.position();
+            const pos = cursor.pos;
             const list = listParser.parseSinglePass(cursor);
             if (list) {
                 // Finish inline markup
@@ -138,13 +138,13 @@ export class ListRule extends BlockRule {
                 // Append list
                 children.push(list);
                 // Start new inline fragment from here
-                inlineStart = cursor.position();
+                inlineStart = cursor.pos;
             } else {
                 cursor.skipToEol().skipBlankLines();
             }
         }
-        if (inlineStart !== cursor.position()) {
-            const region = cursor.subRegion(inlineStart, cursor.position());
+        if (inlineStart !== cursor.pos) {
+            const region = cursor.subRegion(inlineStart, cursor.pos);
             children.push(...this.parseInlineContent(region));
         }
         return new HtmlElementNode(cursor.region, children, 'li');

@@ -14,7 +14,7 @@ describe('PlainTextRule', () => {
         const node = rule.parse(cursor)!;
         assert(node instanceof TextNode);
         assert(node.render(processor), 'Hello ');
-        assert.equal(cursor.position(), 6);
+        assert.equal(cursor.pos, 6);
     });
 
 });

@@ -49,7 +49,7 @@ export class HtmlEntityRule extends Rule {
                 const c = cur.current();
                 if (c === ';') {
                     cur.skip();
-                    return cur.position();
+                    return cur.pos;
                 } else if (cur.atSome(allowedChars)) {
                     cur.skip();
                 } else {

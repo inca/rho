@@ -14,7 +14,7 @@ describe('CodeSpanRule', () => {
             const cursor = new Cursor('This `code` that', 5);
             const node = rule.parse(cursor);
             assert(node instanceof CodeSpanNode);
-            assert.equal(cursor.position(), 11);
+            assert.equal(cursor.pos, 11);
         });
 
         it('escapes <', () => {
@@ -64,7 +64,7 @@ describe('CodeSpanRule', () => {
             const cursor = new Cursor('This `ol that', 5);
             const node = rule.parse(cursor);
             assert(node == null);
-            assert.equal(cursor.position(), 5);
+            assert.equal(cursor.pos, 5);
         });
     });
 
@@ -72,10 +72,10 @@ describe('CodeSpanRule', () => {
         it('does not match', () => {
             const cursor = new Cursor('\\- random \\& stuff \\\\', 0);
             while (cursor.hasCurrent()) {
-                const pos = cursor.position();
+                const pos = cursor.pos;
                 const node = rule.parse(cursor);
                 assert(node == null);
-                assert.equal(cursor.position(), pos);
+                assert.equal(cursor.pos, pos);
                 cursor.skip();
             }
         });

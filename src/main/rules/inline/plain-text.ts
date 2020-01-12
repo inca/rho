@@ -19,7 +19,7 @@ export class PlainTextRule extends Rule {
     }
 
     protected parseAt(cursor: Cursor): Node | null {
-        const start = cursor.position();
+        const start = cursor.pos;
         while (cursor.hasCurrent()) {
             const current = cursor.current();
             if (this.isControlChar(current)) {
@@ -28,10 +28,10 @@ export class PlainTextRule extends Rule {
                 cursor.skip();
             }
         }
-        if (cursor.position() === start) {
+        if (cursor.pos === start) {
             return null;
         }
-        return new TextNode(cursor.subRegion(start, cursor.position()));
+        return new TextNode(cursor.subRegion(start, cursor.pos));
     }
 
     isControlChar(char: string) {

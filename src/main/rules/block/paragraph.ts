@@ -6,7 +6,7 @@ export class ParagraphRule extends BlockRule {
 
     protected scanBlock(cursor: Cursor): number | null {
         cursor.skipToEndOfBlock().skipBlankLines();
-        return cursor.position();
+        return cursor.pos;
     }
 
     protected parseSubRegion(region: Region) {

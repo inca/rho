@@ -42,11 +42,11 @@ export abstract class Rule {
     protected abstract parseAt(cursor: Cursor): Node | null;
 
     parse(cursor: Cursor): Node | null {
-        const pos = cursor.position();
+        const pos = cursor.pos;
         const node = this.parseAt(cursor);
         if (node == null) {
             cursor.set(pos);
-        } else if (cursor.position() <= pos) {
+        } else if (cursor.pos <= pos) {
             throw new Exception({
                 code: 'InvalidRule',
                 message: 'Parse rule must advance cursor position if it emits a node',
@@ -95,7 +95,7 @@ export abstract class BracketRule extends Rule {
                     cur.skip(2);
                 }
                 if (cur.at(closeMarker)) {
-                    return cur.position();
+                    return cur.pos;
                 }
                 cur.skip();
             }

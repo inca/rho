@@ -14,21 +14,19 @@ import { Region } from './region';
  */
 export class Cursor {
     readonly region: Region;
-    protected pos: number = 0;
 
     constructor(
         source: string | Region,
-        pos: number = 0,
+        protected _pos: number = 0,
     ) {
         this.region = source instanceof Region ? source : new Region(source);
-        this.pos = pos;
     }
 
     /**
      * Returns current cursor position.
      */
-    position() {
-        return this.pos;
+    get pos() {
+        return this._pos;
     }
 
     /**
@@ -148,7 +146,7 @@ export class Cursor {
         const p = this.pos;
         this.skipSpaces();
         const result = this.atNewLine();
-        this.pos = p;
+        this.set(p);
         return result;
     }
 
@@ -186,18 +184,10 @@ export class Cursor {
     }
 
     /**
-     * Sets cursor position back to 0.
-     */
-    reset(): this {
-        this.pos = 0;
-        return this;
-    }
-
-    /**
      * Sets cursor position to `i`.
      */
     set(i: number): this {
-        this.pos = i;
+        this._pos = i;
         return this;
     }
 
@@ -205,7 +195,7 @@ export class Cursor {
      * Advances cursor forward by `n` characters.
      */
     skip(n: number = 1): this {
-        this.pos += n;
+        this._pos += n;
         return this;
     }
 
@@ -278,7 +268,7 @@ export class Cursor {
                 this.skipNewLines();
             } else {
                 // It's a meaningful line!
-                this.pos = pos;
+                this.set(pos);
                 break;
             }
         }
@@ -327,7 +317,7 @@ export class Cursor {
      * Same as `readUntil`, but new position is relative to current cursor position.
      */
     readForward(relNewPos: number): Region {
-        return this.readUntil(this.position() + relNewPos);
+        return this.readUntil(this.pos + relNewPos);
     }
 
     /**

@@ -15,7 +15,7 @@ describe('BackslashEscapeRule', () => {
             const node = rule.parse(cursor);
             assert(node instanceof TextNode);
             assert(node?.render(processor), '^');
-            assert.equal(cursor.position(), 7);
+            assert.equal(cursor.pos, 7);
         });
     });
 
@@ -23,10 +23,10 @@ describe('BackslashEscapeRule', () => {
         it('does not match', () => {
             const cursor = new Cursor('\\- random \\& stuff \\\\', 0);
             while (cursor.hasCurrent()) {
-                const pos = cursor.position();
+                const pos = cursor.pos;
                 const node = rule.parse(cursor);
                 assert(node == null);
-                assert.equal(cursor.position(), pos);
+                assert.equal(cursor.pos, pos);
                 cursor.skip();
             }
         });

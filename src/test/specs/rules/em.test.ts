@@ -15,7 +15,7 @@ describe('EmRule', () => {
             const node = rule.parse(cursor);
             assert(node instanceof EmNode);
             assert.equal(node?.render(processor), '<em>word</em>');
-            assert.equal(cursor.position(), 11);
+            assert.equal(cursor.pos, 11);
         });
 
         it('renders inline markup inside', () => {
@@ -32,7 +32,7 @@ describe('EmRule', () => {
             const cursor = new Cursor('This _and that', 5);
             const node = rule.parse(cursor);
             assert(node == null);
-            assert.equal(cursor.position(), 5);
+            assert.equal(cursor.pos, 5);
         });
     });
 
@@ -40,10 +40,10 @@ describe('EmRule', () => {
         it('does not match', () => {
             const cursor = new Cursor('\\- random \\& stuff \\\\', 0);
             while (cursor.hasCurrent()) {
-                const pos = cursor.position();
+                const pos = cursor.pos;
                 const node = rule.parse(cursor);
                 assert(node == null);
-                assert.equal(cursor.position(), pos);
+                assert.equal(cursor.pos, pos);
                 cursor.skip();
             }
         });
