@@ -5,18 +5,18 @@ import { Exception } from './exception';
 export class Processor {
     protected parsers: Map<string, Parser> = new Map();
 
-    defineParser(kind: string, rules: Rule[]): this {
+    defineParser(parserId: string, rules: Rule[]): this {
         const parser = new Parser(this, rules);
-        this.parsers.set(kind, parser);
+        this.parsers.set(parserId, parser);
         return this;
     }
 
-    getParser(kind: string): Parser {
-        const parser = this.parsers.get(kind);
+    getParser(parserId: string): Parser {
+        const parser = this.parsers.get(parserId);
         if (!parser) {
             throw new Exception({
                 code: 'ParserNotFound',
-                message: `Parser "${kind}" not found, please update Processor configuration accordingly`
+                message: `Parser "${parserId}" not found, please update Processor configuration accordingly`
             });
         }
         return parser;

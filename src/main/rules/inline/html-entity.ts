@@ -102,10 +102,13 @@ export class HtmlEntityRule extends Rule {
             if (!cur.atLatin()) {
                 return false;
             }
-            // Hack! We look max 1000 characters for > character
-            let i = 0;
-            while (cur.hasCurrent() && i < 1000) {
-                i += 1;
+            // We simply scan for next angular bracket, for simplicity.
+            // A limitation of that is: <> characters would need to be manually
+            // escaped if used in attributes, e.g. <a title="a &lt; b">
+            while (cur.hasCurrent()) {
+                if (cur.at('<')) {
+                    return false;
+                }
                 if (cur.at('>')) {
                     return true;
                 }

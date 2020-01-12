@@ -1,0 +1,33 @@
+- [ ] inline
+    - [x] plain text
+    - [x] backslash escapes
+    - [ ] typographics
+    - [x] amp
+    - [x] lt (+ escape lt)
+    - [x] gt
+    - [x] code span
+    - [x] em
+    - [x] strong
+    - [ ] strike
+    - [ ] html tag
+    - [ ] html comment
+    - [ ] links
+    - [ ] headless links
+    - [ ] images
+    - [x] literal
+
+- [ ] block
+    - [ ] ul
+    - [ ] ol
+    - [ ] dl
+    - [ ] headings
+    - [ ] code block
+    - [ ] div
+    - [ ] html
+    - [ ] hr
+    - [ ] table
+    - [x] paragraph
+
+- [ ] selectors
+- [ ] integration tests
+- [ ] benchmarks

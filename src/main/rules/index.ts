@@ -1,3 +1,5 @@
+export * from './block/list';
+
 export * from './inline/backslash-escape';
 export * from './inline/code-span';
 export * from './inline/em';

@@ -60,6 +60,22 @@ export abstract class Rule {
     }
 }
 
+export class DelegateRule extends Rule {
+
+    constructor(
+        processor: Processor,
+        readonly parserId: string,
+    ) {
+        super(processor);
+    }
+
+    parseAt(cursor: Cursor): Node | null {
+        const parser = this.processor.getParser(this.parserId);
+        return parser.parseSinglePass(cursor);
+    }
+
+}
+
 export abstract class BracketRule extends Rule {
     abstract openMarker: string;
     abstract closeMarker: string;

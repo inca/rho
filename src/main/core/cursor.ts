@@ -1,7 +1,7 @@
 import { Region } from './region';
 
 /**
- * Cursor tracks a position `pos` within a string source.
+ * Cursor tracks a position `pos` within a string region.
  *
  * Implementation note: normally it is preferable to use high order functions like
  * `lookahead` for traversal to avoid side effects. However, simple profiling shows that
@@ -142,6 +142,17 @@ export class Cursor {
     }
 
     /**
+     * Tests if cursor is positioned blank line (optional whitespace followed by newline or end of input)
+     */
+    atBlankLine(): boolean {
+        const p = this.pos;
+        this.skipSpaces();
+        const result = this.atNewLine();
+        this.pos = p;
+        return result;
+    }
+
+    /**
      * Tests if current character is inline-level space (space or tab).
      */
     atSpace(): boolean {
@@ -195,6 +206,16 @@ export class Cursor {
      */
     skip(n: number = 1): this {
         this.pos += n;
+        return this;
+    }
+
+    /**
+     * Skips specified string, if positioned at it, otherwise do nothing.
+     */
+    skipString(str: string): this {
+        if (this.at(str)) {
+            this.skip(str.length);
+        }
         return this;
     }
 
@@ -317,6 +338,14 @@ export class Cursor {
         const start = this.pos;
         this.skipToEol().skipNewLine();
         return this.region.subRegion(start, this.pos);
+    }
+
+    debug() {
+        const fmt = (str: string) => str.replace(/ /g, '·').replace(/\n/g, '↲\n');
+        const prefix = this.region.substring(0, this.pos);
+        const suffix = this.region.substring(this.pos);
+        return '\u001b[33m' + fmt(prefix) + '\u001b[0m' +
+            '\u001b[36m' + fmt(suffix) + '\u001b[0m';
     }
 
 }

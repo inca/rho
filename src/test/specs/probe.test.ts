@@ -1,15 +1,25 @@
 import { RhoProcessor } from '../../main/processor';
 
-describe('Inline parser', () => {
+describe.only('Probe', () => {
 
     const processor = new RhoProcessor();
-    const parser = processor.getParser('inline');
+    const parser = processor.getParser('block');
+
+    const text = `
+Hello
+
+  - A terse list
+  - Some other list item
+    - foo
+    - bar
+    - baz
+  - Next item
+
+End of it.
+`;
 
     it('works', () => {
-        const str = 'hello_world_and_stuff';
-        const node = parser.parseString(str);
-        console.log(node.debug());
-        console.log(node.render(processor));
+        console.log(parser.parseString(text).render(processor));
     });
 
 });

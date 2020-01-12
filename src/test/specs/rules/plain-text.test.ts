@@ -11,7 +11,7 @@ describe('PlainTextRule', () => {
 
     it('emits a region till next control character', () => {
         const cursor = new Cursor('Hello ^ World!', 0);
-        const node = rule.parse(cursor);
+        const node = rule.parse(cursor)!;
         assert(node instanceof TextNode);
         assert(node.render(processor), 'Hello ');
         assert.equal(cursor.position(), 6);

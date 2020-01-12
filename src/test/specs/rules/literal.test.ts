@@ -14,7 +14,7 @@ describe('LiteralRule', () => {
         while (cursor.hasCurrent()) {
             const pos = cursor.position();
             const char = cursor.current();
-            const node = rule.parse(cursor);
+            const node = rule.parse(cursor)!;
             assert(node instanceof TextNode);
             assert.equal(cursor.position(), pos + 1);
             assert.equal(node.region.start, pos);

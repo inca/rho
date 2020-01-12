@@ -21,26 +21,30 @@ export class Parser {
         const nodes: Node[] = [];
         const cursor = new Cursor(region);
         while (cursor.hasCurrent()) {
-            nodes.push(this.parsePass(cursor));
+            const node = this.parseSinglePass(cursor);
+            if (node == null) {
+                throw new Exception({
+                    code: 'InvalidParser',
+                    message: 'Parser must emit a node on each pass',
+                    details: {
+                        parser: this,
+                        cursor,
+                    }
+                });
+            }
+            nodes.push(node);
         }
         return new RootNode(region, nodes);
     }
 
-    protected parsePass(cursor: Cursor): Node {
+    parseSinglePass(cursor: Cursor): Node | null {
         for (const rule of this.rules) {
             const node = rule.parse(cursor);
             if (node) {
                 return node;
             }
         }
-        throw new Exception({
-            code: 'InvalidParser',
-            message: 'Parser must emit a node on each pass',
-            details: {
-                parser: this,
-                cursor,
-            }
-        });
+        return null;
     }
 
     // TODO PoC APIs for manipulating rules, confirm after extensions appear
