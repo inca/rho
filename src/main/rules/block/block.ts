@@ -36,6 +36,10 @@ export abstract class BlockRule extends Rule {
         return ast.children;
     }
 
+    captureSelector(cursor: Cursor, allowMultiple: boolean = false): SelectorNode | null {
+        return this.parseSelector(cursor.clone(), allowMultiple);
+    }
+
     /**
      * Attempts to parse a selector expression in form {#id.class1.class2}
      * at the end of the current line.
@@ -44,8 +48,8 @@ export abstract class BlockRule extends Rule {
      * (i.e. excluded from string processing) by subsequent AST.
      * The cursor is discarded after this, so no need to preserve its position.
      */
-    protected captureSelector(cursor: Cursor, allowMultiple: boolean = false): SelectorNode | null {
-        while (cursor.hasCurrent() && !cursor.atNewLine) {
+    protected parseSelector(cursor: Cursor, allowMultiple: boolean = false): SelectorNode | null {
+        while (cursor.hasCurrent() && !cursor.atNewLine()) {
             if (cursor.at('\\{')) {
                 cursor.skip(2);
                 continue;
@@ -54,7 +58,7 @@ export abstract class BlockRule extends Rule {
                 cursor.skip();
                 continue;
             }
-            // We're at { here
+            // We're at {
             const start = cursor.pos;
             cursor.skip();
             const id = this.parseSelectorComponent('#', cursor) || '';
@@ -80,7 +84,7 @@ export abstract class BlockRule extends Rule {
                 // If multiple consequtive selectors are allowed (e.g. in lists),
                 // we just recursively try parsing the next selector;
                 // ultimately it should end with us either bumping into previous condition or not.
-                const nextSelector = this.captureSelector(cursor.clone(), allowMultiple);
+                const nextSelector = this.parseSelector(cursor.clone(), allowMultiple);
                 found = found || nextSelector != null;
             }
             // Finally, valid (and parsed) selector!

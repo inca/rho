@@ -7,19 +7,8 @@ describe.skip('Probe', () => {
     const parser = processor.getParser('block');
 
     const text = `
-Hello
-
-  - A terse list
-
-  - Some other list item
-
-    - foo
-    - bar
-    - baz
-
-  - Next item
-
-End of it.
+Hello   {#hi.cl1.cl2}
+World
 `;
 
     it('works', () => {

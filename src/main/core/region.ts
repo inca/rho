@@ -42,8 +42,12 @@ export class Region implements StringLike {
     }
 
     taint(from: number, to: number) {
-        const taint: Taint = [this.start + from, this.start + to];
+        const taint: Taint = [from, to];
         return new TaintedRegion(this.str, this.start, this.end, [taint]);
+    }
+
+    taintRelative(from: number, to: number) {
+        return this.taint(this.start + from, this.start + to);
     }
 
     toString() {
@@ -113,7 +117,7 @@ export class TaintedRegion extends Region {
     }
 
     taint(from: number, to: number) {
-        const taint: Taint = [this.start + from, this.start + to];
+        const taint: Taint = [from, to];
         return new TaintedRegion(this.str, this.start, this.end, this.taints.concat([taint]));
     }
 
