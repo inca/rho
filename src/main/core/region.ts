@@ -51,6 +51,14 @@ export class Region implements StringLike {
     }
 }
 
+/**
+ * Taints provide an elegant solution to "hide" arbitrary subregions inside given region.
+ * Each taint is a pair of indices (in source string space) that indicate subregions
+ * that must not be returned by `charAt`, `substring` and `toString` methods.
+ *
+ * Taints work in conjunction with `subRegion` to make sure the correct indexing is maintained
+ * top-to-bottom no matter what.
+ */
 export class TaintedRegion extends Region {
     protected taints: Taint[];
 
@@ -61,7 +69,11 @@ export class TaintedRegion extends Region {
         taints: Taint[] = [],
     ) {
         super(str, start, end);
-        this.taints = taints.slice().sort((a, b) => a > b ? 1 : -1);
+        this.taints = taints.slice()
+            .sort((a, b) => a > b ? 1 : -1)
+            .filter(t => {
+                return t[0] < end && t[1] > start;
+            });
     }
 
     charAt(i: number) {
@@ -101,13 +113,11 @@ export class TaintedRegion extends Region {
     }
 
     taint(from: number, to: number) {
-        // TODO ignore if outside range
         const taint: Taint = [this.start + from, this.start + to];
         return new TaintedRegion(this.str, this.start, this.end, this.taints.concat([taint]));
     }
 
     subRegion(start: number, end: number = this.length) {
-        // TODO strip taints outside subregion
         start = Math.max(0, start);
         end = Math.min(this.length, end);
         return new TaintedRegion(this.str, this.start + start, this.start + end, this.taints);
