@@ -133,7 +133,7 @@ export class ListRule extends BlockRule {
                 // Finish inline markup
                 if (inlineStart !== pos) {
                     const region = cursor.subRegion(inlineStart, pos);
-                    children.push(...this.parseInlineNodes(region));
+                    children.push(...this.parseInlineContent(region));
                 }
                 // Append list
                 children.push(list);
@@ -145,7 +145,7 @@ export class ListRule extends BlockRule {
         }
         if (inlineStart !== cursor.position()) {
             const region = cursor.subRegion(inlineStart, cursor.position());
-            children.push(...this.parseInlineNodes(region));
+            children.push(...this.parseInlineContent(region));
         }
         return new HtmlElementNode(cursor.region, children, 'li');
     }

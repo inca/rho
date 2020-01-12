@@ -17,17 +17,17 @@ export class RhoProcessor extends Processor {
 
     constructor() {
         super();
-        this.defineParser('block', [
+        this.defineParser('block', () => [
             new DelegateRule(this, 'list'),
             new ParagraphRule(this),
         ]);
-        this.defineParser('list', [
+        this.defineParser('list', () => [
             new ListRule(this, { tagName: 'ul', marker: '* ' }),
             new ListRule(this, { tagName: 'ul', marker: '- ' }),
             new ListRule(this, { tagName: 'ol', marker: '#. ' }),
             new NumberedListRule(this, { tagName: 'ol', marker: '1. ' }),
         ]);
-        this.defineParser('inline', [
+        this.defineParser('inline', () => [
             new PlainTextRule(this),
             new BackslashEscapeRule(this),
             new HtmlEntityRule(this),
@@ -38,7 +38,7 @@ export class RhoProcessor extends Processor {
             new FormulaRule(this, { marker: '%%' }),
             new LiteralRule(this),
         ]);
-        this.defineParser('code', [
+        this.defineParser('code', () => [
             new PlainTextRule(this, { controlCharacters: '`&<>' }),
             new BackslashEscapeRule(this, { controlCharacters: '`' }),
             new HtmlEntityRule(this, { ignoreHtmlTags: true }),

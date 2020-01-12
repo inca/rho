@@ -29,7 +29,7 @@ export abstract class BlockRule extends Rule {
         }
     }
 
-    parseInlineNodes(region: Region): Node[] {
+    parseInlineContent(region: Region): Node[] {
         const parser = this.processor.getParser('inline');
         const ast = parser.parse(region);
         return ast.children;

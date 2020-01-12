@@ -31,3 +31,5 @@
 - [ ] selectors
 - [ ] integration tests
 - [ ] benchmarks
+
+- [ ] opt: cache parser lookups in rules
