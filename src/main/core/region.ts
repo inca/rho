@@ -41,7 +41,8 @@ export class Region implements StringLike {
         return new Region(this.str, this.start + start, this.start + end);
     }
 
-    taint(taint: [number, number]) {
+    taint(from: number, to: number) {
+        const taint: Taint = [this.start + from, this.start + to];
         return new TaintedRegion(this.str, this.start, this.end, [taint]);
     }
 
@@ -51,30 +52,31 @@ export class Region implements StringLike {
 }
 
 export class TaintedRegion extends Region {
-    protected taints: Array<[number, number]>;
+    protected taints: Taint[];
 
     constructor(
         str: string,
         start: number = 0,
         end: number = str.length,
-        taints: Array<[number, number]> = [],
+        taints: Taint[] = [],
     ) {
         super(str, start, end);
         this.taints = taints.slice().sort((a, b) => a > b ? 1 : -1);
     }
 
     charAt(i: number) {
+        const index = this.start + i;
         for (const taint of this.taints) {
-            if (i >= taint[0] && i < taint[1]) {
+            if (index >= taint[0] && index < taint[1]) {
                 return '';
             }
         }
-        return super.charAt(i);
+        return this.str.charAt(index);
     }
 
     substring(start: number, end: number = this.length) {
-        start = Math.max(0, start);
-        end = Math.min(this.length, end);
+        start = this.start + Math.max(0, start);
+        end = this.start + Math.min(this.length, end);
         let result = '';
         let s = start;
         for (const taint of this.taints) {
@@ -89,17 +91,18 @@ export class TaintedRegion extends Region {
             if (s >= e) {
                 break;
             }
-            result += this.str.substring(this.start + s, this.start + e);
+            result += this.str.substring(s, e);
             s = taint[1];
         }
         if (s < end) {
-            result += this.str.substring(this.start + s, this.start + end);
+            result += this.str.substring(s, end);
         }
         return result;
     }
 
-    taint(taint: [number, number]) {
-        // TODO collapse taints?
+    taint(from: number, to: number) {
+        // TODO ignore if outside range
+        const taint: Taint = [this.start + from, this.start + to];
         return new TaintedRegion(this.str, this.start, this.end, this.taints.concat([taint]));
     }
 
@@ -114,3 +117,5 @@ export class TaintedRegion extends Region {
         return this.substring(0);
     }
 }
+
+export type Taint = [number, number];

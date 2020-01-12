@@ -49,9 +49,9 @@ describe('Region', () => {
 
         const str = '__ABcdEFgH___';
         const region = new Region(str, 2, 10)
-            .taint([0, 2])
-            .taint([4, 6])
-            .taint([7, 8]);
+            .taint(0, 2)
+            .taint(4, 6)
+            .taint(7, 8);
 
         describe('charAt', () => {
             it('returns empty string for tainted subregions', () => {
@@ -89,6 +89,27 @@ describe('Region', () => {
             it('ignores tainted subregions', () => {
                 assert.equal(region.toString(), 'cdg');
             });
+        });
+
+        describe('integration', () => {
+
+            it('maintains taints in subregions', () => {
+                const region = new Region('abc|def||ghi')
+                    .taint(3, 4)
+                    .taint(7, 9);
+                assert.equal(region.toString(), 'abcdefghi');
+                assert.equal(region.subRegion(0, 7).toString(), 'abcdef');
+                assert.equal(region.subRegion(3).toString(), 'defghi');
+            });
+
+            it('creates taints in subregions', () => {
+                const region = new Region('abcDefgHi')
+                    .taint(3, 4)
+                    .subRegion(3)
+                    .taint(4, 5);
+                assert.equal(region.toString(), 'efgi');
+            });
+
         });
 
     });
