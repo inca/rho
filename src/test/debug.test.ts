@@ -13,7 +13,7 @@ Paragraph.
 End.
 `;
 
-describe.skip('probe', () => {
+describe.skip('debug', () => {
 
     it('works', () => {
         const out = prettyPrint(processor.process(str));

@@ -1,8 +1,10 @@
-import { RhoProcessor } from '../../../main/processor';
-import { Cursor } from '../../../main/core';
-import { BackslashEscapeRule } from '../../../main/rules';
 import assert from 'assert';
-import { TextNode } from '../../../main/nodes';
+import {
+    RhoProcessor,
+    BackslashEscapeRule,
+    Cursor,
+    TextNode,
+} from '../../../../main';
 
 describe('BackslashEscapeRule', () => {
 

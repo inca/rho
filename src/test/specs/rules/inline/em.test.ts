@@ -1,7 +1,10 @@
-import { RhoProcessor } from '../../../main/processor';
-import { Cursor } from '../../../main/core';
-import { EmRule, EmNode } from '../../../main/rules';
 import assert from 'assert';
+import {
+    RhoProcessor,
+    Cursor,
+    EmRule,
+    EmNode,
+} from '../../../../main';
 
 describe('EmRule', () => {
 

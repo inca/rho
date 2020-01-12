@@ -1,0 +1,17 @@
+* List item 1   {.ul}{.li}{.p1}
+
+  Para          {.p2}
+
+* List item 2   {.li}{.p3}
+
+  Para          {.p4}
+
+Paragraph in between.
+
+* List item 1   {}{}{.p5}
+
+  Para          {.p6}
+
+* List item 2   {}{.p7}
+
+  Para          {.p8}

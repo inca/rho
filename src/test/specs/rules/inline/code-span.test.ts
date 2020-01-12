@@ -1,7 +1,10 @@
-import { RhoProcessor } from '../../../main/processor';
-import { Cursor } from '../../../main/core';
-import { CodeSpanRule, CodeSpanNode } from '../../../main/rules';
 import assert from 'assert';
+import {
+    RhoProcessor,
+    Cursor,
+    CodeSpanRule,
+    CodeSpanNode,
+} from '../../../../main';
 
 describe('CodeSpanRule', () => {
 

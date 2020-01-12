@@ -1,7 +1,10 @@
-import { RhoProcessor } from '../../../main/processor';
-import { Cursor } from '../../../main/core';
-import { FormulaRule, FormulaNode } from '../../../main/rules';
 import assert from 'assert';
+import {
+    RhoProcessor,
+    Cursor,
+    FormulaRule,
+    FormulaNode,
+} from '../../../../main';
 
 describe('FormulaRule', () => {
 

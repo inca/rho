@@ -1,8 +1,11 @@
 import assert from 'assert';
-import { Cursor } from '../../../main/core';
-import { HtmlEntityRule, HtmlEscapeNode } from '../../../main/rules';
-import { RhoProcessor } from '../../../main/processor';
-import { TextNode } from '../../../main/nodes';
+import {
+    RhoProcessor,
+    Cursor,
+    HtmlEntityRule,
+    HtmlEscapeNode,
+    TextNode,
+} from '../../../../main';
 
 describe('HtmlEntityRule', () => {
 

@@ -1,8 +1,10 @@
-import { RhoProcessor } from '../../../main/processor';
-import { Cursor } from '../../../main/core';
-import { LiteralRule } from '../../../main/rules';
 import assert from 'assert';
-import { TextNode } from '../../../main/nodes/text';
+import {
+    RhoProcessor,
+    LiteralRule,
+    Cursor,
+    TextNode,
+} from '../../../../main';
 
 describe('LiteralRule', () => {
 

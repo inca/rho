@@ -1,7 +1,10 @@
-import { RhoProcessor } from '../../../main/processor';
-import { Cursor } from '../../../main/core';
-import { StrongRule, StrongNode } from '../../../main/rules';
 import assert from 'assert';
+import {
+    RhoProcessor,
+    StrongRule,
+    StrongNode,
+    Cursor,
+} from '../../../../main';
 
 describe('StrongRule', () => {
 
