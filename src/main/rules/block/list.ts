@@ -151,7 +151,9 @@ export class ListRule extends BlockRule {
     }
 
     protected parseBlockLi(cursor: Cursor): Node {
-        return new TextNode(cursor.subRegion(0, 0));
+        const blockParser = this.processor.getParser('block');
+        const ast = blockParser.parse(cursor.region);
+        return new HtmlElementNode(cursor.region, ast.children, 'li');
     }
 
 }

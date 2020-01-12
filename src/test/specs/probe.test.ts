@@ -9,10 +9,13 @@ describe.only('Probe', () => {
 Hello
 
   - A terse list
+
   - Some other list item
+
     - foo
     - bar
     - baz
+
   - Next item
 
 End of it.
