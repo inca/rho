@@ -1,8 +1,13 @@
-import { Node } from '../core';
+import { Node, Region } from '../core';
 
 export class SelectorNode extends Node {
-    id: string = '';
-    classList: string[] = [];
+    constructor(
+        region: Region,
+        public id: string,
+        public classList: string[],
+    ) {
+        super(region, []);
+    }
 
     render() {
         const buf: string[] = [];
