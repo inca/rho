@@ -53,12 +53,13 @@ export class ListRule extends BlockRule {
         return result;
     }
 
-    protected scanBlock(cursor: Cursor): number | null {
+    protected scanBlock(cursor: Cursor): Region | null {
         // Note: first marker of block is always matched against this.marker
         // (not via skipMarker/isAtMarker)
         if (!cursor.at(this.marker)) {
             return null;
         }
+        const start = cursor.pos;
         while (cursor.hasCurrent()) {
             cursor.skipToEndOfBlock();
             const endOfBlock = cursor.pos;
@@ -77,7 +78,7 @@ export class ListRule extends BlockRule {
                 break;
             }
         }
-        return cursor.pos;
+        return cursor.subRegion(start, cursor.pos);
     }
 
     protected parseSubRegion(region: Region) {

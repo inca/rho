@@ -3,7 +3,8 @@ import path from 'path';
 import assert from 'assert';
 import { promises as fs } from 'fs';
 import { RhoProcessor } from '../main/processor';
-import { prettyPrint } from 'html';
+import pretty from 'pretty';
+import { normalize } from './util';
 
 const baseDir = path.resolve(process.cwd(), 'src/test/cases');
 const sourceFiles = glob.sync('**/*.txt', {
@@ -23,7 +24,7 @@ describe('cases', () => {
             const text = await fs.readFile(srcFile, 'utf-8');
             const expected = await fs.readFile(dstFile, 'utf-8');
             const actual = processor.process(text);
-            assert.equal(prettyPrint(actual), prettyPrint(expected));
+            assert.equal(normalize(actual), normalize(expected));
         });
     }
 

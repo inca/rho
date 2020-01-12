@@ -1,3 +1,4 @@
-declare module 'html' {
-    export function prettyPrint(str: string): string;
+declare module 'pretty' {
+    function pretty(str: string, opts?: any): string;
+    export = pretty;
 }

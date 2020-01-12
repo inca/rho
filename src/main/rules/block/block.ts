@@ -6,7 +6,7 @@ export abstract class BlockRule extends Rule {
     selector: SelectorNode | null = null;
 
     protected abstract parseSubRegion(region: Region): Node | null;
-    protected abstract scanBlock(cursor: Cursor): number | null;
+    protected abstract scanBlock(cursor: Cursor): Region | null;
 
     protected allowsMultipleSelectors(): boolean {
         return false;
@@ -15,11 +15,14 @@ export abstract class BlockRule extends Rule {
     protected parseAt(cursor: Cursor): Node | null {
         cursor.skipBlankLines();
         this.countBlockIndent(cursor);
-        const end = this.scanBlock(cursor.clone());
-        if (end == null) {
+        let region = this.scanBlock(cursor.clone()) ;
+        if (region == null) {
             return null;
         }
-        let region = cursor.readUntil(end);
+        // Cursor position is set to the end of the returned region;
+        // this has to be calculated, since cursor position is relative to its own region,
+        // whilst the new region boundaries are relative to the source string.
+        cursor.set(region.end - cursor.region.start);
         this.selector = this.captureSelector(region, this.allowsMultipleSelectors());
         if (this.selector) {
             region = region.taintRegion(this.selector.region);
@@ -40,10 +43,14 @@ export abstract class BlockRule extends Rule {
     }
 
     parseInlineContent(region: Region): Node[] {
-        // TODO optimize for tainted regions
+        const result: Node[] = [];
         const parser = this.processor.getParser('inline');
-        const ast = parser.parse(region);
-        return ast.children;
+        const regions = region.untaint();
+        for (const region of regions) {
+            const ast = parser.parse(region);
+            result.push(...ast.children);
+        }
+        return result;
     }
 
     captureSelector(region: Region, allowMultiple: boolean = false): SelectorNode | null {

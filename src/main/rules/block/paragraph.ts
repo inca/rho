@@ -4,9 +4,10 @@ import { BlockRule } from './block';
 
 export class ParagraphRule extends BlockRule {
 
-    protected scanBlock(cursor: Cursor): number | null {
+    protected scanBlock(cursor: Cursor): Region | null {
+        const start = cursor.pos;
         cursor.skipToEndOfBlock().skipBlankLines();
-        return cursor.pos;
+        return cursor.subRegion(start, cursor.pos);
     }
 
     protected parseSubRegion(region: Region) {

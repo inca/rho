@@ -41,6 +41,10 @@ export class Region implements StringLike {
         return new Region(this.str, this.start + start, this.start + end);
     }
 
+    toString() {
+        return this.substring(0);
+    }
+
     taint(from: number, to: number) {
         const taint: Taint = [from, to];
         return new TaintedRegion(this.str, this.start, this.end, [taint]);
@@ -54,9 +58,10 @@ export class Region implements StringLike {
         return this.taint(subRegion.start, subRegion.end);
     }
 
-    toString() {
-        return this.substring(0);
+    untaint(): Region[] {
+        return [this];
     }
+
 }
 
 /**
@@ -78,7 +83,7 @@ export class TaintedRegion extends Region {
     ) {
         super(str, start, end);
         this.taints = taints.slice()
-            .sort((a, b) => a > b ? 1 : -1)
+            .sort((a, b) => a[0] > b[0] ? 1 : -1)
             .filter(t => {
                 return t[0] < end && t[1] > start;
             });
@@ -95,9 +100,39 @@ export class TaintedRegion extends Region {
     }
 
     substring(start: number, end: number = this.length) {
+        let result = '';
+        const indexes = this.untaintedIndexes(start, end);
+        for (const [s, e] of indexes) {
+            result += this.str.substring(s, e);
+        }
+        return result;
+    }
+
+    subRegion(start: number, end: number = this.length) {
+        start = Math.max(0, start);
+        end = Math.min(this.length, end);
+        return new TaintedRegion(this.str, this.start + start, this.start + end, this.taints);
+    }
+
+    taint(from: number, to: number) {
+        const taint: Taint = [from, to];
+        return new TaintedRegion(this.str, this.start, this.end, this.taints.concat([taint]));
+    }
+
+    untaint(): Region[] {
+        const result: Region[] = [];
+        const indexes = this.untaintedIndexes(0, this.length);
+        for (const [s, e] of indexes) {
+            const region = new Region(this.str, s, e);
+            result.push(region);
+        }
+        return result;
+    }
+
+    protected untaintedIndexes(start: number, end: number): number[][] {
+        const result: number[][] = [];
         start = this.start + Math.max(0, start);
         end = this.start + Math.min(this.length, end);
-        let result = '';
         let s = start;
         for (const taint of this.taints) {
             if (taint[1] < s) {
@@ -111,28 +146,13 @@ export class TaintedRegion extends Region {
             if (s >= e) {
                 break;
             }
-            result += this.str.substring(s, e);
+            result.push([s, e]);
             s = taint[1];
         }
         if (s < end) {
-            result += this.str.substring(s, end);
+            result.push([s, end]);
         }
         return result;
-    }
-
-    taint(from: number, to: number) {
-        const taint: Taint = [from, to];
-        return new TaintedRegion(this.str, this.start, this.end, this.taints.concat([taint]));
-    }
-
-    subRegion(start: number, end: number = this.length) {
-        start = Math.max(0, start);
-        end = Math.min(this.length, end);
-        return new TaintedRegion(this.str, this.start + start, this.start + end, this.taints);
-    }
-
-    toString() {
-        return this.substring(0);
     }
 
 }

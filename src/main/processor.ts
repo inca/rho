@@ -12,6 +12,7 @@ import {
     NumberedListRule,
 } from './rules';
 import { ParagraphRule } from './rules/block/paragraph';
+import { HeadingRule } from './rules/block/heading';
 
 export class RhoProcessor extends Processor {
 
@@ -19,6 +20,7 @@ export class RhoProcessor extends Processor {
         super();
         this.setMainParser('block');
         this.defineParser('block', () => [
+            new HeadingRule(this, { minLevel: 1, maxLevel: 6 }),
             new DelegateRule(this, 'list'),
             new ParagraphRule(this),
         ]);

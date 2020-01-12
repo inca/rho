@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { Region } from '../../main/core';
+import { Region, TaintedRegion } from '../../main/core';
 
 describe('Region', () => {
 
@@ -88,6 +88,23 @@ describe('Region', () => {
         describe('toString', () => {
             it('ignores tainted subregions', () => {
                 assert.equal(region.toString(), 'cdg');
+            });
+        });
+
+        describe('untaint', () => {
+            it('returns regions not covered by any taints', () => {
+                const regions = region.untaint();
+                assert.equal(regions.length, 2);
+                for (const region of regions) {
+                    assert(region instanceof Region);
+                    assert(!(region instanceof TaintedRegion));
+                }
+                assert.equal(regions[0].start, 4);
+                assert.equal(regions[0].end, 6);
+                assert.equal(regions[0].length, 2);
+                assert.equal(regions[1].start, 8);
+                assert.equal(regions[1].end, 9);
+                assert.equal(regions[1].length, 1);
             });
         });
 

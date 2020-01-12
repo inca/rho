@@ -1,5 +1,5 @@
 import { RhoProcessor } from '../main/processor';
-import { prettyPrint } from 'html';
+import { normalize } from './util';
 
 const processor = new RhoProcessor();
 
@@ -16,7 +16,7 @@ End.
 describe.skip('debug', () => {
 
     it('works', () => {
-        const out = prettyPrint(processor.process(str));
+        const out = normalize(processor.process(str));
         console.log(out);
     });
 
