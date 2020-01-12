@@ -104,7 +104,7 @@ export class ListRule extends BlockRule {
         const lastRegion = cursor.subRegion(start, cursor.pos);
         regions.push(lastRegion);
         const children = this.parseLiRegions(regions, hasBlocks);
-        return new HtmlElementNode(lastRegion, children, this.tagName);
+        return new HtmlElementNode(lastRegion, children, this.tagName, this.selector);
     }
 
     protected parseLiRegions(regions: Region[], hasBlocks: boolean): Node[] {

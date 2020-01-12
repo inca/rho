@@ -17,6 +17,7 @@ export class RhoProcessor extends Processor {
 
     constructor() {
         super();
+        this.setMainParser('block');
         this.defineParser('block', () => [
             new DelegateRule(this, 'list'),
             new ParagraphRule(this),

@@ -17,8 +17,8 @@
     - [x] literal
 
 - [ ] block
-    - [ ] ul
-    - [ ] ol
+    - [x] ul
+    - [x] ol
     - [ ] dl
     - [ ] headings
     - [ ] code block
@@ -31,5 +31,7 @@
 - [ ] selectors
 - [ ] integration tests
 - [ ] benchmarks
+
+- [ ] consider removing Processor from AST .render method
 
 - [ ] opt: cache parser lookups in rules

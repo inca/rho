@@ -1,5 +1,4 @@
 import { RhoProcessor } from '../../main/processor';
-import { Region } from '../../main/core';
 
 describe.skip('Probe', () => {
 

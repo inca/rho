@@ -3,9 +3,14 @@ import { SelectorNode } from '../../nodes';
 
 export abstract class BlockRule extends Rule {
     indent: number = 0;
+    selector: SelectorNode | null = null;
 
     protected abstract parseSubRegion(region: Region): Node | null;
     protected abstract scanBlock(cursor: Cursor): number | null;
+
+    protected allowsMultipleSelectors(): boolean {
+        return false;
+    }
 
     protected parseAt(cursor: Cursor): Node | null {
         cursor.skipBlankLines();
@@ -14,7 +19,11 @@ export abstract class BlockRule extends Rule {
         if (end == null) {
             return null;
         }
-        const region = cursor.readUntil(end);
+        let region = cursor.readUntil(end);
+        this.selector = this.captureSelector(region, this.allowsMultipleSelectors());
+        if (this.selector) {
+            region = region.taint(this.selector.region.start, this.selector.region.end);
+        }
         return this.parseSubRegion(region);
     }
 
@@ -31,13 +40,14 @@ export abstract class BlockRule extends Rule {
     }
 
     parseInlineContent(region: Region): Node[] {
+        // TODO optimize for tainted regions
         const parser = this.processor.getParser('inline');
         const ast = parser.parse(region);
         return ast.children;
     }
 
-    captureSelector(cursor: Cursor, allowMultiple: boolean = false): SelectorNode | null {
-        return this.parseSelector(cursor.clone(), allowMultiple);
+    captureSelector(region: Region, allowMultiple: boolean = false): SelectorNode | null {
+        return this.parseSelector(new Cursor(region), allowMultiple);
     }
 
     /**
