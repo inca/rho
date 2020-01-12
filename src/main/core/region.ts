@@ -50,6 +50,10 @@ export class Region implements StringLike {
         return this.taint(this.start + from, this.start + to);
     }
 
+    taintRegion(subRegion: Region) {
+        return this.taint(subRegion.start, subRegion.end);
+    }
+
     toString() {
         return this.substring(0);
     }
@@ -130,6 +134,7 @@ export class TaintedRegion extends Region {
     toString() {
         return this.substring(0);
     }
+
 }
 
 export type Taint = [number, number];

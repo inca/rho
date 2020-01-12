@@ -22,7 +22,7 @@ export abstract class BlockRule extends Rule {
         let region = cursor.readUntil(end);
         this.selector = this.captureSelector(region, this.allowsMultipleSelectors());
         if (this.selector) {
-            region = region.taint(this.selector.region.start, this.selector.region.end);
+            region = region.taintRegion(this.selector.region);
         }
         return this.parseSubRegion(region);
     }
@@ -47,7 +47,7 @@ export abstract class BlockRule extends Rule {
     }
 
     captureSelector(region: Region, allowMultiple: boolean = false): SelectorNode | null {
-        return this.parseSelector(new Cursor(region), allowMultiple);
+        return this.parseSelectorAt(new Cursor(region), allowMultiple);
     }
 
     /**
@@ -58,7 +58,7 @@ export abstract class BlockRule extends Rule {
      * (i.e. excluded from string processing) by subsequent AST.
      * The cursor is discarded after this, so no need to preserve its position.
      */
-    protected parseSelector(cursor: Cursor, allowMultiple: boolean = false): SelectorNode | null {
+    protected parseSelectorAt(cursor: Cursor, allowMultiple: boolean = false): SelectorNode | null {
         while (cursor.hasCurrent() && !cursor.atNewLine()) {
             if (cursor.at('\\{')) {
                 cursor.skip(2);
@@ -94,7 +94,7 @@ export abstract class BlockRule extends Rule {
                 // If multiple consequtive selectors are allowed (e.g. in lists),
                 // we just recursively try parsing the next selector;
                 // ultimately it should end with us either bumping into previous condition or not.
-                const nextSelector = this.parseSelector(cursor.clone(), allowMultiple);
+                const nextSelector = this.parseSelectorAt(cursor.clone(), allowMultiple);
                 found = found || nextSelector != null;
             }
             // Finally, valid (and parsed) selector!

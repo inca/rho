@@ -1,5 +1,5 @@
 import { Cursor, Processor, Node, Region } from '../../core';
-import { TextNode } from '../../nodes';
+import { TextNode, SelectorNode } from '../../nodes';
 import { HtmlElementNode } from '../../nodes/html-element';
 import { BlockRule } from './block';
 
@@ -35,6 +35,10 @@ export class ListRule extends BlockRule {
         super(processor);
         this.tagName = options.tagName;
         this.marker = options.marker;
+    }
+
+    protected allowsMultipleSelectors() {
+        return true;
     }
 
     protected skipMarker(cursor: Cursor) {
@@ -110,14 +114,20 @@ export class ListRule extends BlockRule {
     protected parseLiRegions(regions: Region[], hasBlocks: boolean): Node[] {
         const nodes = [];
         for (const region of regions) {
-            const cursor = new Cursor(region);
-            const li = hasBlocks ? this.parseBlockLi(cursor) : this.parseTerseLi(cursor);
+            let cursor = new Cursor(region);
+            const selector = this.parseSelectorAt(cursor.clone(), true);
+            if (selector) {
+                cursor = new Cursor(region.taintRegion(selector.region));
+            }
+            const li = hasBlocks ?
+                this.parseBlockLi(cursor, selector) :
+                this.parseTerseLi(cursor, selector);
             nodes.push(li);
         }
         return nodes;
     }
 
-    protected parseTerseLi(cursor: Cursor): Node {
+    protected parseTerseLi(cursor: Cursor, selector: SelectorNode | null): Node {
         const children: Node[] = [];
         // Terse lists start with inline markup and are scanned line-by-line,
         // looking for the lists inside with list parser.
@@ -147,13 +157,13 @@ export class ListRule extends BlockRule {
             const region = cursor.subRegion(inlineStart, cursor.pos);
             children.push(...this.parseInlineContent(region));
         }
-        return new HtmlElementNode(cursor.region, children, 'li');
+        return new HtmlElementNode(cursor.region, children, 'li', selector);
     }
 
-    protected parseBlockLi(cursor: Cursor): Node {
+    protected parseBlockLi(cursor: Cursor, selector: SelectorNode | null): Node {
         const blockParser = this.processor.getParser('block');
         const ast = blockParser.parse(cursor.region);
-        return new HtmlElementNode(cursor.region, ast.children, 'li');
+        return new HtmlElementNode(cursor.region, ast.children, 'li', selector);
     }
 
 }
