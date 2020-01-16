@@ -30,6 +30,14 @@ export class Cursor {
     }
 
     /**
+     * Sets cursor position to `i`.
+     */
+    set(i: number): this {
+        this._pos = i;
+        return this;
+    }
+
+    /**
      * Returns a copy of this cursor.
      */
     clone() {
@@ -60,7 +68,7 @@ export class Cursor {
     /**
      * Creates a subregion with specified boundaries.
      */
-    subRegion(start: number, end: number) {
+    subRegion(start: number, end: number = this.region.length) {
         return this.region.subRegion(start, end);
     }
 
@@ -170,10 +178,10 @@ export class Cursor {
     }
 
     /**
-     * Tests if cursor is positioned at whitespace.
+     * Tests if cursor is positioned within a tainted region.
      */
-    atWhitespace() {
-        return this.atNewLine() || this.atSpace();
+    atTaint() {
+        return this.current() === '' && this.pos < this.region.length;
     }
 
     /**
@@ -184,11 +192,23 @@ export class Cursor {
     }
 
     /**
-     * Sets cursor position to `i`.
+     * Scans forward till positioned at `str` and returns its index, if found.
+     * Backslash escapes are ignored.
      */
-    set(i: number): this {
-        this._pos = i;
-        return this;
+    indexOfEscaped(str: string): number | null {
+        return this.lookahead(cur => {
+            while (cur.hasCurrent()) {
+                if (cur.at('\\')) {
+                    cur.skip(2);
+                    continue;
+                }
+                if (cur.at(str)) {
+                    return cur.pos;
+                }
+                cur.skip();
+            }
+            return null;
+        });
     }
 
     /**
@@ -212,8 +232,13 @@ export class Cursor {
     /**
      * Skips a sequence of space or tab characters at current cursor position.
      */
-    skipSpaces() {
-        while (this.atSpace()) {
+    skipSpaces(count: number = -1) {
+        let i = count;
+        while (this.atSpace() || this.atTaint()) {
+            if (i === 0) {
+                break;
+            }
+            i -= 1;
             this.skip();
         }
         return this;
@@ -244,16 +269,6 @@ export class Cursor {
     }
 
     /**
-     * Skip all consequential whitespace characters at current cursor position.
-     */
-    skipWhitespaces() {
-        while (this.atWhitespace()) {
-            this.skip();
-        }
-        return this;
-    }
-
-    /**
      * Skips blank lines, i.e. lines containing only whitespace characters,
      * up to the beginning of the next line containing meaningful content.
      *
@@ -276,7 +291,7 @@ export class Cursor {
     }
 
     /**
-     * Skips up to the closest newline character, or to the end of source.
+     * Skips up to the closest newline character, or to the end of region, whichever comes first.
      */
     skipToEol(): this {
         while (this.hasCurrent() && !this.atNewLine()) {

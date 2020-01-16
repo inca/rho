@@ -13,6 +13,7 @@ import {
 } from './rules';
 import { ParagraphRule } from './rules/block/paragraph';
 import { HeadingRule } from './rules/block/heading';
+import { CodeBlockRule } from './rules/block/code-block';
 
 export class RhoProcessor extends Processor {
 
@@ -22,6 +23,7 @@ export class RhoProcessor extends Processor {
         this.defineParser('block', () => [
             new HeadingRule(this, { minLevel: 1, maxLevel: 6 }),
             new DelegateRule(this, 'list'),
+            new CodeBlockRule(this),
             new ParagraphRule(this),
         ]);
         this.defineParser('list', () => [

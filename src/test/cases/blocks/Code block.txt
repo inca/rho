@@ -1,0 +1,23 @@
+With stripped indent:
+
+    ```    {.ts}
+    export class Hello {
+
+        constructor() {
+            console.log('Hello world!');
+        }
+
+    }
+    ```
+
+With surrounding blank lines:
+
+  ```    {.html}
+
+  <div class="foo">
+    <a href="/bar?this&that">link</a>
+  </div>
+
+  ```
+
+The end.

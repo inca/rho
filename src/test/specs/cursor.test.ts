@@ -118,14 +118,6 @@ describe('Cursor', () => {
         });
     });
 
-    describe('skipWhitespaces', () => {
-        it('skips spaces, tabs and newline characters', () => {
-            const cursor = new Cursor('  \t \r\n Hello');
-            cursor.skipWhitespaces();
-            assert(cursor.at('Hello'));
-        });
-    });
-
     describe('skipNewline', () => {
         it('skips a single newline character', () => {
             const cursor = new Cursor('\r\n\n\n Hello');

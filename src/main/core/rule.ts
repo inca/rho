@@ -89,18 +89,7 @@ export abstract class BracketRule extends Rule {
         }
         cursor.skip(openMarker.length);
         // Look for closeMarker, ignoring backslashes
-        const end = cursor.lookahead(cur => {
-            while (cur.hasCurrent()) {
-                if (cur.at('\\')) {
-                    cur.skip(2);
-                }
-                if (cur.at(closeMarker)) {
-                    return cur.pos;
-                }
-                cur.skip();
-            }
-            return null;
-        });
+        const end = cursor.indexOfEscaped(closeMarker);
         if (end == null) {
             return null;
         }

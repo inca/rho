@@ -6,15 +6,19 @@ export class HtmlElementNode extends Node {
         region: Region,
         children: Node[],
         readonly tagName: string,
-        readonly selector?: SelectorNode | null,
+        readonly selector: SelectorNode | null = null,
+        readonly trim: boolean = true,
     ) {
         super(region, children);
     }
 
     render(processor: Processor) {
-        return `<${this.tagName}${this.selector?.render() || ''}>` +
-            this.renderChildren(processor).trim() +
-            `</${this.tagName}>`;
+        let content = this.renderChildren(processor);
+        if (this.trim) {
+            content = content.trim();
+        }
+        const attrs = this.selector?.render() || '';
+        return `<${this.tagName}${attrs}>${content}</${this.tagName}>`;
     }
 
 }

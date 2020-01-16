@@ -3,6 +3,7 @@ import { HtmlElementNode } from '../../nodes/html-element';
 import { BlockRule } from './block';
 
 export class HeadingRule extends BlockRule {
+    marker: string;
     minLevel: number;
     maxLevel: number;
 
@@ -11,19 +12,21 @@ export class HeadingRule extends BlockRule {
     constructor(
         processor: Processor,
         options: {
+            marker?: string,
             minLevel: number,
             maxLevel: number,
         }
     ) {
         super(processor);
+        this.marker = options.marker ?? '#';
         this.minLevel = options.minLevel;
         this.maxLevel = options.maxLevel;
     }
 
     protected scanBlock(cursor: Cursor): Region | null {
         this.level = 0;
-        while (cursor.at('#')) {
-            cursor.skip();
+        while (cursor.at(this.marker)) {
+            cursor.skip(this.marker.length);
             this.level += 1;
         }
         if (!cursor.atSpace() || this.level < this.minLevel || this.level > this.maxLevel) {
