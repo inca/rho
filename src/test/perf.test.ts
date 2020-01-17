@@ -8,7 +8,7 @@ describe.skip('Performance', () => {
     let source: string;
 
     beforeEach(() => {
-        const file = path.join(process.cwd(), 'src/test/benchmark/blob.txt');
+        const file = path.join(process.cwd(), 'src/test/perf/blob.txt');
         source = fs.readFileSync(file, 'utf-8');
     });
 
