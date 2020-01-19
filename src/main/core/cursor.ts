@@ -60,6 +60,13 @@ export class Cursor {
     }
 
     /**
+     * Returns character code at current cursor position.
+     */
+    currentCode() {
+        return this.region.charCodeAt(this.pos);
+    }
+
+    /**
      * Indicates whether cursor points within the source.
      */
     hasCurrent() {

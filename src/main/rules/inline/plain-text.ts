@@ -21,8 +21,8 @@ export class PlainTextRule extends Rule {
     protected parseAt(cursor: Cursor): Node | null {
         const start = cursor.pos;
         while (cursor.hasCurrent()) {
-            const current = cursor.current();
-            if (this.isControlChar(current)) {
+            const code = cursor.currentCode();
+            if (this.isControlChar(code)) {
                 break;
             } else {
                 cursor.skip();
@@ -34,8 +34,21 @@ export class PlainTextRule extends Rule {
         return new TextNode(cursor.subRegion(start, cursor.pos));
     }
 
-    isControlChar(char: string) {
-        return char && this.controlCharacters.indexOf(char) > -1;
+    isControlChar(code: number) {
+        // Spaces and new lines are never control chars
+        if (code === 0x21 || code === 0x0A) {
+            return false;
+        }
+        // Optimize for 0-9, a-z and A-Z ranges
+        if (
+            code >= 0x30 && code <= 0x39 ||
+            code >= 0x41 && code <= 0x5a ||
+            code >= 0x61 && code <= 0x7a
+        ) {
+            return false;
+        }
+        const char = String.fromCodePoint(code);
+        return this.controlCharacters.indexOf(char) > -1;
     }
 
 }

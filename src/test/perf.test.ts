@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { RhoProcessor } from '../main';
 import { globalStats } from '../main/core/stats';
+import marked from 'marked';
 
 const processor = new RhoProcessor();
 
@@ -16,11 +17,16 @@ describe.only('Performance', () => {
         }
     });
 
-    it('compiles 100 large files under 5s', () => {
+    it('compiles 100 large files with Rho', () => {
         for (let i = 0; i < 100; i++) {
             processor.process(source);
         }
         console.log(globalStats);
     });
 
+    it.skip('compiles 100 large files with marked', () => {
+        for (let i = 0; i < 100; i++) {
+            marked(source);
+        }
+    });
 });

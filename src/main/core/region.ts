@@ -3,6 +3,7 @@ import { globalStats } from './stats';
 export interface StringLike {
     length: number;
     charAt(i: number): string;
+    charCodeAt(i: number): number;
     substring(start: number, end?: number): string;
     toString(): string;
 }
@@ -33,6 +34,11 @@ export class Region implements StringLike {
             return '';
         }
         return this.str.charAt(this.start + i);
+    }
+
+    charCodeAt(i: number) {
+        globalStats.charCodeAt++;
+        return this.str.charCodeAt(this.start + i);
     }
 
     substring(start: number, end: number = this.length) {
@@ -108,6 +114,17 @@ export class TaintedRegion extends Region {
             }
         }
         return this.str.charAt(this.start + i);
+    }
+
+    charCodeAt(i: number) {
+        globalStats.taintedCharCodeAt++;
+        const index = this.start + i;
+        for (const taint of this.taints) {
+            if (index >= taint[0] && index < taint[1]) {
+                return 0;
+            }
+        }
+        return this.str.charCodeAt(this.start + i);
     }
 
     substring(start: number, end: number = this.length) {

@@ -116,7 +116,7 @@ export abstract class BlockRule extends Rule {
                 // we just recursively try parsing the next selector;
                 // ultimately it should end with us either bumping into previous condition or not.
                 const nextSelector = this.parseSelectorAt(cursor.clone(), allowMultiple);
-                found = found || nextSelector != null;
+                found = nextSelector != null;
             }
             // Finally, valid (and parsed) selector!
             if (found) {

@@ -18,17 +18,20 @@ Forêt Vièrge qui s'appelait Histoires Vecues.
 
 export function generateTextFile(file: string) {
     const buf: string[] = [];
-    buf.push(generateHeading(1, 1));
-    for (let i = 0; i < 10; i++) {
-        buf.push(generateParagraph(5, 10, 5, 20));
+    for (let i = 0; i < 1000; i++) {
+        buf.push(generateParagraph(5, 10, 10, 40));
     }
-    for (let i = 0; i < 100; i++) {
-        buf.push(generateHeading(2, 4));
-        for (let j = 0; j < 5; j++) {
-            buf.push(generateParagraph(3, 15, 5, 20));
-        }
-        buf.push(generateCode(5, 50));
-    }
+    // buf.push(generateHeading(1, 1));
+    // for (let i = 0; i < 10; i++) {
+    //     buf.push(generateParagraph(5, 10, 5, 20));
+    // }
+    // for (let i = 0; i < 100; i++) {
+    //     buf.push(generateHeading(2, 4));
+    //     for (let j = 0; j < 5; j++) {
+    //         buf.push(generateParagraph(3, 15, 5, 20));
+    //     }
+    //     buf.push(generateCode(5, 50));
+    // }
     fs.writeFileSync(file, buf.join('\n\n'), 'utf-8');
 }
 
@@ -57,13 +60,19 @@ export function generateSentence(words: number) {
     return buffer.join(' ') + '.';
 }
 
-export function generateParagraph(sentMin: number, sentMax: number, wordsMin: number, wordsMax: number) {
+export function generateParagraph(
+    sentMin: number,
+    sentMax: number,
+    wordsMin: number,
+    wordsMax: number,
+    addSelectorChance: number = 0,
+) {
     const buffer: string[] = [];
     const s = randomInt(sentMin, sentMax);
     for (let i = 0; i < s; i++) {
         const w = randomInt(wordsMin, wordsMax);
         let sentence = generateSentence(w);
-        if (i === 0 && Math.random() > .75) {
+        if (i === 0 && Math.random() < addSelectorChance) {
             // Add selector
             sentence = sentence + '    {.style}\n';
         }
