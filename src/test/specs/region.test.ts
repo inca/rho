@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { Region } from '../../main/core';
+import { Region, TaintedRegion } from '../../main/core';
 
 describe('Region', () => {
 
@@ -97,7 +97,7 @@ describe('Region', () => {
                 assert.equal(regions.length, 2);
                 for (const region of regions) {
                     assert(region instanceof Region);
-                    assert(!region.taints.length);
+                    assert(!(region instanceof TaintedRegion));
                 }
                 assert.equal(regions[0].start, 4);
                 assert.equal(regions[0].end, 6);

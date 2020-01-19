@@ -1,4 +1,5 @@
 import { Region } from './region';
+import { globalStats } from './stats';
 
 /**
  * Cursor tracks a position `pos` within a string region.
@@ -76,6 +77,7 @@ export class Cursor {
      * Tests if cursor is currently positioned at specified string.
      */
     at(str: string): boolean {
+        globalStats.at++;
         const end = this.pos + str.length;
         if (end > this.region.length) {
             return false;

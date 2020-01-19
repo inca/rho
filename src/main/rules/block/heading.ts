@@ -39,9 +39,8 @@ export class HeadingRule extends BlockRule {
     }
 
     protected parseSubRegion(region: Region) {
-        const inlineParser = this.processor.getParser('inline');
-        const root = inlineParser.parse(region);
-        return new HtmlElementNode(region, root.children, 'h' + this.level, this.selector);
+        const children = this.parseInlineContent(region);
+        return new HtmlElementNode(region, children, 'h' + this.level, this.selector);
     }
 
 }

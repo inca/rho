@@ -11,9 +11,8 @@ export class ParagraphRule extends BlockRule {
     }
 
     protected parseSubRegion(region: Region) {
-        const inlineParser = this.processor.getParser('inline');
-        const root = inlineParser.parse(region);
-        return new HtmlElementNode(region, root.children, 'p', this.selector);
+        const children = this.parseInlineContent(region);
+        return new HtmlElementNode(region, children, 'p', this.selector);
     }
 
 }
