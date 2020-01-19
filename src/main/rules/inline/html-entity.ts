@@ -1,6 +1,12 @@
 import { Rule, Node, Processor, Region, Cursor } from '../../core';
-import { latinLetters, hexDigits, decimalDigits } from '../../core/constants';
 import { TextNode } from '../../nodes/text';
+
+const latinLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+const decimalDigits = '0123456789';
+const hexDigits = '0123456789abcdefABCDEF';
+const CHAR_AMP = 0x26;
+const CHAR_LT = 0x3c;
+const CHAR_GT = 0x3e;
 
 export class HtmlEntityRule extends Rule {
     ignoreHtmlTags: boolean;
@@ -26,7 +32,7 @@ export class HtmlEntityRule extends Rule {
      * part of entity reference.
      */
     tryAmp(cursor: Cursor): Node | null {
-        if (!cursor.at('&')) {
+        if (!cursor.atCode(CHAR_AMP)) {
             return null;
         }
         // Check for entity reference
@@ -68,7 +74,7 @@ export class HtmlEntityRule extends Rule {
      * `<` character should be escaped, unless it's a part of HTML tag or comment.
      */
     tryLt(cursor: Cursor): Node | null {
-        if (!cursor.at('<')) {
+        if (!cursor.atCode(CHAR_LT)) {
             return null;
         }
         if (!this.ignoreHtmlTags && this.isAtHtmlTag(cursor)) {
@@ -85,7 +91,7 @@ export class HtmlEntityRule extends Rule {
      * which are part of HTML markup.
      */
     tryGt(cursor: Cursor): Node | null {
-        if (!cursor.at('>')) {
+        if (!cursor.atCode(CHAR_GT)) {
             return null;
         }
         return new HtmlEscapeNode(cursor.readForward(1), '>');
@@ -106,10 +112,10 @@ export class HtmlEntityRule extends Rule {
             // A limitation of that is: <> characters would need to be manually
             // escaped if used in attributes, e.g. <a title="a &lt; b">
             while (cur.hasCurrent()) {
-                if (cur.at('<')) {
+                if (cur.atCode(CHAR_LT)) {
                     return false;
                 }
-                if (cur.at('>')) {
+                if (cur.atCode(CHAR_GT)) {
                     return true;
                 }
                 cur.skip();

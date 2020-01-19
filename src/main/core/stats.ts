@@ -16,4 +16,5 @@ export const globalStats = {
     taintedUntaint: 0,
     // Cursor
     at: 0,
+    atCode: 0,
 };

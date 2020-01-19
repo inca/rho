@@ -1,21 +1,37 @@
-import { Rule, Processor, Cursor, Node } from '../../core';
 import { TextNode } from '../../nodes/text';
-import { DEFAULT_CONTROL_CHARACTERS } from '../../util';
+import {
+    Rule,
+    Processor,
+    Cursor,
+    Node,
+    convertCharCodes,
+} from '../../core';
+
+// Opt: getting this from imports is roughly x3 slower.
+const CHAR_SPACE = 0x20;
+const CHAR_LF = 0x0a;
+const CHAR_CR = 0x0d;
+const RANGE_LATIN_UPPER_START = 0x41;    // A
+const RANGE_LATIN_UPPER_END = 0x5a;      // Z
+const RANGE_LATIN_LOWER_START = 0x61;    // a
+const RANGE_LATIN_LOWER_END = 0x7a;      // z
+const RANGE_DIGIT_START = 0x30;          // 0
+const RANGE_DIGIT_END = 0x39;            // 9
 
 /**
  * Emits plain text up to the next control character, respecting backslash escapes.
  */
 export class PlainTextRule extends Rule {
-    controlCharacters: string;
+    controlCharacters: number[];
 
     constructor(
         processor: Processor,
         options: {
-            controlCharacters?: string,
+            controlCharacters?: string | number[],
         } = {},
     ) {
         super(processor);
-        this.controlCharacters = options.controlCharacters ?? DEFAULT_CONTROL_CHARACTERS;
+        this.controlCharacters = convertCharCodes(options.controlCharacters);
     }
 
     protected parseAt(cursor: Cursor): Node | null {
@@ -36,19 +52,18 @@ export class PlainTextRule extends Rule {
 
     isControlChar(code: number) {
         // Spaces and new lines are never control chars
-        if (code === 0x21 || code === 0x0A) {
+        if (code === CHAR_SPACE || code === CHAR_LF || code === CHAR_CR) {
             return false;
         }
         // Optimize for 0-9, a-z and A-Z ranges
         if (
-            code >= 0x30 && code <= 0x39 ||
-            code >= 0x41 && code <= 0x5a ||
-            code >= 0x61 && code <= 0x7a
+            code >= RANGE_LATIN_LOWER_START && code <= RANGE_LATIN_LOWER_END ||
+            code >= RANGE_LATIN_UPPER_START && code <= RANGE_LATIN_UPPER_END ||
+            code >= RANGE_DIGIT_START && code <= RANGE_DIGIT_END
         ) {
             return false;
         }
-        const char = String.fromCodePoint(code);
-        return this.controlCharacters.indexOf(char) > -1;
+        return this.controlCharacters.indexOf(code) > -1;
     }
 
 }

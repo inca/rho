@@ -1,6 +1,19 @@
 import { Region } from './region';
 import { globalStats } from './stats';
 
+// Opt: getting this from imports is roughly x3 slower.
+const CHAR_SPACE = 0x20;
+const CHAR_TAB = 0x09;
+const CHAR_LF = 0x0a;
+const CHAR_CR = 0x0d;
+const CHAR_BACKSLASH = 0x5c;
+const RANGE_LATIN_UPPER_START = 0x41;
+const RANGE_LATIN_UPPER_END = 0x5a;
+const RANGE_LATIN_LOWER_START = 0x61;
+const RANGE_LATIN_LOWER_END = 0x7a;
+const RANGE_DIGIT_START = 0x30;
+const RANGE_DIGIT_END = 0x39;
+
 /**
  * Cursor tracks a position `pos` within a string region.
  *
@@ -53,6 +66,13 @@ export class Cursor {
     }
 
     /**
+     * Returns next character code without advancing cursor position.
+     */
+    peekCode(offset: number = 1) {
+        return this.region.charCodeAt(this.pos + offset);
+    }
+
+    /**
      * Returns character at current cursor position.
      */
     current() {
@@ -98,6 +118,15 @@ export class Cursor {
     }
 
     /**
+     * Tests if current char code equals specified code. Significantly
+     * faster than char-based equivalent.
+     */
+    atCode(code: number): boolean {
+        globalStats.atCode++;
+        return this.currentCode() === code;
+    }
+
+    /**
      * Tests if cursor is currently positioned at specified string,
      * ignoring case.
      */
@@ -106,8 +135,7 @@ export class Cursor {
         if (end > this.region.length) {
             return false;
         }
-        return this.region.substring(this.pos, end).toLowerCase() ===
-            str.toLowerCase();
+        return this.region.substring(this.pos, end).toLowerCase() === str.toLowerCase();
     }
 
     /**
@@ -127,16 +155,17 @@ export class Cursor {
      * Tests if cursor is currently positioned at decimal digit.
      */
     atDigit(): boolean {
-        const c = this.current();
-        return c >= '0' && c <= '9';
+        const c = this.currentCode();
+        return c >= RANGE_DIGIT_START && c <= RANGE_DIGIT_END;
     }
 
     /**
      * Tests if cursor is currently positioned at latin character.
      */
     atLatin(): boolean {
-        const c = this.current();
-        return c >= 'A' && c <= 'z';
+        const c = this.currentCode();
+        return c >= RANGE_LATIN_LOWER_START && c <= RANGE_LATIN_LOWER_END ||
+            c >= RANGE_LATIN_UPPER_START && c <= RANGE_LATIN_UPPER_END;
     }
 
     /**
@@ -144,16 +173,19 @@ export class Cursor {
      * equivalent to testing for [0-9A-Za-z_-]
      */
     atIdentifier(): boolean {
-        const c = this.current();
-        return c >= '0' && c <= '9' || c >= 'A' && c <= 'z' || c === '_' || c === '-';
+        const c = this.currentCode();
+        return c >= RANGE_LATIN_LOWER_START && c <= RANGE_LATIN_LOWER_END ||
+            c >= RANGE_LATIN_UPPER_START && c <= RANGE_LATIN_UPPER_END ||
+            c >= RANGE_DIGIT_START && c <= RANGE_DIGIT_END ||
+            c === 0x5f || c === 0x2d;
     }
 
     /**
      * Tests if current character is newline char, which is either \n or \r.
      */
     atNewLine(): boolean {
-        const c = this.current();
-        return c === '\n' || c === '\r';
+        const c = this.currentCode();
+        return c === CHAR_LF || c === CHAR_CR;
     }
 
     /**
@@ -171,7 +203,8 @@ export class Cursor {
      * Tests if current character is inline-level space (space or tab).
      */
     atSpace(): boolean {
-        return this.at(' ') || this.at('\t');
+        const c = this.currentCode();
+        return c === CHAR_SPACE || c === CHAR_TAB;
     }
 
     /**
@@ -179,7 +212,7 @@ export class Cursor {
      */
     atSpaces(count: number): boolean {
         for (let i = 0; i < count; i++) {
-            if (this.peek(i) !== ' ') {
+            if (this.peekCode(i) !== CHAR_SPACE) {
                 return false;
             }
         }
@@ -190,7 +223,7 @@ export class Cursor {
      * Tests if cursor is positioned within a tainted region.
      */
     atTaint() {
-        return this.current() === '' && this.pos < this.region.length;
+        return this.currentCode() === 0 && this.pos < this.region.length;
     }
 
     /**
@@ -207,7 +240,7 @@ export class Cursor {
     indexOfEscaped(str: string): number | null {
         return this.lookahead(cur => {
             while (cur.hasCurrent()) {
-                if (cur.at('\\')) {
+                if (cur.atCode(CHAR_BACKSLASH)) {
                     cur.skip(2);
                     continue;
                 }
@@ -257,9 +290,10 @@ export class Cursor {
      * Skips a single newline character, which is either `\r\n` or `\r` or `\n'.
      */
     skipNewLine(): this {
-        if (this.at('\r\n')) {
+        const code = this.currentCode();
+        if (code === CHAR_CR && this.peekCode() === CHAR_LF) {
             this.skip(2);
-        } else if (this.atNewLine()) {
+        } else if (code === CHAR_LF || code === CHAR_CR) {
             this.skip();
         }
         return this;
