@@ -64,6 +64,9 @@ export class Region implements StringLike {
     taint(from: number, to: number) {
         globalStats.taint++;
         const taint: Taint = [from, to];
+        if (!isTaintInRegion(this.start, this.end, taint)) {
+            return this;
+        }
         return new TaintedRegion(this.str, this.start, this.end, [taint]);
     }
 

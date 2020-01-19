@@ -24,7 +24,7 @@ export class CodeBlockRule extends BlockRule {
             return null;
         }
         const blockStart = cursor.pos;
-        cursor.skip(marker.length);
+        cursor.skip(marker.length).skipToEol();
         this.contentStart = cursor.pos;
         const end = cursor.indexOfEscaped(marker);
         if (end == null) {

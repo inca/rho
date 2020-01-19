@@ -5,7 +5,7 @@ import { globalStats } from '../main/core/stats';
 
 const processor = new RhoProcessor();
 
-describe.skip('Performance', () => {
+describe.only('Performance', () => {
     let source: string;
 
     beforeEach(() => {
@@ -16,17 +16,11 @@ describe.skip('Performance', () => {
         }
     });
 
-    it('compiles 50 large files under 5s', () => {
-        for (let i = 0; i < 50; i++) {
+    it('compiles 100 large files under 5s', () => {
+        for (let i = 0; i < 100; i++) {
             processor.process(source);
         }
         console.log(globalStats);
-    });
-
-    it.skip('writes to file', () => {
-        const out = processor.process(source);
-        const file = path.join(process.cwd(), 'src/test/perf/blob.html');
-        fs.writeFileSync(file, out, 'utf-8');
     });
 
 });

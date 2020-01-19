@@ -43,8 +43,8 @@ export abstract class BlockRule extends Rule {
     }
 
     parseInlineContent(region: Region): Node[] {
-        const result: Node[] = [];
         const parser = this.processor.getParser('inline');
+        const result: Node[] = [];
         const regions = region.untaint();
         for (const region of regions) {
             const ast = parser.parse(region);

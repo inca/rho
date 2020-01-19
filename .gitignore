@@ -13,5 +13,5 @@ keyfile.json
 plaintext.*
 
 .tmp*
-blob.txt
-blob.html
+src/test/perf/**/*.txt
+src/test/perf/**/*.html
