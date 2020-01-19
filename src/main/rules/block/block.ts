@@ -1,7 +1,19 @@
 import { Rule, Region, Node, Cursor } from '../../core';
 import { SelectorNode } from '../../nodes';
 
+// Opt: enforces a limit on where opening curly brace { of
+// selector expression may occur on the first line of the block.
+// This prevents parser from walking through big blocks
+// written in a soft-wrap style (i.e. where the entire block
+// is written without line break characters), only to find out
+// that there is no selector and it was a waste of processing.
+// This also enforces a stylistic rule where, if selector
+// is specified, it must start within conventional
+// 120 characters from the start of the line.
+const SELECTOR_LOOKUP_LIMIT = 120;
+
 export abstract class BlockRule extends Rule {
+    lineStartPos: number = 0;
     indent: number = 0;
     selector: SelectorNode | null = null;
 
@@ -66,7 +78,9 @@ export abstract class BlockRule extends Rule {
      * The cursor is discarded after this, so no need to preserve its position.
      */
     protected parseSelectorAt(cursor: Cursor, allowMultiple: boolean = false): SelectorNode | null {
-        while (cursor.hasCurrent() && !cursor.atNewLine()) {
+        let i = 0;
+        while (cursor.hasCurrent() && !cursor.atNewLine() && i < SELECTOR_LOOKUP_LIMIT) {
+            i++;
             if (cursor.at('\\{')) {
                 cursor.skip(2);
                 continue;
