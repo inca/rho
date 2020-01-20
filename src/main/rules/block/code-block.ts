@@ -59,8 +59,8 @@ export class CodeBlockRule extends BlockRule {
             const ast = codeParser.parse(line);
             lines.push(ast);
         }
-        const code = new HtmlElementNode(region, lines, 'code', null, false);
-        const pre = new HtmlElementNode(region, [code], 'pre', this.selector);
+        const code = new HtmlElementNode(region, lines, 'code', null, false, false);
+        const pre = new HtmlElementNode(region, [code], 'pre', this.selector, true, false);
         return pre;
     }
 

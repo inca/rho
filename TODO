@@ -21,14 +21,14 @@
     - [x] ol
     - [ ] dl
     - [x] headings
-    - [ ] code block
+    - [x] code block
     - [ ] div
     - [ ] html
     - [ ] hr
     - [ ] table
     - [x] paragraph
 
-- [ ] selectors
+- [x] selectors
 - [ ] integration tests
 - [ ] benchmarks
 

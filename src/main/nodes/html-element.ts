@@ -8,6 +8,7 @@ export class HtmlElementNode extends Node {
         readonly tagName: string,
         readonly selector: SelectorNode | null = null,
         readonly trim: boolean = true,
+        readonly newline: boolean = true,
     ) {
         super(region, children);
     }
@@ -18,7 +19,8 @@ export class HtmlElementNode extends Node {
             content = content.trim();
         }
         const attrs = this.selector?.render() || '';
-        return `<${this.tagName}${attrs}>${content}</${this.tagName}>`;
+        return `<${this.tagName}${attrs}>${content}</${this.tagName}>` +
+            (this.newline ? '\n' : '');
     }
 
 }
