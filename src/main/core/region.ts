@@ -1,5 +1,3 @@
-import { globalStats } from './stats';
-
 export interface StringLike {
     length: number;
     charAt(i: number): string;
@@ -24,12 +22,10 @@ export class Region implements StringLike {
         readonly start: number = 0,
         readonly end: number = str.length,
     ) {
-        globalStats.Region++;
         this.length = this.end - this.start;
     }
 
     charAt(i: number) {
-        globalStats.charAt++;
         if (i < 0 || i >= this.length) {
             return '';
         }
@@ -37,19 +33,16 @@ export class Region implements StringLike {
     }
 
     charCodeAt(i: number) {
-        globalStats.charCodeAt++;
         return this.str.charCodeAt(this.start + i);
     }
 
     substring(start: number, end: number = this.length) {
-        globalStats.substring++;
         start = Math.max(0, start);
         end = Math.min(this.length, end);
         return this.str.substring(this.start + start, this.start + end);
     }
 
     subRegion(start: number, end: number = this.length) {
-        globalStats.subRegion++;
         start = Math.max(0, start);
         end = Math.min(this.length, end);
         return new Region(this.str, this.start + start, this.start + end);
@@ -68,7 +61,6 @@ export class Region implements StringLike {
      * top-to-bottom no matter what.
      */
     taint(from: number, to: number) {
-        globalStats.taint++;
         const taint: Taint = [from, to];
         if (!isTaintInRegion(this.start, this.end, taint)) {
             return this;
@@ -85,7 +77,6 @@ export class Region implements StringLike {
     }
 
     untaint(): Region[] {
-        globalStats.untaint++;
         return [this];
     }
 
@@ -99,11 +90,9 @@ export class TaintedRegion extends Region {
         readonly taints: Taint[] = [],
     ) {
         super(str, start, end);
-        globalStats.TaintedRegion++;
     }
 
     charAt(i: number) {
-        globalStats.taintedCharAt++;
         if (i < 0 || i >= this.length) {
             return '';
         }
@@ -117,7 +106,6 @@ export class TaintedRegion extends Region {
     }
 
     charCodeAt(i: number) {
-        globalStats.taintedCharCodeAt++;
         const index = this.start + i;
         for (const taint of this.taints) {
             if (index >= taint[0] && index < taint[1]) {
@@ -128,7 +116,6 @@ export class TaintedRegion extends Region {
     }
 
     substring(start: number, end: number = this.length) {
-        globalStats.taintedSubstring++;
         start = Math.max(0, start);
         end = Math.min(this.length, end);
         let result = '';
@@ -140,7 +127,6 @@ export class TaintedRegion extends Region {
     }
 
     subRegion(start: number, end: number = this.length): Region {
-        globalStats.taintedSubRegion++;
         start = this.start + Math.max(0, start);
         end = this.start + Math.min(this.length, end);
         const taints = this.taints.filter(t => isTaintInRegion(start, end, t));
@@ -159,7 +145,6 @@ export class TaintedRegion extends Region {
      * top-to-bottom no matter what.
      */
     taint(from: number, to: number) {
-        globalStats.taintedTaint++;
         const taint: Taint = [from, to];
         if (!isTaintInRegion(this.start, this.end, taint)) {
             return this;
@@ -177,7 +162,6 @@ export class TaintedRegion extends Region {
     }
 
     untaint(): Region[] {
-        globalStats.taintedUntaint++;
         const result: Region[] = [];
         const indexes = this.untaintedIndexes(0, this.length);
         for (const [s, e] of indexes) {

@@ -1,5 +1,4 @@
 import { Region } from './region';
-import { globalStats } from './stats';
 
 // Opt: getting this from imports is roughly x3 slower.
 const CHAR_SPACE = 0x20;
@@ -104,7 +103,6 @@ export class Cursor {
      * Tests if cursor is currently positioned at specified string.
      */
     at(str: string): boolean {
-        globalStats.at++;
         const end = this.pos + str.length;
         if (end > this.region.length) {
             return false;
@@ -122,7 +120,6 @@ export class Cursor {
      * faster than char-based equivalent.
      */
     atCode(code: number): boolean {
-        globalStats.atCode++;
         return this.currentCode() === code;
     }
 

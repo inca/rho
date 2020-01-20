@@ -12,8 +12,15 @@
   "files": [
     "out/main/**/*"
   ],
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "markdown",
+    "text",
+    "html",
+    "semantic",
+    "markup",
+    "text processor"
+  ],
+  "author": "Boris Okunskiy",
   "license": "ISC",
   "devDependencies": {
     "@types/glob": "^7.1.1",
