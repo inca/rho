@@ -1,7 +1,7 @@
 {
   "name": "rho",
-  "version": "0.0.0",
-  "description": "",
+  "version": "1.0.0",
+  "description": "Extensible semantic markup language",
   "main": "out/main/index.js",
   "scripts": {
     "clean": "rm -rf out/",

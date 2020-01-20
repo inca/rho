@@ -35,3 +35,7 @@
 - [ ] consider removing Processor from AST .render method
 
 - [ ] opt: cache parser lookups in rules
+- [ ] bundles
+    - [ ] esm
+    - [ ] cjs
+    - [ ] umd
