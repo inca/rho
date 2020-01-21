@@ -7,6 +7,7 @@
     "clean": "rm -rf out/",
     "dev": "npm run clean && tsc -w",
     "dev:test": "NODE_ENV=test mocha -w --opts=./mocha.opts",
+    "check": "tslint --project ./tsconfig.json",
     "test": "NODE_ENV=test mocha --opts=./mocha.opts",
     "build": "npm run clean && tsc"
   },

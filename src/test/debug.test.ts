@@ -10,7 +10,7 @@ describe.skip('debug', () => {
 
     it('works', () => {
         const out = processor.process(str);
-        console.log(out);
+        // console.log(out);
     });
 
 });

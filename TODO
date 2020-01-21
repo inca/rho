@@ -39,3 +39,4 @@
     - [ ] esm
     - [ ] cjs
     - [ ] umd
+- [ ] linting: replace with ESLint
