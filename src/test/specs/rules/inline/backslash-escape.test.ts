@@ -16,7 +16,7 @@ describe('BackslashEscapeRule', () => {
             const cursor = new Cursor('This \\^ that', 5);
             const node = rule.parse(cursor);
             assert(node instanceof TextNode);
-            assert(node?.render(processor), '^');
+            assert.equal(node?.render(processor), '^');
             assert.equal(cursor.pos, 7);
         });
     });

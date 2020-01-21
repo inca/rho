@@ -1,4 +1,4 @@
-import { Rule, Node, Processor, Region, Cursor } from '../../core';
+import { Rule, Node, Region, Cursor } from '../../core';
 import { TextNode } from '../../nodes/text';
 
 const latinLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -9,17 +9,6 @@ const CHAR_LT = 0x3c;
 const CHAR_GT = 0x3e;
 
 export class HtmlEntityRule extends Rule {
-    ignoreHtmlTags: boolean;
-
-    constructor(
-        processor: Processor,
-        options: {
-            ignoreHtmlTags?: boolean
-        } = {},
-    ) {
-        super(processor);
-        this.ignoreHtmlTags = options.ignoreHtmlTags ?? false;
-    }
 
     protected parseAt(cursor: Cursor): Node | null {
         return this.tryAmp(cursor) ||
@@ -56,7 +45,7 @@ export class HtmlEntityRule extends Rule {
                 if (c === ';') {
                     cur.skip();
                     return cur.pos;
-                } else if (cur.atSome(allowedChars)) {
+                } else if (allowedChars.indexOf(c) > -1) {
                     cur.skip();
                 } else {
                     return null;
@@ -75,12 +64,6 @@ export class HtmlEntityRule extends Rule {
      */
     tryLt(cursor: Cursor): Node | null {
         if (!cursor.atCode(CHAR_LT)) {
-            return null;
-        }
-        if (!this.ignoreHtmlTags && this.isAtHtmlTag(cursor)) {
-            return null;
-        }
-        if (!this.ignoreHtmlTags && this.isAtHtmlComment(cursor)) {
             return null;
         }
         return new HtmlEscapeNode(cursor.readForward(1), '<');

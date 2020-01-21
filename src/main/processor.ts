@@ -11,6 +11,7 @@ import {
     ListRule,
     NumberedListRule,
     StrikeRule,
+    HtmlTagRule,
 } from './rules';
 import { ParagraphRule } from './rules/block/paragraph';
 import { HeadingRule } from './rules/block/heading';
@@ -36,6 +37,7 @@ export class RhoProcessor extends Processor {
         this.defineParser('inline', () => [
             new PlainTextRule(this),
             new BackslashEscapeRule(this),
+            new HtmlTagRule(this),
             new HtmlEntityRule(this),
             new EmRule(this),
             new StrongRule(this),
@@ -46,9 +48,9 @@ export class RhoProcessor extends Processor {
             new LiteralRule(this),
         ]);
         this.defineParser('code', () => [
-            new PlainTextRule(this, { controlCharacters: '`&<>' }),
+            new PlainTextRule(this, { controlCharacters: '`&<>\\' }),
             new BackslashEscapeRule(this, { controlCharacters: '`' }),
-            new HtmlEntityRule(this, { ignoreHtmlTags: true }),
+            new HtmlEntityRule(this),
             new LiteralRule(this),
         ]);
     }

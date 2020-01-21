@@ -1,0 +1,12 @@
+In inline markup tags like
+<a href="https://www.w3.org/TR/2011/WD-html5-20110525/syntax.html">these</a>
+are emitted verbatim.
+
+Self-closing tags <input /> are supported.
+
+If something looks like tag, but does not have > at the end,
+it's not rendered as tag, e.g <a
+
+All non-tag uses of < character should be properly escaped. <3
+
+Ah, also, tags inside code spans like `<a>` are escaped.

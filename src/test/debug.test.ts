@@ -4,7 +4,7 @@ import fs from 'fs';
 
 const processor = new RhoProcessor();
 
-const str = fs.readFileSync('src/test/cases/blocks/Code block.txt', 'utf-8');
+const str = fs.readFileSync('src/test/cases/block/Code block.txt', 'utf-8');
 
 describe.skip('debug', () => {
 

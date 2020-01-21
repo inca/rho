@@ -18,7 +18,7 @@ describe('FormulaRule', () => {
                 const cursor = new Cursor(`This ${marker}\\frac{1}{x}${marker} that`, 5);
                 const node = rule.parse(cursor);
                 assert(node instanceof FormulaNode);
-                assert(node?.render(processor), `${marker}\\frac{1}{x}${marker}`);
+                assert.equal(node?.render(processor), `${marker}\\frac{1}{x}${marker}`);
                 assert.equal(cursor.pos, 20);
             });
         });

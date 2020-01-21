@@ -25,7 +25,7 @@ describe('CodeSpanRule', () => {
             const node = rule.parse(cursor);
             assert(node instanceof CodeSpanNode);
             assert(!cursor.hasCurrent());
-            assert(node?.render(processor), '<code>a &lt; b</code>');
+            assert.equal(node?.render(processor), '<code>a &lt; b</code>');
         });
 
         it('escapes >', () => {
@@ -33,7 +33,7 @@ describe('CodeSpanRule', () => {
             const node = rule.parse(cursor);
             assert(node instanceof CodeSpanNode);
             assert(!cursor.hasCurrent());
-            assert(node?.render(processor), '<code>a &gt; b</code>');
+            assert.equal(node?.render(processor), '<code>a &gt; b</code>');
         });
 
         it('escapes &', () => {
@@ -41,7 +41,7 @@ describe('CodeSpanRule', () => {
             const node = rule.parse(cursor);
             assert(node instanceof CodeSpanNode);
             assert(!cursor.hasCurrent());
-            assert(node?.render(processor), '<code>a &amp;&amp; b</code>');
+            assert.equal(node?.render(processor), '<code>a &amp;&amp; b</code>');
         });
 
         it('escapes html tags', () => {
@@ -49,7 +49,7 @@ describe('CodeSpanRule', () => {
             const node = rule.parse(cursor);
             assert(node instanceof CodeSpanNode);
             assert(!cursor.hasCurrent());
-            assert(node?.render(processor), '<code>&lt;a&gt;link&lt;/a&gt;</code>');
+            assert.equal(node?.render(processor), '<code>&lt;a&gt;link&lt;/a&gt;</code>');
         });
 
         it('escapes ` with backslash', () => {
@@ -57,7 +57,15 @@ describe('CodeSpanRule', () => {
             const node = rule.parse(cursor);
             assert(node instanceof CodeSpanNode);
             assert(!cursor.hasCurrent());
-            assert(node?.render(processor), '<code>a ` b</code>');
+            assert.equal(node?.render(processor), '<code>a ` b</code>');
+        });
+
+        it('emits backslash verbatim for non-` chars', () => {
+            const cursor = new Cursor('`a \\+ b`', 0);
+            const node = rule.parse(cursor);
+            assert(node instanceof CodeSpanNode);
+            assert(!cursor.hasCurrent());
+            assert.equal(node?.render(processor), '<code>a \\+ b</code>');
         });
 
     });

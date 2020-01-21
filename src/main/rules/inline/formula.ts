@@ -22,7 +22,7 @@ export class FormulaRule extends BracketRule {
         this.marker = options.marker;
         this.parser = new Parser(processor, [
             new PlainTextRule(processor, { controlCharacters: '&<>' }),
-            new HtmlEntityRule(processor, { ignoreHtmlTags: true }),
+            new HtmlEntityRule(processor),
             new LiteralRule(processor),
         ]);
     }

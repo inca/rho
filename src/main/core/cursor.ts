@@ -4,6 +4,7 @@ import { Region } from './region';
 const CHAR_SPACE = 0x20;
 const CHAR_TAB = 0x09;
 const CHAR_LF = 0x0a;
+const CHAR_FF = 0x0c;
 const CHAR_CR = 0x0d;
 const CHAR_BACKSLASH = 0x5c;
 const RANGE_LATIN_UPPER_START = 0x41;
@@ -136,19 +137,6 @@ export class Cursor {
     }
 
     /**
-     * Tests if cursor is positioned at any of the specified strings.
-     * If a single string is specified, each of its character is matched instead.
-     */
-    atSome(strings: string[] | string) {
-        for (const s of strings) {
-            if (this.at(s)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Tests if cursor is currently positioned at decimal digit.
      */
     atDigit(): boolean {
@@ -219,6 +207,15 @@ export class Cursor {
             }
         }
         return true;
+    }
+
+    atWhitespace() {
+        const c = this.currentCode();
+        return c === CHAR_SPACE ||
+            c === CHAR_TAB ||
+            c === CHAR_LF ||
+            c === CHAR_CR ||
+            c === CHAR_FF;
     }
 
     /**
@@ -309,6 +306,18 @@ export class Cursor {
         while (pos !== this.pos) {
             pos = this.pos;
             this.skipNewLine();
+        }
+        return this;
+    }
+
+    /**
+     * Skips all whitespace (spaces, new lines) from current position onwards.
+     */
+    skipWhitespaces() {
+        let pos = -1;
+        while (pos !== this.pos) {
+            pos = this.pos;
+            this.skipSpaces().skipNewLines();
         }
         return this;
     }
