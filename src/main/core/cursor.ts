@@ -209,7 +209,12 @@ export class Cursor {
      */
     atSpaces(count: number): boolean {
         for (let i = 0; i < count; i++) {
-            if (this.peekCode(i) !== CHAR_SPACE) {
+            const c = this.peekCode(i);
+            if (c === CHAR_TAB) {
+                i += 3;
+                continue;
+            }
+            if (c !== CHAR_SPACE) {
                 return false;
             }
         }

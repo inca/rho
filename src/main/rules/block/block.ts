@@ -11,6 +11,9 @@ import { SelectorNode } from '../../nodes';
 // is specified, it must start within conventional
 // 120 characters from the start of the line.
 const SELECTOR_LOOKUP_LIMIT = 120;
+// Opt: getting this from imports is roughly x3 slower.
+const CHAR_SPACE = 0x20;
+const CHAR_TAB = 0x09;
 
 export abstract class BlockRule extends Rule {
     lineStartPos: number = 0;
@@ -45,8 +48,12 @@ export abstract class BlockRule extends Rule {
     countBlockIndent(cursor: Cursor) {
         this.indent = 0;
         while (cursor.hasCurrent()) {
-            if (cursor.at(' ')) {
+            const c = cursor.currentCode();
+            if (c === CHAR_SPACE) {
                 this.indent += 1;
+                cursor.skip();
+            } else if (c === CHAR_TAB) {
+                this.indent += 4;
                 cursor.skip();
             } else {
                 break;
