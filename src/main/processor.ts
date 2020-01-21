@@ -12,6 +12,7 @@ import {
     NumberedListRule,
     StrikeRule,
     HtmlTagRule,
+    HtmlCommentRule,
 } from './rules';
 import { ParagraphRule } from './rules/block/paragraph';
 import { HeadingRule } from './rules/block/heading';
@@ -38,6 +39,7 @@ export class RhoProcessor extends Processor {
             new PlainTextRule(this),
             new BackslashEscapeRule(this),
             new HtmlTagRule(this),
+            new HtmlCommentRule(this),
             new HtmlEntityRule(this),
             new EmRule(this),
             new StrongRule(this),

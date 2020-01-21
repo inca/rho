@@ -1,4 +1,4 @@
-import { Rule, Node, Processor, Region, Cursor } from '../../core';
+import { Rule, Node, Cursor } from '../../core';
 import { TextNode } from '../../nodes/text';
 
 const CHAR_LT = 0x3c;
@@ -6,17 +6,6 @@ const CHAR_GT = 0x3e;
 const CHAR_SLASH = 0x2f;
 
 export class HtmlTagRule extends Rule {
-    ignoreHtmlTags: boolean;
-
-    constructor(
-        processor: Processor,
-        options: {
-            ignoreHtmlTags?: boolean
-        } = {},
-    ) {
-        super(processor);
-        this.ignoreHtmlTags = options.ignoreHtmlTags ?? false;
-    }
 
     protected parseAt(cursor: Cursor): Node | null {
         if (!cursor.atCode(CHAR_LT)) {
