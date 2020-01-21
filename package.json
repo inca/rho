@@ -7,7 +7,8 @@
     "clean": "rm -rf out/",
     "dev": "npm run clean && tsc -w",
     "dev:test": "NODE_ENV=test mocha -w --opts=./mocha.opts",
-    "test": "NODE_ENV=test mocha --opts=./mocha.opts"
+    "test": "NODE_ENV=test mocha --opts=./mocha.opts",
+    "build": "npm run clean && tsc"
   },
   "files": [
     "out/main/**/*"

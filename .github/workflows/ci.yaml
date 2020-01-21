@@ -1,0 +1,22 @@
+name: ci
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@master
+    - name: use node 12.14.0
+      uses: actions/setup-node@v1
+      with:
+        node-version: "12.14.1"
+    - run: npm ci
+    - run: npm run check
+    - run: npm run build
+    - run: npm test
