@@ -10,6 +10,7 @@ import {
     FormulaRule,
     ListRule,
     NumberedListRule,
+    StrikeRule,
 } from './rules';
 import { ParagraphRule } from './rules/block/paragraph';
 import { HeadingRule } from './rules/block/heading';
@@ -38,6 +39,7 @@ export class RhoProcessor extends Processor {
             new HtmlEntityRule(this),
             new EmRule(this),
             new StrongRule(this),
+            new StrikeRule(this),
             new CodeSpanRule(this),
             new FormulaRule(this, { marker: '$$' }),
             new FormulaRule(this, { marker: '%%' }),

@@ -7,4 +7,5 @@ export * from './inline/formula';
 export * from './inline/html-entity';
 export * from './inline/literal';
 export * from './inline/plain-text';
+export * from './inline/strike';
 export * from './inline/strong';
