@@ -1,4 +1,4 @@
-import { Rule, Region, Node, Cursor } from '../../core';
+import { Rule, Region, Node, Cursor, constants } from '../../core';
 import { SelectorNode } from '../../nodes';
 
 // Opt: enforces a limit on where opening curly brace { of
@@ -11,9 +11,8 @@ import { SelectorNode } from '../../nodes';
 // is specified, it must start within conventional
 // 120 characters from the start of the line.
 const SELECTOR_LOOKUP_LIMIT = 120;
-// Opt: getting this from imports is roughly x3 slower.
-const CHAR_SPACE = 0x20;
-const CHAR_TAB = 0x09;
+
+const { CHAR_SPACE, CHAR_TAB } = constants;
 
 export abstract class BlockRule extends Rule {
     lineStartPos: number = 0;

@@ -1,18 +1,23 @@
 import { Region } from './region';
+import * as constants from './constants';
 
-// Opt: getting this from imports is roughly x3 slower.
-const CHAR_SPACE = 0x20;
-const CHAR_TAB = 0x09;
-const CHAR_LF = 0x0a;
-const CHAR_FF = 0x0c;
-const CHAR_CR = 0x0d;
-const CHAR_BACKSLASH = 0x5c;
-const RANGE_LATIN_UPPER_START = 0x41;
-const RANGE_LATIN_UPPER_END = 0x5a;
-const RANGE_LATIN_LOWER_START = 0x61;
-const RANGE_LATIN_LOWER_END = 0x7a;
-const RANGE_DIGIT_START = 0x30;
-const RANGE_DIGIT_END = 0x39;
+// Opt: getting these directly from import is roughly x3 slower
+const {
+    RANGE_DIGIT_START,
+    RANGE_DIGIT_END,
+    RANGE_LATIN_LOWER_START,
+    RANGE_LATIN_LOWER_END,
+    RANGE_LATIN_UPPER_START,
+    RANGE_LATIN_UPPER_END,
+    CHAR_SPACE,
+    CHAR_TAB,
+    CHAR_LF,
+    CHAR_FF,
+    CHAR_CR,
+    CHAR_BACKSLASH,
+    CHAR_MINUS,
+    CHAR_UNDERSCORE,
+} = constants;
 
 /**
  * Cursor tracks a position `pos` within a string region.
@@ -162,7 +167,7 @@ export class Cursor {
         return c >= RANGE_LATIN_LOWER_START && c <= RANGE_LATIN_LOWER_END ||
             c >= RANGE_LATIN_UPPER_START && c <= RANGE_LATIN_UPPER_END ||
             c >= RANGE_DIGIT_START && c <= RANGE_DIGIT_END ||
-            c === 0x5f || c === 0x2d;
+            c === CHAR_MINUS || c === CHAR_UNDERSCORE;
     }
 
     /**

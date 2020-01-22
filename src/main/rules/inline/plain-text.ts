@@ -5,18 +5,20 @@ import {
     Cursor,
     Node,
     convertCharCodes,
+    constants,
 } from '../../core';
 
-// Opt: getting this from imports is roughly x3 slower.
-const CHAR_SPACE = 0x20;
-const CHAR_LF = 0x0a;
-const CHAR_CR = 0x0d;
-const RANGE_LATIN_UPPER_START = 0x41;    // A
-const RANGE_LATIN_UPPER_END = 0x5a;      // Z
-const RANGE_LATIN_LOWER_START = 0x61;    // a
-const RANGE_LATIN_LOWER_END = 0x7a;      // z
-const RANGE_DIGIT_START = 0x30;          // 0
-const RANGE_DIGIT_END = 0x39;            // 9
+const {
+    RANGE_DIGIT_START,
+    RANGE_DIGIT_END,
+    RANGE_LATIN_LOWER_START,
+    RANGE_LATIN_LOWER_END,
+    RANGE_LATIN_UPPER_START,
+    RANGE_LATIN_UPPER_END,
+    CHAR_SPACE,
+    CHAR_LF,
+    CHAR_CR,
+} = constants;
 
 /**
  * Emits plain text up to the next control character, respecting backslash escapes.

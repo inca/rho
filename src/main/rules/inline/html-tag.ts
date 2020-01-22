@@ -1,9 +1,7 @@
-import { Rule, Node, Cursor } from '../../core';
+import { Rule, Node, Cursor, constants } from '../../core';
 import { TextNode } from '../../nodes/text';
 
-const CHAR_LT = 0x3c;
-const CHAR_GT = 0x3e;
-const CHAR_SLASH = 0x2f;
+const { CHAR_LT, CHAR_GT, CHAR_SLASH } = constants;
 
 export class HtmlTagRule extends Rule {
 

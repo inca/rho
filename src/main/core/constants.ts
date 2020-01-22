@@ -1,0 +1,19 @@
+export const CHAR_SPACE = 0x20;
+export const CHAR_TAB = 0x09;
+export const CHAR_LF = 0x0a;
+export const CHAR_FF = 0x0c;
+export const CHAR_CR = 0x0d;
+export const CHAR_BACKSLASH = 0x5c;
+export const CHAR_MINUS = 0x2d;
+export const CHAR_UNDERSCORE = 0x5f;
+export const CHAR_AMP = 0x26;
+export const CHAR_LT = 0x3c;
+export const CHAR_GT = 0x3e;
+export const CHAR_SLASH = 0x2f;
+
+export const RANGE_LATIN_UPPER_START = 0x41;
+export const RANGE_LATIN_UPPER_END = 0x5a;
+export const RANGE_LATIN_LOWER_START = 0x61;
+export const RANGE_LATIN_LOWER_END = 0x7a;
+export const RANGE_DIGIT_START = 0x30;
+export const RANGE_DIGIT_END = 0x39;

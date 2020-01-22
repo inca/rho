@@ -1,31 +1,7 @@
-export const DEFAULT_CONTROL_CHARACTERS = [
-    '\\',
-    '~',
-    '`',
-    '!',
-    '@',
-    '#',
-    '$',
-    '%',
-    '^',
-    '&',
-    '*',
-    '(',
-    ')',
-    '-',
-    '_',
-    '+',
-    '=',
-    '"',
-    '<',
-    '>',
-    '{',
-    '}',
-    '[',
-    ']',
-    '/',
-    '|',
-].map(_ => _.charCodeAt(0));
+export const DEFAULT_CONTROL_CHARACTERS =
+    '\\~`!@#$%^&*()-_+="<>{}[]/|'
+    .split('')
+    .map(_ => _.charCodeAt(0));
 
 /**
  * Utility function to convert custom-specified list of character codes.

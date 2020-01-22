@@ -4,10 +4,11 @@ import {
     Node,
     Processor,
     convertCharCodes,
+    constants,
 } from '../../core';
 import { TextNode } from '../../nodes/text';
 
-const CHAR_BACKSLASH = 0x5c;
+const { CHAR_BACKSLASH } = constants;
 
 /**
  * Emits backslash escape of control character.

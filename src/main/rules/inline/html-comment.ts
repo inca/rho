@@ -1,7 +1,7 @@
-import { Rule, Node, Cursor } from '../../core';
+import { Rule, Node, Cursor, constants } from '../../core';
 import { TextNode } from '../../nodes/text';
 
-const CHAR_LT = 0x3c;
+const { CHAR_LT } = constants;
 
 export class HtmlCommentRule extends Rule {
     protected parseAt(cursor: Cursor): Node | null {

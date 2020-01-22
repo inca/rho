@@ -1,13 +1,12 @@
-import { Rule, Node, Region, Cursor } from '../../core';
+import { Rule, Node, Cursor, constants } from '../../core';
 import { TextNode } from '../../nodes/text';
 import { ConstantNode } from '../../nodes';
 
 const latinLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 const decimalDigits = '0123456789';
 const hexDigits = '0123456789abcdefABCDEF';
-const CHAR_AMP = 0x26;
-const CHAR_LT = 0x3c;
-const CHAR_GT = 0x3e;
+
+const { CHAR_AMP, CHAR_LT, CHAR_GT } = constants;
 
 export class HtmlEntityRule extends Rule {
 
