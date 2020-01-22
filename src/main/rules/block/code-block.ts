@@ -1,47 +1,13 @@
-import { Cursor, Region, Processor, Node } from '../../core';
-import { HtmlElementNode } from '../../nodes/html-element';
-import { BlockRule } from './block';
+import { Cursor, Region, Node } from '../../core';
+import { HtmlElementNode } from '../../nodes';
+import { FencedBlockRule } from './fenced-block';
 
-export class CodeBlockRule extends BlockRule {
-    marker: string;
-
+export class CodeBlockRule extends FencedBlockRule {
     protected contentStart: number = 0;
     protected contentEnd: number = 0;
 
-    constructor(
-        processor: Processor,
-        options: {
-            marker?: string,
-        } = {}
-    ) {
-        super(processor);
-        this.marker = options.marker ?? '```';
-    }
-
-    protected scanBlock(cursor: Cursor): Region | null {
-        const { marker } = this;
-        if (!cursor.at(marker)) {
-            return null;
-        }
-        const blockStart = cursor.pos;
-        cursor.skip(marker.length).skipToEol();
-        this.contentStart = cursor.pos;
-        const end = cursor.indexOfEscaped(marker);
-        if (end == null) {
-            return null;
-        }
-        this.contentEnd = end;
-        cursor
-            .set(end)
-            .skip(marker.length)
-            .skipBlankLines();
-        return cursor.subRegion(blockStart, cursor.pos);
-    }
-
-    protected parseSubRegion(region: Region) {
-        const offset = this.contentStart - region.start;
-        const length = this.contentEnd - this.contentStart;
-        return this.parseContent(region.subRegion(offset, offset + length));
+    get marker() {
+        return '```';
     }
 
     protected parseContent(region: Region) {

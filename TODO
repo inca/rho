@@ -22,7 +22,8 @@
     - [ ] dl
     - [x] headings
     - [x] code block
-    - [ ] div
+        - [ ] support gfm-style class
+    - [x] div
     - [ ] html
     - [ ] hr
     - [ ] table

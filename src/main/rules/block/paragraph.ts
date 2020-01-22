@@ -1,6 +1,6 @@
 import { Cursor, Region } from '../../core';
-import { HtmlElementNode } from '../../nodes/html-element';
 import { BlockRule } from './block';
+import { HtmlElementNode } from '../../nodes';
 
 export class ParagraphRule extends BlockRule {
 

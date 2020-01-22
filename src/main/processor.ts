@@ -13,6 +13,7 @@ import {
     StrikeRule,
     HtmlTagRule,
     HtmlCommentRule,
+    DivBlockRule,
 } from './rules';
 import { ParagraphRule } from './rules/block/paragraph';
 import { HeadingRule } from './rules/block/heading';
@@ -27,6 +28,7 @@ export class RhoProcessor extends Processor {
             new HeadingRule(this, { minLevel: 1, maxLevel: 6 }),
             new DelegateRule(this, 'list'),
             new CodeBlockRule(this),
+            new DivBlockRule(this),
             new ParagraphRule(this),
         ]);
         this.defineParser('list', () => [

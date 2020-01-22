@@ -1,6 +1,5 @@
 import { Cursor, Processor, Node, Region } from '../../core';
-import { TextNode, SelectorNode } from '../../nodes';
-import { HtmlElementNode } from '../../nodes/html-element';
+import { TextNode, SelectorNode, HtmlElementNode } from '../../nodes';
 import { BlockRule } from './block';
 
 export type CursorMatcher = (cursor: Cursor) => void;
