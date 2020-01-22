@@ -5,6 +5,7 @@ export const CHAR_FF = 0x0c;
 export const CHAR_CR = 0x0d;
 export const CHAR_BACKSLASH = 0x5c;
 export const CHAR_MINUS = 0x2d;
+export const CHAR_COLON = 0x3a;
 export const CHAR_UNDERSCORE = 0x5f;
 export const CHAR_AMP = 0x26;
 export const CHAR_LT = 0x3c;

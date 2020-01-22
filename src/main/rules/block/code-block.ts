@@ -13,9 +13,6 @@ export class CodeBlockRule extends FencedBlockRule {
     protected parseContent(region: Region) {
         const codeParser = this.processor.getParser('code');
         const cursor = new Cursor(region);
-        // Note: we skip exactly one leading newline,
-        // this allows code blocks to add leading blank lines
-        cursor.skipSpaces().skipNewLine();
         const lines: Node[] = [];
         while (cursor.hasCurrent()) {
             cursor.skipSpaces(this.indent);
@@ -26,7 +23,7 @@ export class CodeBlockRule extends FencedBlockRule {
             lines.push(ast);
         }
         const code = new HtmlElementNode(region, lines, 'code', null, false, false);
-        const pre = new HtmlElementNode(region, [code], 'pre', this.selector, true, false);
+        const pre = new HtmlElementNode(region, [code], 'pre', this.selector, true, true);
         return pre;
     }
 
