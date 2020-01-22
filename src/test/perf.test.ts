@@ -5,7 +5,7 @@ import marked from 'marked';
 
 const processor = new RhoProcessor();
 
-describe.only('Performance', () => {
+describe.skip('Performance', () => {
     let source: string;
 
     beforeEach(() => {

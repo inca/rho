@@ -3,12 +3,14 @@ import {
     Cursor,
     Node,
     Processor,
-    convertCharCodes,
     constants,
 } from '../../core';
 import { TextNode } from '../../nodes/text';
 
-const { CHAR_BACKSLASH } = constants;
+const {
+    DEFAULT_CONTROL_CHARACTERS,
+    CHAR_BACKSLASH,
+} = constants;
 
 /**
  * Emits backslash escape of control character.
@@ -19,11 +21,11 @@ export class BackslashEscapeRule extends Rule {
     constructor(
         processor: Processor,
         options: {
-            controlCharacters?: string | number[],
+            controlCharacters?: number[],
         } = {},
     ) {
         super(processor);
-        this.controlCharacters = convertCharCodes(options.controlCharacters);
+        this.controlCharacters = options.controlCharacters ?? DEFAULT_CONTROL_CHARACTERS;
     }
 
     protected parseAt(cursor: Cursor): Node | null {

@@ -12,7 +12,12 @@ import { SelectorNode } from '../../nodes';
 // 120 characters from the start of the line.
 const SELECTOR_LOOKUP_LIMIT = 120;
 
-const { CHAR_SPACE, CHAR_TAB } = constants;
+const {
+    CHAR_SPACE,
+    CHAR_TAB,
+    CHAR_BACKSLASH,
+    CHAR_CURLY_LEFT,
+} = constants;
 
 export abstract class BlockRule extends Rule {
     lineStartPos: number = 0;
@@ -87,11 +92,11 @@ export abstract class BlockRule extends Rule {
         let i = 0;
         while (cursor.hasCurrent() && !cursor.atNewLine() && i < SELECTOR_LOOKUP_LIMIT) {
             i++;
-            if (cursor.at('\\{')) {
+            if (cursor.atCode(CHAR_BACKSLASH)) {
                 cursor.skip(2);
                 continue;
             }
-            if (!cursor.at('{')) {
+            if (!cursor.atCode(CHAR_CURLY_LEFT)) {
                 cursor.skip();
                 continue;
             }

@@ -1,4 +1,4 @@
-import { Processor, DelegateRule } from './core';
+import { Processor, DelegateRule, constants } from './core';
 import {
     PlainTextRule,
     BackslashEscapeRule,
@@ -19,6 +19,14 @@ import {
 import { ParagraphRule } from './rules/block/paragraph';
 import { HeadingRule } from './rules/block/heading';
 import { CodeBlockRule } from './rules/block/code-block';
+
+const {
+    CHAR_AMP,
+    CHAR_LT,
+    CHAR_GT,
+    CHAR_BACKSLASH,
+    CHAR_BACKTICK,
+} = constants;
 
 export class RhoProcessor extends Processor {
 
@@ -54,8 +62,18 @@ export class RhoProcessor extends Processor {
             new VerbatimRule(this),
         ]);
         this.defineParser('code', () => [
-            new PlainTextRule(this, { controlCharacters: '`&<>\\' }),
-            new BackslashEscapeRule(this, { controlCharacters: '`' }),
+            new PlainTextRule(this, {
+                controlCharacters: [
+                    CHAR_BACKTICK,
+                    CHAR_AMP,
+                    CHAR_LT,
+                    CHAR_GT,
+                    CHAR_BACKSLASH,
+                ]
+            }),
+            new BackslashEscapeRule(this, {
+                controlCharacters: [CHAR_BACKTICK]
+            }),
             new HtmlEntityRule(this),
             new VerbatimRule(this),
         ]);

@@ -1,7 +1,16 @@
-import { BracketRule, Node, Processor, Region, Parser } from '../../core';
+import {
+    BracketRule,
+    Node,
+    Processor,
+    Region,
+    Parser,
+    constants,
+} from '../../core';
 import { PlainTextRule } from './plain-text';
 import { HtmlEntityRule } from './html-entity';
 import { VerbatimRule } from './verbatim';
+
+const { CHAR_LT, CHAR_GT, CHAR_AMP } = constants;
 
 /**
  * Emits MathJax-friendly formula enclosed in $$ and %% markers.
@@ -21,7 +30,13 @@ export class FormulaRule extends BracketRule {
         super(processor);
         this.marker = options.marker;
         this.parser = new Parser(processor, [
-            new PlainTextRule(processor, { controlCharacters: '&<>' }),
+            new PlainTextRule(processor, {
+                controlCharacters: [
+                    CHAR_AMP,
+                    CHAR_LT,
+                    CHAR_GT,
+                ]
+            }),
             new HtmlEntityRule(processor),
             new VerbatimRule(processor),
         ]);

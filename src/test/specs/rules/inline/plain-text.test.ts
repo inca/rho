@@ -9,7 +9,9 @@ import {
 describe('PlainTextRule', () => {
 
     const processor = new RhoProcessor();
-    const rule = new PlainTextRule(processor, { controlCharacters: '^' });
+    const rule = new PlainTextRule(processor, {
+        controlCharacters: [0x5e]
+    });
 
     it('emits a region till next control character', () => {
         const cursor = new Cursor('Hello ^ World!', 0);

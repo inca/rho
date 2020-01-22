@@ -9,7 +9,9 @@ import {
 describe('BackslashEscapeRule', () => {
 
     const processor = new RhoProcessor();
-    const rule = new BackslashEscapeRule(processor, { controlCharacters: '^!' });
+    const rule = new BackslashEscapeRule(processor, {
+        controlCharacters: [0x5e]
+    });
 
     context('\\ + control character', () => {
         it('consumes backslash, emits control character verbatim', () => {
