@@ -15,7 +15,7 @@ export abstract class FencedBlockRule extends BlockRule {
         }
         const blockStart = cursor.pos;
         cursor.skip(marker.length).skipToEol().skipNewLine();
-        this.contentStart = cursor.pos;
+        this.contentStart = cursor.region.start + cursor.pos;
         this.contentEnd = -1;
         while (cursor.hasCurrent()) {
             cursor.skipSpaces(this.indent);
@@ -24,7 +24,7 @@ export abstract class FencedBlockRule extends BlockRule {
                 continue;
             }
             // We're at marker, but it has to be at the end of block
-            const contentEnd = cursor.pos;
+            const contentEnd = cursor.region.start + cursor.pos;
             cursor.skip(marker.length).skipSpaces();
             if (cursor.atBlankLine()) {
                 cursor.skipNewLine();
@@ -37,13 +37,15 @@ export abstract class FencedBlockRule extends BlockRule {
         if (this.contentEnd === -1) {
             return null;
         }
+        cursor.skipBlankLines();
         return cursor.subRegion(blockStart, cursor.pos);
     }
 
     protected parseSubRegion(region: Region) {
         const offset = this.contentStart - region.start;
         const length = this.contentEnd - this.contentStart;
-        return this.parseContent(region.subRegion(offset, offset + length));
+        const contentRegion = region.subRegion(offset, offset + length);
+        return this.parseContent(contentRegion);
     }
 
 }

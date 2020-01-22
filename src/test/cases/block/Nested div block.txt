@@ -1,0 +1,21 @@
+Paragraph.
+
+~~~ {.note}
+Blocks should be properly nestable.
+
+    ~~~ {.something.else}
+    See?
+    ~~~
+
+    ~~~ {.sibling}
+    And one more.
+
+        ~~~ {.deep}
+        And even more!
+        ~~~
+    ~~~
+
+Ok, enough is enough.
+~~~
+
+The end.

@@ -330,7 +330,7 @@ export class Cursor {
         while (this.hasCurrent()) {
             const pos = this.pos;
             this.skipSpaces();
-            if (this.atNewLine()) {
+            if (this.atNewLine() || !this.hasCurrent()) {
                 this.skipNewLines();
             } else {
                 // It's a meaningful line!
