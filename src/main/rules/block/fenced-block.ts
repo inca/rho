@@ -2,8 +2,8 @@ import { Cursor, Region, Node } from '../../core';
 import { BlockRule } from './block';
 
 export abstract class FencedBlockRule extends BlockRule {
-    protected contentStart: number = 0;
-    protected contentEnd: number = 0;
+    protected contentStart: number = -1;
+    protected contentEnd: number = -1;
 
     abstract get marker(): string;
     protected abstract parseContent(region: Region): Node | null;
@@ -14,17 +14,29 @@ export abstract class FencedBlockRule extends BlockRule {
             return null;
         }
         const blockStart = cursor.pos;
-        cursor.skip(marker.length).skipToEol();
+        cursor.skip(marker.length).skipToEol().skipNewLine();
         this.contentStart = cursor.pos;
-        const end = cursor.indexOfEscaped(marker);
-        if (end == null) {
+        this.contentEnd = -1;
+        while (cursor.hasCurrent()) {
+            cursor.skipSpaces(this.indent);
+            if (!cursor.at(marker)) {
+                cursor.skipToEol().skipNewLine();
+                continue;
+            }
+            // We're at marker, but it has to be at the end of block
+            const contentEnd = cursor.pos;
+            cursor.skip(marker.length).skipSpaces();
+            if (cursor.atBlankLine()) {
+                cursor.skipNewLine();
+                if (cursor.atBlankLine()) {
+                    this.contentEnd = contentEnd;
+                    break;
+                }
+            }
+        }
+        if (this.contentEnd === -1) {
             return null;
         }
-        this.contentEnd = end;
-        cursor
-            .set(end)
-            .skip(marker.length)
-            .skipBlankLines();
         return cursor.subRegion(blockStart, cursor.pos);
     }
 

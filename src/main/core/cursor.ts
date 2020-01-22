@@ -184,7 +184,7 @@ export class Cursor {
     atBlankLine(): boolean {
         const p = this.pos;
         this.skipSpaces();
-        const result = this.atNewLine();
+        const result = this.atNewLine() || !this.hasCurrent();
         this.set(p);
         return result;
     }
@@ -363,7 +363,7 @@ export class Cursor {
                     break;
                 }
             }
-            this.skip();
+            this.skipToEol();
         }
         return this;
     }
