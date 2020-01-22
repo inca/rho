@@ -1,0 +1,9 @@
+Paragraph.
+
+~~~ {.note}
+A paragraph inside note.
+
+One more.
+~~~
+
+The end.

@@ -19,7 +19,7 @@ describe.skip('Performance', () => {
         }
     });
 
-    it.skip('compiles 100 large files with marked', () => {
+    it('compiles 100 large files with marked', () => {
         for (let i = 0; i < 100; i++) {
             marked(source);
         }

@@ -23,7 +23,7 @@
     - [x] headings
     - [x] code block
         - [ ] support gfm-style class
-    - [ ] div
+    - [x] div
     - [ ] html
     - [ ] hr
     - [ ] table
