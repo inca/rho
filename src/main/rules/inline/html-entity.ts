@@ -1,5 +1,6 @@
 import { Rule, Node, Region, Cursor } from '../../core';
 import { TextNode } from '../../nodes/text';
+import { ConstantNode } from '../../nodes';
 
 const latinLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 const decimalDigits = '0123456789';
@@ -25,38 +26,40 @@ export class HtmlEntityRule extends Rule {
             return null;
         }
         // Check for entity reference
-        const end = cursor.lookahead(cur => {
-            cur.skip();
-            let allowedChars = latinLetters;
-            if (cur.at('#x') || cur.at('#X')) {
-                // Hexadecimal escape
-                allowedChars = hexDigits;
-                cur.skip(2);
-            } else if (cur.at('#')) {
-                allowedChars = decimalDigits;
-                cur.skip(1);
-            }
-            if (cur.at(';')) {
-                // Invalid entity reference
-                return null;
-            }
-            while (cur.hasCurrent()) {
-                const c = cur.current();
-                if (c === ';') {
-                    cur.skip();
-                    return cur.pos;
-                } else if (allowedChars.indexOf(c) > -1) {
-                    cur.skip();
-                } else {
-                    return null;
-                }
-            }
-            return null;
-        });
+        const end = this.matchEntityReference(cursor.clone());
         if (end === null) {
-            return new HtmlEscapeNode(cursor.readForward(1), '&');
+            return new ConstantNode(cursor.readForward(1), '&amp;');
         }
         return new TextNode(cursor.readUntil(end));
+    }
+
+    matchEntityReference(cursor: Cursor): number | null {
+        cursor.skip();
+        let allowedChars = latinLetters;
+        if (cursor.at('#x') || cursor.at('#X')) {
+            // Hexadecimal escape
+            allowedChars = hexDigits;
+            cursor.skip(2);
+        } else if (cursor.at('#')) {
+            allowedChars = decimalDigits;
+            cursor.skip(1);
+        }
+        if (cursor.at(';')) {
+            // Invalid entity reference
+            return null;
+        }
+        while (cursor.hasCurrent()) {
+            const c = cursor.current();
+            if (c === ';') {
+                cursor.skip();
+                return cursor.pos;
+            } else if (allowedChars.indexOf(c) > -1) {
+                cursor.skip();
+            } else {
+                return null;
+            }
+        }
+        return null;
     }
 
     /**
@@ -66,7 +69,7 @@ export class HtmlEntityRule extends Rule {
         if (!cursor.atCode(CHAR_LT)) {
             return null;
         }
-        return new HtmlEscapeNode(cursor.readForward(1), '<');
+        return new ConstantNode(cursor.readForward(1), '&lt;');
     }
 
     /**
@@ -77,61 +80,7 @@ export class HtmlEntityRule extends Rule {
         if (!cursor.atCode(CHAR_GT)) {
             return null;
         }
-        return new HtmlEscapeNode(cursor.readForward(1), '>');
+        return new ConstantNode(cursor.readForward(1), '&gt;');
     }
 
-    isAtHtmlTag(cursor: Cursor): boolean {
-        return cursor.lookahead(cur => {
-            cur.skip(); // <
-            // Closing tag counts as HTML tag here
-            if (cur.at('/')) {
-                cur.skip();
-            }
-            // HTML tag name should start with latin character
-            if (!cur.atLatin()) {
-                return false;
-            }
-            // We simply scan for next angular bracket, for simplicity.
-            // A limitation of that is: <> characters would need to be manually
-            // escaped if used in attributes, e.g. <a title="a &lt; b">
-            while (cur.hasCurrent()) {
-                if (cur.atCode(CHAR_LT)) {
-                    return false;
-                }
-                if (cur.atCode(CHAR_GT)) {
-                    return true;
-                }
-                cur.skip();
-            }
-            return false;
-        });
-    }
-
-    isAtHtmlComment(cursor: Cursor): boolean {
-        return cursor.at('<!--');
-    }
-
-}
-
-export class HtmlEscapeNode extends Node {
-
-    constructor(
-        region: Region,
-        protected char: '&' | '<' | '>'
-    ) {
-        super(region);
-    }
-
-    render() {
-        switch (this.char) {
-            case '&':
-                return '&amp;';
-            case '<':
-                return '&lt;';
-            case '>':
-                return '&gt;';
-            default:
-                return '';
-        }
-    }
 }

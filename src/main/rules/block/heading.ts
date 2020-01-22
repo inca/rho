@@ -1,6 +1,6 @@
 import { Cursor, Region, Processor } from '../../core';
-import { HtmlElementNode } from '../../nodes/html-element';
 import { BlockRule } from './block';
+import { HtmlElementNode } from '../../nodes';
 
 export class HeadingRule extends BlockRule {
     marker: string;

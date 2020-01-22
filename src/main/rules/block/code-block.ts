@@ -1,6 +1,6 @@
 import { Cursor, Region, Processor, Node } from '../../core';
-import { HtmlElementNode } from '../../nodes/html-element';
 import { BlockRule } from './block';
+import { HtmlElementNode } from '../../nodes';
 
 export class CodeBlockRule extends BlockRule {
     marker: string;

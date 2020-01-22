@@ -3,7 +3,6 @@ import {
     RhoProcessor,
     Cursor,
     HtmlEntityRule,
-    HtmlEscapeNode,
     TextNode,
 } from '../../../../main';
 
@@ -17,7 +16,6 @@ describe('HtmlEntityRule', () => {
         it('emits &amp; for standalone ampersand character', () => {
             const cursor = new Cursor('This & that', 5);
             const node = rule.parse(cursor);
-            assert(node instanceof HtmlEscapeNode);
             assert.equal(node?.render(processor), '&amp;');
             assert.equal(cursor.pos, 6);
         });
@@ -53,7 +51,6 @@ describe('HtmlEntityRule', () => {
             const cursor = new Cursor('a < b', 2);
             assert.equal(cursor.current(), '<');
             const node = rule.parse(cursor);
-            assert(node instanceof HtmlEscapeNode);
             assert.equal(node?.render(processor), '&lt;');
             assert.equal(cursor.pos, 3);
         });
@@ -64,7 +61,6 @@ describe('HtmlEntityRule', () => {
             const cursor = new Cursor('a > b', 2);
             assert.equal(cursor.current(), '>');
             const node = rule.parse(cursor);
-            assert(node instanceof HtmlEscapeNode);
             assert.equal(node?.render(processor), '&gt;');
             assert.equal(cursor.pos, 3);
         });

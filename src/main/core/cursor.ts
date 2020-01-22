@@ -226,30 +226,22 @@ export class Cursor {
     }
 
     /**
-     * Invokes `fn` with copy of cursor as an argument, and returns its result.
-     */
-    lookahead<T>(fn: (cursor: Cursor) => T): T {
-        return fn(this.clone());
-    }
-
-    /**
      * Scans forward till positioned at `str` and returns its index, if found.
      * Backslash escapes are ignored.
      */
     indexOfEscaped(str: string): number | null {
-        return this.lookahead(cur => {
-            while (cur.hasCurrent()) {
-                if (cur.atCode(CHAR_BACKSLASH)) {
-                    cur.skip(2);
-                    continue;
-                }
-                if (cur.at(str)) {
-                    return cur.pos;
-                }
-                cur.skip();
+        const cur = this.clone();
+        while (cur.hasCurrent()) {
+            if (cur.atCode(CHAR_BACKSLASH)) {
+                cur.skip(2);
+                continue;
             }
-            return null;
-        });
+            if (cur.at(str)) {
+                return cur.pos;
+            }
+            cur.skip();
+        }
+        return null;
     }
 
     /**
