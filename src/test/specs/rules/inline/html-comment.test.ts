@@ -21,12 +21,10 @@ describe('HtmlCommentRule', () => {
             assert(cursor.at(' that'));
         });
 
-        it('emits till the end, even if unclosed', () => {
+        it('does not emit if unclosed', () => {
             const cursor = new Cursor('This <!-- blah', 5);
             const node = rule.parse(cursor);
-            assert(node instanceof TextNode);
-            assert.equal(node?.render(processor), '<!-- blah');
-            assert(!cursor.hasCurrent());
+            assert.equal(node, null);
         });
 
     });

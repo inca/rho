@@ -15,11 +15,11 @@ export class HtmlCommentRule extends Rule {
         while (cursor.hasCurrent()) {
             if (cursor.at('-->')) {
                 cursor.skip(3);
-                break;
+                return new TextNode(cursor.subRegion(start, cursor.pos));
             }
             cursor.skip();
         }
-        return new TextNode(cursor.subRegion(start, cursor.pos));
+        return null;
     }
 
 }
