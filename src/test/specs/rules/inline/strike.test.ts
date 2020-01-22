@@ -3,7 +3,6 @@ import {
     RhoProcessor,
     Cursor,
     StrikeRule,
-    StrikeNode,
 } from '../../../../main';
 
 describe('StrikeRule', () => {
@@ -16,7 +15,6 @@ describe('StrikeRule', () => {
         it('consumes S till end marker', () => {
             const cursor = new Cursor('This ~word~ that', 5);
             const node = rule.parse(cursor);
-            assert(node instanceof StrikeNode);
             assert.equal(node?.render(processor), '<s>word</s>');
             assert.equal(cursor.pos, 11);
         });
@@ -24,7 +22,6 @@ describe('StrikeRule', () => {
         it('renders inline markup inside', () => {
             const cursor = new Cursor('~a *&* b~', 0);
             const node = rule.parse(cursor);
-            assert(node instanceof StrikeNode);
             assert.equal(node?.render(processor), '<s>a <strong>&amp;</strong> b</s>');
             assert(!cursor.hasCurrent());
         });

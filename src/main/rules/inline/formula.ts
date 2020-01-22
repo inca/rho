@@ -1,7 +1,7 @@
 import { BracketRule, Node, Processor, Region, Parser } from '../../core';
 import { PlainTextRule } from './plain-text';
 import { HtmlEntityRule } from './html-entity';
-import { LiteralRule } from './literal';
+import { VerbatimRule } from './verbatim';
 
 /**
  * Emits MathJax-friendly formula enclosed in $$ and %% markers.
@@ -23,7 +23,7 @@ export class FormulaRule extends BracketRule {
         this.parser = new Parser(processor, [
             new PlainTextRule(processor, { controlCharacters: '&<>' }),
             new HtmlEntityRule(processor),
-            new LiteralRule(processor),
+            new VerbatimRule(processor),
         ]);
     }
 

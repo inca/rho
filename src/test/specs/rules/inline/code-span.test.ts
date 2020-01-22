@@ -3,7 +3,6 @@ import {
     RhoProcessor,
     Cursor,
     CodeSpanRule,
-    CodeSpanNode,
 } from '../../../../main';
 
 describe('CodeSpanRule', () => {
@@ -16,14 +15,12 @@ describe('CodeSpanRule', () => {
         it('consumes code span till end marker', () => {
             const cursor = new Cursor('This `code` that', 5);
             const node = rule.parse(cursor);
-            assert(node instanceof CodeSpanNode);
             assert.equal(cursor.pos, 11);
         });
 
         it('escapes <', () => {
             const cursor = new Cursor('`a < b`', 0);
             const node = rule.parse(cursor);
-            assert(node instanceof CodeSpanNode);
             assert(!cursor.hasCurrent());
             assert.equal(node?.render(processor), '<code>a &lt; b</code>');
         });
@@ -31,7 +28,6 @@ describe('CodeSpanRule', () => {
         it('escapes >', () => {
             const cursor = new Cursor('`a > b`', 0);
             const node = rule.parse(cursor);
-            assert(node instanceof CodeSpanNode);
             assert(!cursor.hasCurrent());
             assert.equal(node?.render(processor), '<code>a &gt; b</code>');
         });
@@ -39,7 +35,6 @@ describe('CodeSpanRule', () => {
         it('escapes &', () => {
             const cursor = new Cursor('`a && b`', 0);
             const node = rule.parse(cursor);
-            assert(node instanceof CodeSpanNode);
             assert(!cursor.hasCurrent());
             assert.equal(node?.render(processor), '<code>a &amp;&amp; b</code>');
         });
@@ -47,7 +42,6 @@ describe('CodeSpanRule', () => {
         it('escapes html tags', () => {
             const cursor = new Cursor('`<a>link</a>`', 0);
             const node = rule.parse(cursor);
-            assert(node instanceof CodeSpanNode);
             assert(!cursor.hasCurrent());
             assert.equal(node?.render(processor), '<code>&lt;a&gt;link&lt;/a&gt;</code>');
         });
@@ -55,7 +49,6 @@ describe('CodeSpanRule', () => {
         it('escapes ` with backslash', () => {
             const cursor = new Cursor('`a \\` b`', 0);
             const node = rule.parse(cursor);
-            assert(node instanceof CodeSpanNode);
             assert(!cursor.hasCurrent());
             assert.equal(node?.render(processor), '<code>a ` b</code>');
         });
@@ -63,7 +56,6 @@ describe('CodeSpanRule', () => {
         it('emits backslash verbatim for non-` chars', () => {
             const cursor = new Cursor('`a \\+ b`', 0);
             const node = rule.parse(cursor);
-            assert(node instanceof CodeSpanNode);
             assert(!cursor.hasCurrent());
             assert.equal(node?.render(processor), '<code>a \\+ b</code>');
         });

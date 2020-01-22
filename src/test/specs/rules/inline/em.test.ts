@@ -3,7 +3,6 @@ import {
     RhoProcessor,
     Cursor,
     EmRule,
-    EmNode,
 } from '../../../../main';
 
 describe('EmRule', () => {
@@ -16,7 +15,6 @@ describe('EmRule', () => {
         it('consumes EM till end marker', () => {
             const cursor = new Cursor('This _word_ that', 5);
             const node = rule.parse(cursor);
-            assert(node instanceof EmNode);
             assert.equal(node?.render(processor), '<em>word</em>');
             assert.equal(cursor.pos, 11);
         });
@@ -24,7 +22,6 @@ describe('EmRule', () => {
         it('renders inline markup inside', () => {
             const cursor = new Cursor('_a *&* b_', 0);
             const node = rule.parse(cursor);
-            assert(node instanceof EmNode);
             assert.equal(node?.render(processor), '<em>a <strong>&amp;</strong> b</em>');
             assert(!cursor.hasCurrent());
         });

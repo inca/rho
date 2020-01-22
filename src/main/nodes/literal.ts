@@ -5,7 +5,7 @@ import { Node, Region } from '../core';
  * instead of region.
  * Useful for overwriting regions.
  */
-export class ConstantNode extends Node {
+export class LiteralNode extends Node {
 
     constructor(
         region: Region,

@@ -1,6 +1,6 @@
 import { Rule, Node, Cursor, constants } from '../../core';
 import { TextNode } from '../../nodes/text';
-import { ConstantNode } from '../../nodes';
+import { LiteralNode } from '../../nodes';
 
 const latinLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 const decimalDigits = '0123456789';
@@ -27,7 +27,7 @@ export class HtmlEntityRule extends Rule {
         // Check for entity reference
         const end = this.matchEntityReference(cursor.clone());
         if (end === null) {
-            return new ConstantNode(cursor.readForward(1), '&amp;');
+            return new LiteralNode(cursor.readForward(1), '&amp;');
         }
         return new TextNode(cursor.readUntil(end));
     }
@@ -68,7 +68,7 @@ export class HtmlEntityRule extends Rule {
         if (!cursor.atCode(CHAR_LT)) {
             return null;
         }
-        return new ConstantNode(cursor.readForward(1), '&lt;');
+        return new LiteralNode(cursor.readForward(1), '&lt;');
     }
 
     /**
@@ -79,7 +79,7 @@ export class HtmlEntityRule extends Rule {
         if (!cursor.atCode(CHAR_GT)) {
             return null;
         }
-        return new ConstantNode(cursor.readForward(1), '&gt;');
+        return new LiteralNode(cursor.readForward(1), '&gt;');
     }
 
 }

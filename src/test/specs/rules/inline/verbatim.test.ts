@@ -1,15 +1,15 @@
 import assert from 'assert';
 import {
     RhoProcessor,
-    LiteralRule,
+    VerbatimRule,
     Cursor,
     TextNode,
 } from '../../../../main';
 
-describe('LiteralRule', () => {
+describe('VerbatimRule', () => {
 
     const processor = new RhoProcessor();
-    const rule = new LiteralRule(processor);
+    const rule = new VerbatimRule(processor);
 
     it('emits any character verbatim', () => {
         const cursor = new Cursor('\\- random \\\`~!@#$%^&*()-_+="<>{}[] stuff \\\\', 0);

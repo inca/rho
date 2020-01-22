@@ -18,9 +18,17 @@ export class HtmlElementNode extends Node {
         if (this.trim) {
             content = content.trim();
         }
-        const attrs = this.selector?.render() || '';
-        return `<${this.tagName}${attrs}>${content}</${this.tagName}>` +
-            (this.newline ? '\n' : '');
+        let result = '<' + this.tagName;
+        if (this.selector) {
+            result += this.selector.render();
+        }
+        result += '>';
+        result += content;
+        result += '</' + this.tagName + '>';
+        if (this.newline) {
+            result += '\n';
+        }
+        return result;
     }
 
 }

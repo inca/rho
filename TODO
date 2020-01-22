@@ -24,7 +24,7 @@
     - [x] code block
         - [ ] support gfm-style class
     - [x] div
-    - [ ] html
+    - [x] html
     - [ ] hr
     - [ ] table
     - [x] paragraph

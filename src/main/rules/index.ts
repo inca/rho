@@ -14,7 +14,7 @@ export * from './inline/formula';
 export * from './inline/html-comment';
 export * from './inline/html-entity';
 export * from './inline/html-tag';
-export * from './inline/literal';
+export * from './inline/verbatim';
 export * from './inline/plain-text';
 export * from './inline/strike';
 export * from './inline/strong';

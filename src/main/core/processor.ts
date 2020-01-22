@@ -1,6 +1,7 @@
 import { Parser } from './parser';
 import { Rule } from './rule';
 import { Exception } from './exception';
+import { Node } from './node';
 
 export type ParserDef = () => Rule[];
 

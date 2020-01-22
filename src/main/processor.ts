@@ -3,7 +3,7 @@ import {
     PlainTextRule,
     BackslashEscapeRule,
     HtmlEntityRule,
-    LiteralRule,
+    VerbatimRule,
     EmRule,
     StrongRule,
     CodeSpanRule,
@@ -51,13 +51,13 @@ export class RhoProcessor extends Processor {
             new CodeSpanRule(this),
             new FormulaRule(this, { marker: '$$' }),
             new FormulaRule(this, { marker: '%%' }),
-            new LiteralRule(this),
+            new VerbatimRule(this),
         ]);
         this.defineParser('code', () => [
             new PlainTextRule(this, { controlCharacters: '`&<>\\' }),
             new BackslashEscapeRule(this, { controlCharacters: '`' }),
             new HtmlEntityRule(this),
-            new LiteralRule(this),
+            new VerbatimRule(this),
         ]);
     }
 
