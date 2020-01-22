@@ -363,7 +363,7 @@ export class Cursor {
                     break;
                 }
             }
-            this.skipToEol();
+            this.skip();
         }
         return this;
     }
