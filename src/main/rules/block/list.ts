@@ -1,6 +1,7 @@
 import { Cursor, Processor, Node, Region } from '../../core';
-import { TextNode, SelectorNode, HtmlElementNode } from '../../nodes';
+import { HtmlElementNode } from '../../nodes';
 import { BlockRule } from './block';
+import { Selector } from '../../util/selector';
 
 export type CursorMatcher = (cursor: Cursor) => void;
 
@@ -127,7 +128,7 @@ export class ListRule extends BlockRule {
         return nodes;
     }
 
-    protected parseTerseLi(cursor: Cursor, selector: SelectorNode | null): Node {
+    protected parseTerseLi(cursor: Cursor, selector: Selector | null): Node {
         const children: Node[] = [];
         // Terse lists start with inline markup and are scanned line-by-line,
         // looking for the lists inside with list parser.
@@ -160,7 +161,7 @@ export class ListRule extends BlockRule {
         return new HtmlElementNode(cursor.region, children, 'li', selector);
     }
 
-    protected parseBlockLi(cursor: Cursor, selector: SelectorNode | null): Node {
+    protected parseBlockLi(cursor: Cursor, selector: Selector | null): Node {
         const blockParser = this.processor.getParser('block');
         const ast = blockParser.parse(cursor.region);
         return new HtmlElementNode(cursor.region, ast.children, 'li', selector);

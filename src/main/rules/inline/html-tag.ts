@@ -1,6 +1,6 @@
 import { Rule, Node, Cursor } from '../../core';
 import { TextNode } from '../../nodes/text';
-import { matchHtmlTag } from '../../util';
+import { matchHtmlTag } from '../../util/html';
 
 export class HtmlTagRule extends Rule {
 

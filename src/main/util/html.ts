@@ -1,4 +1,4 @@
-import { Region, Cursor, constants } from './core';
+import { Region, Cursor, constants } from '../core';
 
 const { CHAR_LT, CHAR_GT, CHAR_SLASH, CHAR_COLON } = constants;
 

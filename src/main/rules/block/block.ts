@@ -1,5 +1,5 @@
 import { Rule, Region, Node, Cursor, constants } from '../../core';
-import { SelectorNode } from '../../nodes';
+import { Selector } from '../../util/selector';
 
 // Opt: enforces a limit on where opening curly brace { of
 // selector expression may occur on the first line of the block.
@@ -22,7 +22,7 @@ const {
 export abstract class BlockRule extends Rule {
     lineStartPos: number = 0;
     indent: number = 0;
-    selector: SelectorNode | null = null;
+    selector: Selector | null = null;
 
     protected abstract parseSubRegion(region: Region): Node | null;
     protected abstract scanBlock(cursor: Cursor): Region | null;
@@ -76,7 +76,7 @@ export abstract class BlockRule extends Rule {
         return result;
     }
 
-    captureSelector(region: Region, allowMultiple: boolean = false): SelectorNode | null {
+    captureSelector(region: Region, allowMultiple: boolean = false): Selector | null {
         return this.parseSelectorAt(new Cursor(region), allowMultiple);
     }
 
@@ -88,7 +88,7 @@ export abstract class BlockRule extends Rule {
      * (i.e. excluded from string processing) by subsequent AST.
      * The cursor is discarded after this, so no need to preserve its position.
      */
-    protected parseSelectorAt(cursor: Cursor, allowMultiple: boolean = false): SelectorNode | null {
+    protected parseSelectorAt(cursor: Cursor, allowMultiple: boolean = false): Selector | null {
         let i = 0;
         while (cursor.hasCurrent() && !cursor.atNewLine() && i < SELECTOR_LOOKUP_LIMIT) {
             i++;
@@ -136,7 +136,7 @@ export abstract class BlockRule extends Rule {
                 // it is super important to keep the region from `{` to `}` so that
                 // block processors can properly taint them.
                 const region = cursor.subRegion(start, cursor.pos);
-                const node = new SelectorNode(region, id, classList);
+                const node = new Selector(region, id, classList);
                 return node;
             }
         }

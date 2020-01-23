@@ -1,12 +1,12 @@
 import { Node, Region, Processor } from '../core';
-import { SelectorNode } from './selector';
+import { Selector } from '../util/selector';
 
 export class HtmlElementNode extends Node {
     constructor(
         region: Region,
         children: Node[],
         readonly tagName: string,
-        readonly selector: SelectorNode | null = null,
+        readonly selector: Selector | null = null,
         readonly trim: boolean = true,
         readonly newline: boolean = true,
     ) {

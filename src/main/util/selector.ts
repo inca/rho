@@ -1,12 +1,11 @@
-import { Node, Region } from '../core';
+import { Region } from '../core';
 
-export class SelectorNode extends Node {
+export class Selector {
     constructor(
-        region: Region,
+        readonly region: Region,
         public id: string,
         public classList: string[],
     ) {
-        super(region, []);
     }
 
     render() {

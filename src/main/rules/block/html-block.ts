@@ -1,7 +1,7 @@
 import { Cursor, Region } from '../../core';
 import { BlockRule } from './block';
 import { TextNode } from '../../nodes';
-import { matchHtmlTag, HtmlTagType } from '../../util';
+import { matchHtmlTag, HtmlTagType } from '../../util/html';
 
 export class HtmlBlockRule extends BlockRule {
 
