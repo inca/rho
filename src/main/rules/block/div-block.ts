@@ -11,7 +11,7 @@ export class DivBlockRule extends FencedBlockRule {
     }
 
     protected parseContent(region: Region) {
-        const blockParser = this.processor.getParser('block');
+        const blockParser = this.ctx.getParser('block');
         const ast = blockParser.parse(region);
         const div = new HtmlElementNode(region, ast.children, 'div', this.selector);
         return div;

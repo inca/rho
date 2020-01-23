@@ -9,7 +9,8 @@ import {
 describe('PlainTextRule', () => {
 
     const processor = new RhoProcessor();
-    const rule = new PlainTextRule(processor, {
+    const ctx = processor.createContext();
+    const rule = new PlainTextRule(ctx, {
         controlCharacters: [0x5e]
     });
 
@@ -17,7 +18,7 @@ describe('PlainTextRule', () => {
         const cursor = new Cursor('Hello ^ World!', 0);
         const node = rule.parse(cursor)!;
         assert(node instanceof TextNode);
-        assert(node.render(processor), 'Hello ');
+        assert(node.render(ctx), 'Hello ');
         assert.equal(cursor.pos, 6);
     });
 

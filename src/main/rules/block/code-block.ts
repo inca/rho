@@ -11,7 +11,7 @@ export class CodeBlockRule extends FencedBlockRule {
     }
 
     protected parseContent(region: Region) {
-        const codeParser = this.processor.getParser('code');
+        const codeParser = this.ctx.getParser('code');
         const cursor = new Cursor(region);
         const lines: Node[] = [];
         while (cursor.hasCurrent()) {

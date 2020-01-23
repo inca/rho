@@ -1,4 +1,4 @@
-import { BracketRule, Region, Processor, Node } from '../../core';
+import { BracketRule, Region, Node } from '../../core';
 import { HtmlElementNode } from '../../nodes';
 
 export class StrongRule extends BracketRule {
@@ -6,7 +6,7 @@ export class StrongRule extends BracketRule {
     get closeMarker() { return '*'; }
 
     protected parseSubRegion(region: Region): Node {
-        const inlineParser = this.processor.getParser('inline');
+        const inlineParser = this.ctx.getParser('inline');
         const root = inlineParser.parse(region);
         return new HtmlElementNode(region, root.children, 'strong', null, false, false);
     }

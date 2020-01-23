@@ -9,7 +9,8 @@ import {
 describe('BackslashEscapeRule', () => {
 
     const processor = new RhoProcessor();
-    const rule = new BackslashEscapeRule(processor, {
+    const ctx = processor.createContext();
+    const rule = new BackslashEscapeRule(ctx, {
         controlCharacters: [0x5e]
     });
 
@@ -18,7 +19,7 @@ describe('BackslashEscapeRule', () => {
             const cursor = new Cursor('This \\^ that', 5);
             const node = rule.parse(cursor);
             assert(node instanceof TextNode);
-            assert.equal(node?.render(processor), '^');
+            assert.equal(node?.render(ctx), '^');
             assert.equal(cursor.pos, 7);
         });
     });

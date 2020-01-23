@@ -9,7 +9,8 @@ import {
 describe('VerbatimRule', () => {
 
     const processor = new RhoProcessor();
-    const rule = new VerbatimRule(processor);
+    const ctx = processor.createContext();
+    const rule = new VerbatimRule(ctx);
 
     it('emits any character verbatim', () => {
         const cursor = new Cursor('\\- random \\\`~!@#$%^&*()-_+="<>{}[] stuff \\\\', 0);

@@ -6,7 +6,7 @@ export class CodeSpanRule extends BracketRule {
     get closeMarker() { return '`'; }
 
     protected parseSubRegion(region: Region): Node {
-        const codeParser = this.processor.getParser('code');
+        const codeParser = this.ctx.getParser('code');
         const root = codeParser.parse(region);
         return new HtmlElementNode(region, root.children, 'code', null, false, false);
     }

@@ -9,7 +9,8 @@ import {
 describe('HtmlCommentRule', () => {
 
     const processor = new RhoProcessor();
-    const rule = new HtmlCommentRule(processor);
+    const ctx = processor.createContext();
+    const rule = new HtmlCommentRule(ctx);
 
     context('<!--', () => {
 
@@ -17,7 +18,7 @@ describe('HtmlCommentRule', () => {
             const cursor = new Cursor('This <!-- blah --> that', 5);
             const node = rule.parse(cursor);
             assert(node instanceof TextNode);
-            assert.equal(node?.render(processor), '<!-- blah -->');
+            assert.equal(node?.render(ctx), '<!-- blah -->');
             assert(cursor.at(' that'));
         });
 

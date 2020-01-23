@@ -1,21 +1,23 @@
 import { Region } from './region';
-import { Processor } from './processor';
+import { Context } from './context';
 
 /**
  * Represents an AST node produced by parsing rules.
  */
-export abstract class Node {
+export class Node {
     constructor(
         readonly region: Region,
         readonly children: Node[] = [],
     ) {}
 
-    abstract render(processor: Processor): string;
+    render(ctx: Context) {
+        return this.renderChildren(ctx);
+    }
 
-    renderChildren(processor: Processor): string {
+    renderChildren(ctx: Context): string {
         let result = '';
         for (const child of this.children) {
-            result += child.render(processor);
+            result += child.render(ctx);
         }
         return result;
     }

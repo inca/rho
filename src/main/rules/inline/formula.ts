@@ -5,6 +5,7 @@ import {
     Region,
     Parser,
     constants,
+    Context,
 } from '../../core';
 import { PlainTextRule } from './plain-text';
 import { HtmlEntityRule } from './html-entity';
@@ -22,23 +23,23 @@ export class FormulaRule extends BracketRule {
     parser: Parser;
 
     constructor(
-        processor: Processor,
+        ctx: Context,
         options: {
             marker: string,
         },
     ) {
-        super(processor);
+        super(ctx);
         this.marker = options.marker;
-        this.parser = new Parser(processor, [
-            new PlainTextRule(processor, {
+        this.parser = new Parser(ctx, [
+            new PlainTextRule(ctx, {
                 controlCharacters: [
                     CHAR_AMP,
                     CHAR_LT,
                     CHAR_GT,
                 ]
             }),
-            new HtmlEntityRule(processor),
-            new VerbatimRule(processor),
+            new HtmlEntityRule(ctx),
+            new VerbatimRule(ctx),
         ]);
     }
 
@@ -66,7 +67,7 @@ export class FormulaNode extends Node {
         super(region, children);
     }
 
-    render(processor: Processor) {
-        return `${this.marker}${this.renderChildren(processor)}${this.marker}`;
+    render(ctx: Context) {
+        return `${this.marker}${this.renderChildren(ctx)}${this.marker}`;
     }
 }

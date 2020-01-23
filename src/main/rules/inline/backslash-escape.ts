@@ -2,8 +2,8 @@ import {
     Rule,
     Cursor,
     Node,
-    Processor,
     constants,
+    Context,
 } from '../../core';
 import { TextNode } from '../../nodes/text';
 
@@ -19,12 +19,12 @@ export class BackslashEscapeRule extends Rule {
     controlCharacters: number[];
 
     constructor(
-        processor: Processor,
+        ctx: Context,
         options: {
             controlCharacters?: number[],
         } = {},
     ) {
-        super(processor);
+        super(ctx);
         this.controlCharacters = options.controlCharacters ?? DEFAULT_CONTROL_CHARACTERS;
     }
 

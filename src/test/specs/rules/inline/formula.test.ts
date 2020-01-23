@@ -11,14 +11,15 @@ describe('FormulaRule', () => {
     const processor = new RhoProcessor();
 
     for (const marker of ['$$', '%%']) {
-        const rule = new FormulaRule(processor, { marker });
+        const ctx = processor.createContext();
+        const rule = new FormulaRule(ctx, { marker });
 
         context(marker, () => {
             it('consumes till next marker, emits control character verbatim', () => {
                 const cursor = new Cursor(`This ${marker}\\frac{1}{x}${marker} that`, 5);
                 const node = rule.parse(cursor);
                 assert(node instanceof FormulaNode);
-                assert.equal(node?.render(processor), `${marker}\\frac{1}{x}${marker}`);
+                assert.equal(node?.render(ctx), `${marker}\\frac{1}{x}${marker}`);
                 assert.equal(cursor.pos, 20);
             });
         });

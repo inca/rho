@@ -9,14 +9,15 @@ import {
 describe('HtmlEntityRule', () => {
 
     const processor = new RhoProcessor();
-    const rule = new HtmlEntityRule(processor);
+    const ctx = processor.createContext();
+    const rule = new HtmlEntityRule(ctx);
 
     context('&', () => {
 
         it('emits &amp; for standalone ampersand character', () => {
             const cursor = new Cursor('This & that', 5);
             const node = rule.parse(cursor);
-            assert.equal(node?.render(processor), '&amp;');
+            assert.equal(node?.render(ctx), '&amp;');
             assert.equal(cursor.pos, 6);
         });
 
@@ -24,7 +25,7 @@ describe('HtmlEntityRule', () => {
             const cursor = new Cursor('100&percnt; legit', 3);
             const node = rule.parse(cursor);
             assert(node instanceof TextNode);
-            assert.equal(node?.render(processor), '&percnt;');
+            assert.equal(node?.render(ctx), '&percnt;');
             assert.equal(cursor.pos, 11);
         });
 
@@ -32,7 +33,7 @@ describe('HtmlEntityRule', () => {
             const cursor = new Cursor('100&#37; legit', 3);
             const node = rule.parse(cursor);
             assert(node instanceof TextNode);
-            assert.equal(node?.render(processor), '&#37;');
+            assert.equal(node?.render(ctx), '&#37;');
             assert.equal(cursor.pos, 8);
         });
 
@@ -40,7 +41,7 @@ describe('HtmlEntityRule', () => {
             const cursor = new Cursor('100&#x025; legit', 3);
             const node = rule.parse(cursor);
             assert(node instanceof TextNode);
-            assert.equal(node?.render(processor), '&#x025;');
+            assert.equal(node?.render(ctx), '&#x025;');
             assert.equal(cursor.pos, 10);
         });
 
@@ -51,7 +52,7 @@ describe('HtmlEntityRule', () => {
             const cursor = new Cursor('a < b', 2);
             assert.equal(cursor.current(), '<');
             const node = rule.parse(cursor);
-            assert.equal(node?.render(processor), '&lt;');
+            assert.equal(node?.render(ctx), '&lt;');
             assert.equal(cursor.pos, 3);
         });
     });
@@ -61,7 +62,7 @@ describe('HtmlEntityRule', () => {
             const cursor = new Cursor('a > b', 2);
             assert.equal(cursor.current(), '>');
             const node = rule.parse(cursor);
-            assert.equal(node?.render(processor), '&gt;');
+            assert.equal(node?.render(ctx), '&gt;');
             assert.equal(cursor.pos, 3);
         });
     });

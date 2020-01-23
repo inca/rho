@@ -33,36 +33,36 @@ export class RhoProcessor extends Processor {
     constructor() {
         super();
         this.setMainParser('block');
-        this.defineParser('block', () => [
-            new HeadingRule(this, { minLevel: 1, maxLevel: 6 }),
-            new DelegateRule(this, 'list'),
-            new CodeBlockRule(this),
-            new DivBlockRule(this),
-            new HtmlBlockRule(this),
-            new ParagraphRule(this),
+        this.defineParser('block', ctx => [
+            new HeadingRule(ctx, { minLevel: 1, maxLevel: 6 }),
+            new DelegateRule(ctx, 'list'),
+            new CodeBlockRule(ctx),
+            new DivBlockRule(ctx),
+            new HtmlBlockRule(ctx),
+            new ParagraphRule(ctx),
         ]);
-        this.defineParser('list', () => [
-            new ListRule(this, { tagName: 'ul', marker: '* ' }),
-            new ListRule(this, { tagName: 'ul', marker: '- ' }),
-            new ListRule(this, { tagName: 'ol', marker: '#. ' }),
-            new NumberedListRule(this, { tagName: 'ol', marker: '1. ' }),
+        this.defineParser('list', ctx => [
+            new ListRule(ctx, { tagName: 'ul', marker: '* ' }),
+            new ListRule(ctx, { tagName: 'ul', marker: '- ' }),
+            new ListRule(ctx, { tagName: 'ol', marker: '#. ' }),
+            new NumberedListRule(ctx, { tagName: 'ol', marker: '1. ' }),
         ]);
-        this.defineParser('inline', () => [
-            new PlainTextRule(this),
-            new BackslashEscapeRule(this),
-            new HtmlTagRule(this),
-            new HtmlCommentRule(this),
-            new HtmlEntityRule(this),
-            new EmRule(this),
-            new StrongRule(this),
-            new StrikeRule(this),
-            new CodeSpanRule(this),
-            new FormulaRule(this, { marker: '$$' }),
-            new FormulaRule(this, { marker: '%%' }),
-            new VerbatimRule(this),
+        this.defineParser('inline', ctx => [
+            new PlainTextRule(ctx),
+            new BackslashEscapeRule(ctx),
+            new HtmlTagRule(ctx),
+            new HtmlCommentRule(ctx),
+            new HtmlEntityRule(ctx),
+            new EmRule(ctx),
+            new StrongRule(ctx),
+            new StrikeRule(ctx),
+            new CodeSpanRule(ctx),
+            new FormulaRule(ctx, { marker: '$$' }),
+            new FormulaRule(ctx, { marker: '%%' }),
+            new VerbatimRule(ctx),
         ]);
-        this.defineParser('code', () => [
-            new PlainTextRule(this, {
+        this.defineParser('code', ctx => [
+            new PlainTextRule(ctx, {
                 controlCharacters: [
                     CHAR_BACKTICK,
                     CHAR_AMP,
@@ -71,11 +71,11 @@ export class RhoProcessor extends Processor {
                     CHAR_BACKSLASH,
                 ]
             }),
-            new BackslashEscapeRule(this, {
+            new BackslashEscapeRule(ctx, {
                 controlCharacters: [CHAR_BACKTICK]
             }),
-            new HtmlEntityRule(this),
-            new VerbatimRule(this),
+            new HtmlEntityRule(ctx),
+            new VerbatimRule(ctx),
         ]);
     }
 

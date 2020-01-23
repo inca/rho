@@ -1,4 +1,4 @@
-import { Cursor, Region, Processor } from '../../core';
+import { Cursor, Region, Context } from '../../core';
 import { BlockRule } from './block';
 import { HtmlElementNode } from '../../nodes';
 
@@ -10,14 +10,14 @@ export class HeadingRule extends BlockRule {
     level: number = 0;
 
     constructor(
-        processor: Processor,
+        ctx: Context,
         options: {
             marker?: string,
             minLevel: number,
             maxLevel: number,
         }
     ) {
-        super(processor);
+        super(ctx);
         this.marker = options.marker ?? '#';
         this.minLevel = options.minLevel;
         this.maxLevel = options.maxLevel;

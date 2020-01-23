@@ -1,8 +1,8 @@
 import { Cursor } from './cursor';
 import { Node } from './node';
-import { Processor } from './processor';
 import { Region } from './region';
 import { Exception } from './exception';
+import { Context } from './context';
 
 /**
  * Encapsulates a single parsing rule to facilitate the modular parsing system.
@@ -38,7 +38,7 @@ import { Exception } from './exception';
  *    parsing pass, which is generally benefitial for GC
  */
 export abstract class Rule {
-    constructor(readonly processor: Processor) {}
+    constructor(readonly ctx: Context) {}
     protected abstract parseAt(cursor: Cursor): Node | null;
 
     parse(cursor: Cursor): Node | null {
@@ -63,14 +63,14 @@ export abstract class Rule {
 export class DelegateRule extends Rule {
 
     constructor(
-        processor: Processor,
+        ctx: Context,
         readonly parserId: string,
     ) {
-        super(processor);
+        super(ctx);
     }
 
     parseAt(cursor: Cursor): Node | null {
-        const parser = this.processor.getParser(this.parserId);
+        const parser = this.ctx.getParser(this.parserId);
         return parser.parseSinglePass(cursor);
     }
 

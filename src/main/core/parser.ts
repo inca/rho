@@ -1,14 +1,13 @@
-import { Processor } from './processor';
 import { Rule } from './rule';
 import { Cursor } from './cursor';
 import { Node } from './node';
 import { Exception } from './exception';
 import { Region } from './region';
-import { RootNode } from '../nodes/root';
+import { Context } from './context';
 
 export class Parser {
     constructor(
-        readonly processor: Processor,
+        readonly ctx: Context,
         readonly rules: Rule[]
     ) {
     }
@@ -34,7 +33,7 @@ export class Parser {
             }
             nodes.push(node);
         }
-        return new RootNode(region, nodes);
+        return new Node(region, nodes);
     }
 
     parseSinglePass(cursor: Cursor): Node | null {

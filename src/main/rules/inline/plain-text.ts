@@ -1,7 +1,7 @@
 import { TextNode } from '../../nodes/text';
 import {
     Rule,
-    Processor,
+    Context,
     Cursor,
     Node,
     constants,
@@ -27,12 +27,12 @@ export class PlainTextRule extends Rule {
     controlCharacters: number[];
 
     constructor(
-        processor: Processor,
+        ctx: Context,
         options: {
             controlCharacters?: number[],
         } = {},
     ) {
-        super(processor);
+        super(ctx);
         this.controlCharacters = options.controlCharacters ?? DEFAULT_CONTROL_CHARACTERS;
     }
 

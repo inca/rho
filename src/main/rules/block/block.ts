@@ -66,7 +66,7 @@ export abstract class BlockRule extends Rule {
     }
 
     parseInlineContent(region: Region): Node[] {
-        const parser = this.processor.getParser('inline');
+        const parser = this.ctx.getParser('inline');
         const result: Node[] = [];
         const regions = region.untaint();
         for (const region of regions) {

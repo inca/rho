@@ -1,13 +1,22 @@
-import { Parser } from './parser';
 import { Rule } from './rule';
 import { Exception } from './exception';
-import { Node } from './node';
+import { Context } from './context';
 
-export type ParserDef = () => Rule[];
+export type ParserDef = (ctx: Context) => Rule[];
 
 export class Processor {
     protected mainParserId: string = '';
     protected parserDefs: Map<string, ParserDef> = new Map();
+
+    process(str: string): string {
+        const ctx = this.createContext();
+        const ast = ctx.getMainParser().parseString(str);
+        return ast.render(ctx);
+    }
+
+    createContext() {
+        return new Context(this);
+    }
 
     setMainParser(parserId: string): this {
         this.mainParserId = parserId;
@@ -19,7 +28,7 @@ export class Processor {
         return this;
     }
 
-    getParser(parserId: string): Parser {
+    getParserDef(parserId: string): ParserDef {
         const def = this.parserDefs.get(parserId);
         if (!def) {
             throw new Exception({
@@ -27,22 +36,17 @@ export class Processor {
                 message: `Parser "${parserId}" not found, please update Processor accordingly`
             });
         }
-        const rules = def();
-        return new Parser(this, rules);
+        return def;
     }
 
-    getMainParser(): Parser {
+    getMainParserDef(): ParserDef {
         if (!this.mainParserId) {
             throw new Exception({
                 code: 'ProcessorNotConfigured',
                 message: `Main parser not specified, please update Processor accordingly`,
             });
         }
-        return this.getParser(this.mainParserId);
+        return this.getParserDef(this.mainParserId);
     }
 
-    process(str: string): string {
-        const ast = this.getMainParser().parseString(str);
-        return ast.render(this);
-    }
 }

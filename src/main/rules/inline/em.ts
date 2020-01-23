@@ -6,7 +6,7 @@ export class EmRule extends BracketRule {
     get closeMarker() { return '_'; }
 
     protected parseSubRegion(region: Region): Node {
-        const inlineParser = this.processor.getParser('inline');
+        const inlineParser = this.ctx.getParser('inline');
         const root = inlineParser.parse(region);
         return new HtmlElementNode(region, root.children, 'em', null, false, false);
     }

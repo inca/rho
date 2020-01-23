@@ -1,3 +1,4 @@
+export * from './context';
 export * from './cursor';
 export * from './exception';
 export * from './node';

@@ -1,4 +1,4 @@
-import { Node, Region, Processor } from '../core';
+import { Node, Region, Context } from '../core';
 import { Selector } from '../util/selector';
 
 export class HtmlElementNode extends Node {
@@ -13,8 +13,8 @@ export class HtmlElementNode extends Node {
         super(region, children);
     }
 
-    render(processor: Processor) {
-        let content = this.renderChildren(processor);
+    render(ctx: Context) {
+        let content = this.renderChildren(ctx);
         if (this.trim) {
             content = content.trim();
         }

@@ -1,4 +1,4 @@
-import { Cursor, Processor, Node, Region } from '../../core';
+import { Cursor, Processor, Node, Region, Context } from '../../core';
 import { HtmlElementNode } from '../../nodes';
 import { BlockRule } from './block';
 import { Selector } from '../../util/selector';
@@ -25,14 +25,14 @@ export class ListRule extends BlockRule {
     marker: string;
 
     constructor(
-        processor: Processor,
+        ctx: Context,
         options: {
             tagName: string,
             marker: string,
             markerMatcher?: CursorMatcher,
         }
     ) {
-        super(processor);
+        super(ctx);
         this.tagName = options.tagName;
         this.marker = options.marker;
     }
@@ -133,7 +133,7 @@ export class ListRule extends BlockRule {
         // Terse lists start with inline markup and are scanned line-by-line,
         // looking for the lists inside with list parser.
         // Anything else should not exist, as per parseSubRegion's contract.
-        const listParser = this.processor.getParser('list');
+        const listParser = this.ctx.getParser('list');
         // Always skip first new line
         let inlineStart = cursor.pos;
         cursor.skipToEol().skipNewLine();
@@ -162,7 +162,7 @@ export class ListRule extends BlockRule {
     }
 
     protected parseBlockLi(cursor: Cursor, selector: Selector | null): Node {
-        const blockParser = this.processor.getParser('block');
+        const blockParser = this.ctx.getParser('block');
         const ast = blockParser.parse(cursor.region);
         return new HtmlElementNode(cursor.region, ast.children, 'li', selector);
     }

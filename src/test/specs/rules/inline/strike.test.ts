@@ -8,21 +8,22 @@ import {
 describe('StrikeRule', () => {
 
     const processor = new RhoProcessor();
-    const rule = new StrikeRule(processor);
+    const ctx = processor.createContext();
+    const rule = new StrikeRule(ctx);
 
     context('~ pair', () => {
 
         it('consumes S till end marker', () => {
             const cursor = new Cursor('This ~word~ that', 5);
             const node = rule.parse(cursor);
-            assert.equal(node?.render(processor), '<s>word</s>');
+            assert.equal(node?.render(ctx), '<s>word</s>');
             assert.equal(cursor.pos, 11);
         });
 
         it('renders inline markup inside', () => {
             const cursor = new Cursor('~a *&* b~', 0);
             const node = rule.parse(cursor);
-            assert.equal(node?.render(processor), '<s>a <strong>&amp;</strong> b</s>');
+            assert.equal(node?.render(ctx), '<s>a <strong>&amp;</strong> b</s>');
             assert(!cursor.hasCurrent());
         });
     });
