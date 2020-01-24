@@ -22,8 +22,8 @@ export class CodeBlockRule extends FencedBlockRule {
             const ast = codeParser.parse(line);
             lines.push(ast);
         }
-        const code = new HtmlElementNode(region, lines, 'code', null, false, false);
-        const pre = new HtmlElementNode(region, [code], 'pre', this.selector, true, true);
+        const code = new HtmlElementNode(region, lines, 'code', null, true);
+        const pre = new HtmlElementNode(region, [code], 'pre', this.selector);
         return pre;
     }
 

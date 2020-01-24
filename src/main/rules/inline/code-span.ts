@@ -8,6 +8,6 @@ export class CodeSpanRule extends BracketRule {
     protected parseSubRegion(region: Region): Node {
         const codeParser = this.ctx.getParser('code');
         const root = codeParser.parse(region);
-        return new HtmlElementNode(region, root.children, 'code', null, false, false);
+        return new HtmlElementNode(region, root.children, 'code', null, true);
     }
 }

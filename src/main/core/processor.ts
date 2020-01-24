@@ -1,17 +1,20 @@
 import { Rule } from './rule';
 import { Exception } from './exception';
 import { Context } from './context';
+import { Node } from './node';
 
 export type ParserDef = (ctx: Context) => Rule[];
+export type NodeTransform = (node: Node, ctx: Context) => Node[];
 
 export class Processor {
     protected mainParserId: string = '';
     protected parserDefs: Map<string, ParserDef> = new Map();
+    transforms: NodeTransform[] = [];
 
-    process(str: string): string {
+    toHtml(str: string): string {
         const ctx = this.createContext();
         const ast = ctx.getMainParser().parseString(str);
-        return ast.render(ctx);
+        return ctx.render(ast);
     }
 
     createContext() {
@@ -47,6 +50,11 @@ export class Processor {
             });
         }
         return this.getParserDef(this.mainParserId);
+    }
+
+    transform(fn: NodeTransform): this {
+        this.transforms.push(fn);
+        return this;
     }
 
 }

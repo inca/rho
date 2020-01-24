@@ -5,17 +5,16 @@ export class HtmlElementNode extends Node {
     constructor(
         region: Region,
         children: Node[],
-        readonly tagName: string,
-        readonly selector: Selector | null = null,
-        readonly trim: boolean = true,
-        readonly newline: boolean = true,
+        public tagName: string,
+        public selector: Selector | null = null,
+        public inline: boolean = false,
     ) {
         super(region, children);
     }
 
     render(ctx: Context) {
-        let content = this.renderChildren(ctx);
-        if (this.trim) {
+        let content = ctx.renderChildren(this);
+        if (!this.inline) {
             content = content.trim();
         }
         let result = '<' + this.tagName;
@@ -25,7 +24,7 @@ export class HtmlElementNode extends Node {
         result += '>';
         result += content;
         result += '</' + this.tagName + '>';
-        if (this.newline) {
+        if (!this.inline) {
             result += '\n';
         }
         return result;

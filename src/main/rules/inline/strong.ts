@@ -8,6 +8,6 @@ export class StrongRule extends BracketRule {
     protected parseSubRegion(region: Region): Node {
         const inlineParser = this.ctx.getParser('inline');
         const root = inlineParser.parse(region);
-        return new HtmlElementNode(region, root.children, 'strong', null, false, false);
+        return new HtmlElementNode(region, root.children, 'strong', null, true);
     }
 }

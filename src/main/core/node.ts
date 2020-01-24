@@ -6,20 +6,12 @@ import { Context } from './context';
  */
 export class Node {
     constructor(
-        readonly region: Region,
-        readonly children: Node[] = [],
+        public region: Region,
+        public children: Node[] = [],
     ) {}
 
     render(ctx: Context) {
-        return this.renderChildren(ctx);
-    }
-
-    renderChildren(ctx: Context): string {
-        let result = '';
-        for (const child of this.children) {
-            result += child.render(ctx);
-        }
-        return result;
+        return ctx.renderChildren(this);
     }
 
     debug(indent: string = '') {
