@@ -1,5 +1,6 @@
-import { BracketRule, Node, Region } from '../../core';
+import { Node, Region } from '../../core';
 import { HtmlElementNode } from '../../nodes';
+import { BracketRule } from '../block/bracket';
 
 export class CodeSpanRule extends BracketRule {
     get openMarker() { return '`'; }

@@ -5,7 +5,7 @@ import { Exception } from './exception';
 import { Context } from './context';
 
 /**
- * Encapsulates a single parsing rule to facilitate the modular parsing system.
+ * Encapsulates a single parsing rule that facilitate the modular parsing system.
  *
  * Each parser (i.e. block, inline, code, etc) is configured
  * using a sequence of parsing rules. During parsing a cursor
@@ -15,18 +15,21 @@ import { Context } from './context';
  * Each rule must follow a single most important contract:
  *
  *   A rule that returns Node must also modify the cursor.
- *   Conversely, rule that does not match must return `null`.
+ *   The rule that does not match must return `null`
+ *   and in that the case cursor remains unmodified.
+ *   (note: rule doesn't have to preserve cursor position
+ *   as parser will throw them away anyway).
  *
  * Implementations must implement protected `parseAt` method.
  * Public `parse` method wraps `parseAt` and enforces the abovementioned contract.
  *
  * If `null` is returned by `parseAt`, the cursor position is reverted to where it was
- * before attempting to parse — this allows implementations to not care about
- * preserving cursor position when the rule does not match (this is especially useful in lookaheads).
+ * this allows implementations to not care about preserving cursor position
+ * when the rule does not match (this is especially useful in lookaheads).
  * However, if the rule does match, then cursor position must be 100% accurate, otherwise
- * next rules in chain will get incorrect cursor.
+ * next rules in chain will get an incorrect starting position.
  *
- * Note: modifying the state of cursor like that is widely known in the industry
+ * Disclaimer: modifying the state of cursor like that is widely known in the industry
  * as "side effect" and is generally frown upon. However, in this particular case
  * we found this design the most appropriate because:
  *
@@ -60,6 +63,9 @@ export abstract class Rule {
     }
 }
 
+/**
+ * A convenience rule that delegates to another parser identified by `parserId`.
+ */
 export class DelegateRule extends Rule {
 
     constructor(
@@ -74,27 +80,4 @@ export class DelegateRule extends Rule {
         return parser.parseSinglePass(cursor);
     }
 
-}
-
-export abstract class BracketRule extends Rule {
-    abstract openMarker: string;
-    abstract closeMarker: string;
-
-    protected abstract parseSubRegion(region: Region): Node;
-
-    protected parseAt(cursor: Cursor): Node | null {
-        const { openMarker, closeMarker } = this;
-        if (!cursor.at(openMarker)) {
-            return null;
-        }
-        cursor.skip(openMarker.length);
-        // Look for closeMarker, ignoring backslashes
-        const end = cursor.indexOfEscaped(closeMarker);
-        if (end == null) {
-            return null;
-        }
-        const region = cursor.readUntil(end);
-        cursor.skip(closeMarker.length);
-        return this.parseSubRegion(region);
-    }
 }

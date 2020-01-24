@@ -1,7 +1,5 @@
 import {
-    BracketRule,
     Node,
-    Processor,
     Region,
     Parser,
     constants,
@@ -10,6 +8,7 @@ import {
 import { PlainTextRule } from './plain-text';
 import { HtmlEntityRule } from './html-entity';
 import { VerbatimRule } from './verbatim';
+import { BracketRule } from '../block/bracket';
 
 const { CHAR_LT, CHAR_GT, CHAR_AMP } = constants;
 
