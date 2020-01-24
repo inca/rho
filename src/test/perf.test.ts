@@ -15,7 +15,7 @@ describe.skip('Performance', () => {
 
     it('compiles 100 large files with Rho', () => {
         for (let i = 0; i < 100; i++) {
-            processor.process(source);
+            processor.toHtml(source);
         }
     });
 

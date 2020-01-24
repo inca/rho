@@ -9,7 +9,7 @@ export class LiteralNode extends Node {
 
     constructor(
         region: Region,
-        readonly text: string,
+        public text: string,
     ) {
         super(region);
     }

@@ -23,7 +23,7 @@ describe('cases', () => {
             const dstFile = path.resolve(baseDir, baseName + '.html');
             const text = await fs.readFile(srcFile, 'utf-8');
             const expected = await fs.readFile(dstFile, 'utf-8');
-            const actual = processor.process(text);
+            const actual = processor.toHtml(text);
             assert.equal(normalize(actual), normalize(expected));
         });
     }

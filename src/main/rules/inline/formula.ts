@@ -68,6 +68,6 @@ export class FormulaNode extends Node {
     }
 
     render(ctx: Context) {
-        return `${this.marker}${this.renderChildren(ctx)}${this.marker}`;
+        return `${this.marker}${ctx.renderChildren(this)}${this.marker}`;
     }
 }
