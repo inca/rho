@@ -19,6 +19,8 @@ import {
 import { ParagraphRule } from './rules/block/paragraph';
 import { HeadingRule } from './rules/block/heading';
 import { CodeBlockRule } from './rules/block/code-block';
+import { LinkRule } from './rules/inline/link';
+import { RhoOptions, RHO_DEFAULT_OPTIONS } from './options';
 
 const {
     CHAR_AMP,
@@ -29,9 +31,11 @@ const {
 } = constants;
 
 export class RhoProcessor extends Processor {
+    options: RhoOptions;
 
-    constructor() {
+    constructor(options: Partial<RhoOptions> = {}) {
         super();
+        this.options = { ...RHO_DEFAULT_OPTIONS, ...options };
         this.setMainParser('block');
         this.defineParser('block', ctx => [
             new HeadingRule(ctx, { minLevel: 1, maxLevel: 6 }),
@@ -59,6 +63,7 @@ export class RhoProcessor extends Processor {
             new CodeSpanRule(ctx),
             new FormulaRule(ctx, { marker: '$$' }),
             new FormulaRule(ctx, { marker: '%%' }),
+            new LinkRule(ctx),
             new VerbatimRule(ctx),
         ]);
         this.defineParser('code', ctx => [

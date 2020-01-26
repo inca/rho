@@ -1,9 +1,12 @@
 import { Processor, ParserDef } from './processor';
 import { Parser } from './parser';
 import { Node } from './node';
+import { MediaDef } from './media';
 
 export class Context {
     renderStack: Node[] = [];
+    mediaIds: Set<string> = new Set();
+    resolvedMedia: Map<string, MediaDef> = new Map();
 
     constructor(
         readonly processor: Processor,
