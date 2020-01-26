@@ -1,5 +1,4 @@
 import { RhoProcessor } from '../main/processor';
-import { normalize } from './util';
 import fs from 'fs';
 
 const processor = new RhoProcessor();

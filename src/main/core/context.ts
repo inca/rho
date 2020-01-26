@@ -3,6 +3,8 @@ import { Parser } from './parser';
 import { Node } from './node';
 
 export class Context {
+    renderStack: Node[] = [];
+
     constructor(
         readonly processor: Processor,
     ) {}
@@ -33,9 +35,11 @@ export class Context {
 
     renderChildren(node: Node) {
         let res = '';
+        this.renderStack.push(node);
         for (const child of node.children) {
             res += this.render(child);
         }
+        this.renderStack.pop();
         return res;
     }
 
