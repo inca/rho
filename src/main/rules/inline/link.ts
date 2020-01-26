@@ -1,6 +1,7 @@
-import { Rule, Cursor, Node, constants, Context, Region } from '../../core';
-import { MediaDef } from '../../core/media';
+import { Rule, Cursor, Node, constants, Region } from '../../core';
 import { escapeHtml } from '../../util/escape';
+import { MediaDef } from '../../util/media';
+import { ContextWithMedia } from '../../context';
 
 const {
     CHAR_SQUARE_LEFT,
@@ -12,6 +13,12 @@ const {
 } = constants;
 
 export class LinkRule extends Rule {
+
+    constructor(
+        readonly ctx: ContextWithMedia,
+    ) {
+        super(ctx);
+    }
 
     protected parseAt(cursor: Cursor): Node | null {
         if (!cursor.atCode(CHAR_SQUARE_LEFT)) {
@@ -110,9 +117,9 @@ export class LinkRule extends Rule {
 
 export abstract class LinkNode extends Node {
 
-    abstract resolveMedia(ctx: Context): MediaDef | null;
+    abstract resolveMedia(ctx: ContextWithMedia): MediaDef | null;
 
-    render(ctx: Context) {
+    render(ctx: ContextWithMedia) {
         const media = this.resolveMedia(ctx);
         if (media === null) {
             // Unresolved links are omitted by default,
@@ -125,7 +132,9 @@ export abstract class LinkNode extends Node {
         if (media.title) {
             buffer += ` title="${escapeHtml(media.title)}"`;
         }
-        // TODO add support for rel, target and other stuff?
+        if (ctx.isExternalLink(media)) {
+            buffer += ' target="_blank"';
+        }
         buffer += '>';
         buffer += content;
         buffer += '</a>';
@@ -164,7 +173,7 @@ export class RefLinkNode extends LinkNode {
         super(region, children);
     }
 
-    resolveMedia(ctx: Context) {
+    resolveMedia(ctx: ContextWithMedia) {
         return ctx.resolvedMedia.get(this.id) || null;
     }
 

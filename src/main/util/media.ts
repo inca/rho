@@ -1,5 +1,5 @@
 export interface MediaDef {
-    id: string;
     href: string;
-    title: string;
+    title?: string;
+    external?: boolean;
 }
