@@ -15,10 +15,13 @@ import {
     HtmlCommentRule,
     DivBlockRule,
     HtmlBlockRule,
+    HeadingRule,
+    CodeBlockRule,
+    ParagraphRule,
+    LinkRule,
 } from './rules';
-import { ParagraphRule } from './rules/block/paragraph';
-import { HeadingRule } from './rules/block/heading';
-import { CodeBlockRule } from './rules/block/code-block';
+import { RhoOptions, RHO_DEFAULT_OPTIONS } from './options';
+import { RhoContext } from './context';
 
 const {
     CHAR_AMP,
@@ -29,9 +32,11 @@ const {
 } = constants;
 
 export class RhoProcessor extends Processor {
+    options: RhoOptions;
 
-    constructor() {
+    constructor(options: Partial<RhoOptions> = {}) {
         super();
+        this.options = { ...RHO_DEFAULT_OPTIONS, ...options };
         this.setMainParser('block');
         this.defineParser('block', ctx => [
             new HeadingRule(ctx, { minLevel: 1, maxLevel: 6 }),
@@ -59,6 +64,7 @@ export class RhoProcessor extends Processor {
             new CodeSpanRule(ctx),
             new FormulaRule(ctx, { marker: '$$' }),
             new FormulaRule(ctx, { marker: '%%' }),
+            new LinkRule(ctx as RhoContext),
             new VerbatimRule(ctx),
         ]);
         this.defineParser('code', ctx => [
@@ -77,6 +83,10 @@ export class RhoProcessor extends Processor {
             new HtmlEntityRule(ctx),
             new VerbatimRule(ctx),
         ]);
+    }
+
+    createContext() {
+        return new RhoContext(this);
     }
 
 }

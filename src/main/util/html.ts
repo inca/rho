@@ -63,7 +63,7 @@ function matchTagEnd(cursor: Cursor): HtmlTagType | null {
         cursor.skip();
         return HtmlTagType.OPENING;
     }
-    if (cursor.atCode(CHAR_SLASH) && cursor.peekCode(1) === CHAR_GT) {
+    if (cursor.atCode(CHAR_SLASH) && cursor.atCode(CHAR_GT, 1)) {
         cursor.skip(2);
         return HtmlTagType.SELF_CLOSING;
     }

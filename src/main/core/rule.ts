@@ -1,6 +1,5 @@
 import { Cursor } from './cursor';
 import { Node } from './node';
-import { Region } from './region';
 import { Exception } from './exception';
 import { Context } from './context';
 

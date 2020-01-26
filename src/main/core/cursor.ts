@@ -125,8 +125,8 @@ export class Cursor {
      * Tests if current char code equals specified code. Significantly
      * faster than char-based equivalent.
      */
-    atCode(code: number): boolean {
-        return this.currentCode() === code;
+    atCode(code: number, offset: number = 0): boolean {
+        return this.peekCode(offset) === code;
     }
 
     /**

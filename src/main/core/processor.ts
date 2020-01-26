@@ -10,6 +10,12 @@ export class Processor {
     protected mainParserId: string = '';
     protected parserDefs: Map<string, ParserDef> = new Map();
     transforms: NodeTransform[] = [];
+    // Note: it is favourable for subclasses to provide more specific interface for options.
+    options: any = {};
+
+    constructor(options: any = {}) {
+        this.options = options;
+    }
 
     toHtml(str: string): string {
         const ctx = this.createContext();

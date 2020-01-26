@@ -4,6 +4,7 @@ import { TextNode } from '../../nodes/text';
 const { CHAR_LT } = constants;
 
 export class HtmlCommentRule extends Rule {
+
     protected parseAt(cursor: Cursor): Node | null {
         if (!cursor.atCode(CHAR_LT)) {
             return null;

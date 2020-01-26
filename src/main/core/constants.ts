@@ -17,6 +17,7 @@ export const CHAR_LT = 0x3c;
 export const CHAR_GT = 0x3e;
 export const CHAR_SLASH = 0x2f;
 export const CHAR_BACKTICK = 0x60;
+export const CHAR_EXCLAMATION = 0x21;
 
 export const CHAR_CURLY_LEFT = 0x7b;
 export const CHAR_CURLY_RIGHT = 0x7d;
