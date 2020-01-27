@@ -1,6 +1,6 @@
 export class Exception extends Error {
     code: string;
-    details?: any;
+    details?: unknown;
 
     constructor(spec: ExceptionSpec) {
         super(spec.message || spec.code);
@@ -20,5 +20,5 @@ export class Exception extends Error {
 export interface ExceptionSpec {
     code: string;
     message?: string;
-    details?: any;
+    details?: unknown;
 }

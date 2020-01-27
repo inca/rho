@@ -24,7 +24,7 @@ export class FormulaRule extends BracketRule {
     constructor(
         ctx: Context,
         options: {
-            marker: string,
+            marker: string;
         },
     ) {
         super(ctx);

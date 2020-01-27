@@ -11,9 +11,9 @@ export class Processor {
     protected parserDefs: Map<string, ParserDef> = new Map();
     transforms: NodeTransform[] = [];
     // Note: it is favourable for subclasses to provide more specific interface for options.
-    options: any = {};
+    options: object = {};
 
-    constructor(options: any = {}) {
+    constructor(options: object = {}) {
         this.options = options;
     }
 

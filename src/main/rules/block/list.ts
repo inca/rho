@@ -1,4 +1,4 @@
-import { Cursor, Processor, Node, Region, Context } from '../../core';
+import { Cursor, Node, Region, Context } from '../../core';
 import { HtmlElementNode } from '../../nodes';
 import { BlockRule } from './block';
 import { Selector } from '../../util/selector';
@@ -27,9 +27,9 @@ export class ListRule extends BlockRule {
     constructor(
         ctx: Context,
         options: {
-            tagName: string,
-            marker: string,
-            markerMatcher?: CursorMatcher,
+            tagName: string;
+            marker: string;
+            markerMatcher?: CursorMatcher;
         }
     ) {
         super(ctx);
