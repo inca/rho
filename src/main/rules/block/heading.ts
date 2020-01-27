@@ -12,9 +12,9 @@ export class HeadingRule extends BlockRule {
     constructor(
         ctx: Context,
         options: {
-            marker?: string,
-            minLevel: number,
-            maxLevel: number,
+            marker?: string;
+            minLevel: number;
+            maxLevel: number;
         }
     ) {
         super(ctx);

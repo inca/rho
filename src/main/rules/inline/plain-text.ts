@@ -29,7 +29,7 @@ export class PlainTextRule extends Rule {
     constructor(
         ctx: Context,
         options: {
-            controlCharacters?: number[],
+            controlCharacters?: number[];
         } = {},
     ) {
         super(ctx);

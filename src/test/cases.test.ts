@@ -3,7 +3,6 @@ import path from 'path';
 import assert from 'assert';
 import { promises as fs } from 'fs';
 import { RhoProcessor } from '../main/processor';
-import pretty from 'pretty';
 import { normalize } from './util';
 
 const baseDir = path.resolve(process.cwd(), 'src/test/cases');

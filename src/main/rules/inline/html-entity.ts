@@ -26,7 +26,7 @@ export class HtmlEntityRule extends Rule {
         }
         // Check for entity reference
         const end = this.matchEntityReference(cursor.clone());
-        if (end === null) {
+        if (end == null) {
             return new LiteralNode(cursor.readForward(1), '&amp;');
         }
         return new TextNode(cursor.readUntil(end));

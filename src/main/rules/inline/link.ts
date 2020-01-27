@@ -121,7 +121,7 @@ export abstract class LinkNode extends Node {
 
     render(ctx: ContextWithMedia) {
         const media = this.resolveMedia(ctx);
-        if (media === null) {
+        if (media == null) {
             // Unresolved links are omitted by default,
             // but can be changed to verbatim.
             return '';

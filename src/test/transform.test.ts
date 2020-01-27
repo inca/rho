@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { RhoProcessor, HtmlElementNode, LiteralNode, Node } from '../main';
+import { RhoProcessor, HtmlElementNode, LiteralNode } from '../main';
 
 describe('Transforms', () => {
 

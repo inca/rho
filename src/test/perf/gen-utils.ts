@@ -13,7 +13,7 @@ Forêt Vièrge qui s'appelait Histoires Vecues.
 Ça représentait une serpent boa qui avalait un fauve.
 `
     .split(/\s+/)
-    .map(_ => _.trim().replace(/[\.,]/g, '').toLowerCase())
+    .map(_ => _.trim().replace(/[.,]/g, '').toLowerCase())
     .filter(Boolean);
 
 export function generateTextFile(file: string) {
@@ -74,7 +74,7 @@ export function generateParagraph(
         let sentence = generateSentence(w);
         if (i === 0 && Math.random() < addSelectorChance) {
             // Add selector
-            sentence = sentence + '    {.style}\n';
+            sentence += '    {.style}\n';
         }
         buffer.push(sentence);
     }
