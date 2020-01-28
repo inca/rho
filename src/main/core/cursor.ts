@@ -14,7 +14,6 @@ const {
     CHAR_LF,
     CHAR_FF,
     CHAR_CR,
-    CHAR_BACKSLASH,
     CHAR_MINUS,
     CHAR_UNDERSCORE,
 } = constants;
@@ -228,25 +227,6 @@ export class Cursor {
      */
     atTaint() {
         return this.currentCode() === 0 && this.pos < this.region.length;
-    }
-
-    /**
-     * Scans forward till positioned at `str` and returns its index, if found.
-     * Backslash escapes are ignored.
-     */
-    indexOfEscaped(str: string): number | null {
-        const cur = this.clone();
-        while (cur.hasCurrent()) {
-            if (cur.atCode(CHAR_BACKSLASH)) {
-                cur.skip(2);
-                continue;
-            }
-            if (cur.at(str)) {
-                return cur.pos;
-            }
-            cur.skip();
-        }
-        return null;
     }
 
     /**

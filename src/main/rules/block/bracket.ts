@@ -1,4 +1,6 @@
-import { Rule, Region, Cursor, Node } from '../../core';
+import { Rule, Region, Cursor, Node, constants } from '../../core';
+
+const { CHAR_BACKSLASH } = constants;
 
 /**
  * A convenience rule that parsers content between opening and closing markers.
@@ -17,12 +19,19 @@ export abstract class BracketRule extends Rule {
         }
         cursor.skip(openMarker.length);
         // Look for closeMarker, ignoring backslashes
-        const end = cursor.indexOfEscaped(closeMarker);
-        if (end == null) {
-            return null;
+        const start = cursor.pos;
+        while (cursor.hasCurrent()) {
+            if (cursor.atCode(CHAR_BACKSLASH)) {
+                cursor.skip(2);
+                continue;
+            }
+            if (cursor.at(closeMarker)) {
+                const region = cursor.subRegion(start, cursor.pos);
+                cursor.skip(closeMarker.length);
+                return this.parseSubRegion(region);
+            }
+            cursor.skip();
         }
-        const region = cursor.readUntil(end);
-        cursor.skip(closeMarker.length);
-        return this.parseSubRegion(region);
+        return null;
     }
 }
