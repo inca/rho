@@ -26,7 +26,7 @@ export class LinkRule extends Rule {
         }
         const regionStart = cursor.pos;
         cursor.skip();
-        const codeParser = this.ctx.getParser('inline');
+        const inlineParser = this.ctx.getParser('inline');
         const textStart = cursor.pos;
         // Find matching square bracket, allowing nested images
         // with ![alt](href) or ![alt][id] syntaxes
@@ -36,7 +36,7 @@ export class LinkRule extends Rule {
                 // We're at correctly balanced closing bracket now,
                 // so it can be either (href) or [id] after that
                 const textRegion = cursor.subRegion(textStart, cursor.pos);
-                const { children } = codeParser.parse(textRegion);
+                const { children } = inlineParser.parse(textRegion);
                 cursor.skip();
                 return this.tryInlineLink(children, cursor, regionStart)
                     || this.tryRefLink(children, cursor, regionStart);
@@ -124,7 +124,7 @@ export class HeadlessLinkRule extends Rule {
     }
 
     protected parseAt(cursor: Cursor): Node | null {
-        if (!cursor.atCode(CHAR_SQUARE_LEFT) && !cursor.atCode(CHAR_SQUARE_LEFT, 1)) {
+        if (!(cursor.atCode(CHAR_SQUARE_LEFT) && cursor.atCode(CHAR_SQUARE_LEFT, 1))) {
             return null;
         }
         // Simply search for end marker, whatever is inside is an id
@@ -160,8 +160,6 @@ export abstract class LinkNode extends Node {
     render(ctx: ContextWithMedia) {
         const media = this.resolveMedia(ctx);
         if (media == null) {
-            // Unresolved links are omitted by default,
-            // but can be changed to verbatim.
             return '';
         }
         let buffer = '<a';
