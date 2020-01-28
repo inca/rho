@@ -19,6 +19,7 @@ import {
     CodeBlockRule,
     ParagraphRule,
     LinkRule,
+    HeadlessLinkRule,
 } from './rules';
 import { RhoOptions, RHO_DEFAULT_OPTIONS } from './options';
 import { RhoContext } from './context';
@@ -65,6 +66,7 @@ export class RhoProcessor extends Processor {
             new FormulaRule(ctx, { marker: '$$' }),
             new FormulaRule(ctx, { marker: '%%' }),
             new LinkRule(ctx as RhoContext),
+            new HeadlessLinkRule(ctx as RhoContext),
             new VerbatimRule(ctx),
         ]);
         this.defineParser('code', ctx => [

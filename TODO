@@ -11,8 +11,8 @@
     - [x] strike
     - [x] html tag
     - [x] html comment
-    - [ ] links
-    - [ ] headless links
+    - [x] links
+    - [x] headless links
     - [ ] images
     - [x] literal
 
@@ -33,11 +33,10 @@
 - [ ] integration tests
 - [ ] benchmarks
 
-- [ ] consider removing Processor from AST .render method
-
 - [ ] opt: cache parser lookups in rules
+    - to confirm
 - [ ] bundles
     - [ ] esm
     - [ ] cjs
     - [ ] umd
-- [ ] linting: replace with ESLint
+- [x] linting: replace TSLint with ESLint

@@ -3,6 +3,7 @@ import {
     RhoProcessor,
     Cursor,
     LinkRule,
+    HeadlessLinkRule,
 } from '../../../../main';
 
 describe('LinkRule', () => {
@@ -99,6 +100,31 @@ describe('LinkRule', () => {
             const node = rule.parse(cursor);
             assert.equal(node?.render(ctx),
                 '<a href="https://github.com/inca/rho" target="_blank">link</a>');
+        });
+
+    });
+
+    context('headless link', () => {
+
+        it('renders resolved link', () => {
+            const ctx = processor.createContext();
+            ctx.resolvedMedia.set('rho', {
+                href: 'https://github.com/inca/rho',
+                title: 'Rho'
+            });
+            const rule = new HeadlessLinkRule(ctx);
+            const cursor = new Cursor('This [[rho]] that', 5);
+            const node = rule.parse(cursor);
+            assert.equal(node?.render(ctx),
+                '<a href="https://github.com/inca/rho" title="Rho">Rho</a>');
+        });
+
+        it('renders empty string when link is not resolved', () => {
+            const ctx = processor.createContext();
+            const rule = new HeadlessLinkRule(ctx);
+            const cursor = new Cursor('This [[unknown]] that', 5);
+            const node = rule.parse(cursor);
+            assert.equal(node?.render(ctx), '');
         });
 
     });
