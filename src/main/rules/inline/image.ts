@@ -47,9 +47,12 @@ export class ImageRule extends Rule {
             return null;
         }
         cursor.set(hrefEnd + 1);
+        const id = this.ctx.getNextInlineId();
         const href = cursor.subRegion(hrefStart, hrefEnd).toString();
         const region = cursor.subRegion(regionStart, cursor.pos);
-        return new InlineImageNode(region, href, text);
+        this.ctx.mediaIds.add(id);
+        this.ctx.resolvedMedia.set(id, { href });
+        return new ImageNode(region, id, text);
     }
 
     protected tryRefImg(cursor: Cursor, text: string, regionStart: number): Node | null {
@@ -65,19 +68,25 @@ export class ImageRule extends Rule {
         const id = cursor.subRegion(idStart, idEnd).toString();
         cursor.skip();
         const region = cursor.subRegion(regionStart, cursor.pos);
-        this.addRefId(id);
-        return new RefImageNode(region, id, text);
-    }
-
-    addRefId(id: string) {
         this.ctx.mediaIds.add(id);
+        return new ImageNode(region, id, text);
     }
 
 }
 
-export abstract class ImageNode extends Node {
-    abstract text: string;
-    abstract resolveMedia(ctx: ContextWithMedia): MediaDef | null;
+export class ImageNode extends Node {
+
+    constructor(
+        region: Region,
+        public id: string,
+        public text: string = '',
+    ) {
+        super(region, []);
+    }
+
+    resolveMedia(ctx: ContextWithMedia): MediaDef | null {
+        return ctx.resolvedMedia.get(this.id) || null;
+    }
 
     render(ctx: ContextWithMedia) {
         const media = this.resolveMedia(ctx);
@@ -89,47 +98,9 @@ export abstract class ImageNode extends Node {
         if (this.text) {
             buffer += ` alt="${escapeHtml(this.text)}"`;
         }
-        if (media.title) {
-            buffer += ` title="${escapeHtml(media.title)}"`;
-        }
+        buffer += ` title="${escapeHtml(media.title || this.text)}"`;
         buffer += '/>';
         return buffer;
-    }
-
-}
-
-export class InlineImageNode extends ImageNode {
-
-    constructor(
-        region: Region,
-        public href: string,
-        public text: string,
-    ) {
-        super(region, []);
-    }
-
-    resolveMedia() {
-        return {
-            id: '',
-            href: this.href,
-            title: '',
-        };
-    }
-
-}
-
-export class RefImageNode extends ImageNode {
-
-    constructor(
-        region: Region,
-        public id: string,
-        public text: string,
-    ) {
-        super(region, []);
-    }
-
-    resolveMedia(ctx: ContextWithMedia) {
-        return ctx.resolvedMedia.get(this.id) || null;
     }
 
 }

@@ -17,7 +17,7 @@ describe('ImageRule', () => {
             const cursor = new Cursor('This ![alt text](/img.png) that', 5);
             const node = rule.parse(cursor);
             assert.equal(node?.render(ctx),
-                '<img src="/img.png" alt="alt text"/>');
+                '<img src="/img.png" alt="alt text" title="alt text"/>');
             assert.equal(node?.region?.start, 5);
             assert.equal(node?.region?.end, 26);
             assert.equal(cursor.pos, 26);
@@ -27,7 +27,7 @@ describe('ImageRule', () => {
             const cursor = new Cursor('This ![alt text](/img?foo=1&bar=2) that', 5);
             const node = rule.parse(cursor);
             assert.equal(node?.render(ctx),
-                '<img src="/img?foo=1&amp;bar=2" alt="alt text"/>');
+                '<img src="/img?foo=1&amp;bar=2" alt="alt text" title="alt text"/>');
         });
 
     });

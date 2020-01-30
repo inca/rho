@@ -53,7 +53,7 @@ export class LinkRule extends Rule {
                 cursor.skip(2);
                 continue;
             }
-            // Start of image
+            // Start of image: increase nesting
             if (cursor.atSeq(CHAR_EXCLAMATION, CHAR_SQUARE_LEFT)) {
                 cursor.skip(2);
                 nesting += 1;
@@ -64,7 +64,7 @@ export class LinkRule extends Rule {
                 cursor.skip(2);
                 continue;
             }
-            // Closing nested bracket, reduce nesting
+            // Closing nested bracket: decrease nesting
             if (cursor.atCode(CHAR_SQUARE_RIGHT)) {
                 cursor.skip();
                 nesting -= 1;
