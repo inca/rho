@@ -28,18 +28,25 @@ export class LinkRule extends Rule {
         cursor.skip();
         const inlineParser = this.ctx.getParser('inline');
         const textStart = cursor.pos;
+        const textEnd = this.findClosingMarker(cursor.clone());
+        if (textEnd == null) {
+            return null;
+        }
+        cursor.set(textEnd + 1);
+        const textRegion = cursor.subRegion(textStart, textEnd);
+        const { children } = inlineParser.parse(textRegion);
+        return this.tryInlineLink(children, cursor, regionStart)
+            || this.tryRefLink(children, cursor, regionStart);
+    }
+
+    protected findClosingMarker(cursor: Cursor): number | null {
         // Find matching square bracket, allowing nested images
         // with ![alt](href) or ![alt][id] syntaxes
-        let nested = 0;
+        let nesting = 0;
         while (cursor.hasCurrent()) {
-            if (cursor.atCode(CHAR_SQUARE_RIGHT) && nested === 0) {
-                // We're at correctly balanced closing bracket now,
-                // so it can be either (href) or [id] after that
-                const textRegion = cursor.subRegion(textStart, cursor.pos);
-                const { children } = inlineParser.parse(textRegion);
-                cursor.skip();
-                return this.tryInlineLink(children, cursor, regionStart)
-                    || this.tryRefLink(children, cursor, regionStart);
+            if (cursor.atCode(CHAR_SQUARE_RIGHT) && !nesting) {
+                // We're at correctly balanced closing bracket now
+                return cursor.pos;
             }
             // Backslash escapes can be used to skip any square bracket in this context
             if (cursor.atCode(CHAR_BACKSLASH)) {
@@ -47,16 +54,20 @@ export class LinkRule extends Rule {
                 continue;
             }
             // Start of image
-            if (cursor.atCode(CHAR_EXCLAMATION) && cursor.atCode(CHAR_SQUARE_LEFT, 1)) {
+            if (cursor.atSeq(CHAR_EXCLAMATION, CHAR_SQUARE_LEFT)) {
                 cursor.skip(2);
-                nested += 1;
+                nesting += 1;
+                continue;
+            }
+            // The ][ part of ref image: don't increase nesting, just skip it
+            if (cursor.atSeq(CHAR_SQUARE_RIGHT, CHAR_SQUARE_LEFT) && nesting > 0) {
+                cursor.skip(2);
                 continue;
             }
             // Closing nested bracket, reduce nesting
-            // Note: this may produce incorrect results, occasionally
             if (cursor.atCode(CHAR_SQUARE_RIGHT)) {
                 cursor.skip();
-                nested -= 1;
+                nesting -= 1;
                 continue;
             }
             cursor.skip();
