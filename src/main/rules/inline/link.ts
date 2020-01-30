@@ -88,7 +88,10 @@ export class LinkRule extends Rule {
         cursor.set(hrefEnd + 1);
         const href = cursor.subRegion(hrefStart, hrefEnd).toString();
         const region = cursor.subRegion(regionStart, cursor.pos);
-        return new InlineLinkNode(region, children, href);
+        const id = this.ctx.getNextInlineId();
+        this.ctx.mediaIds.add(id);
+        this.ctx.resolvedMedia.set(id, { href });
+        return new LinkNode(region, children, id);
     }
 
     protected tryRefLink(children: Node[], cursor: Cursor, regionStart: number): Node | null {
@@ -104,12 +107,8 @@ export class LinkRule extends Rule {
         cursor.set(idEnd + 1);
         const id = cursor.subRegion(idStart, idEnd).toString();
         const region = cursor.subRegion(regionStart, cursor.pos);
-        this.addRefId(id);
-        return new RefLinkNode(region, children, id, false);
-    }
-
-    addRefId(id: string) {
         this.ctx.mediaIds.add(id);
+        return new LinkNode(region, children, id);
     }
 
 }
@@ -138,15 +137,34 @@ export class HeadlessLinkRule extends Rule {
         const id = cursor.subRegion(idStart, idEnd).toString();
         cursor.skip(2);
         const region = cursor.subRegion(regionStart, cursor.pos);
-        return new RefLinkNode(region, [], id, true);
+        return new LinkNode(region, [], id, true);
     }
 
 }
 
-export abstract class LinkNode extends Node {
+export class LinkNode extends Node {
 
-    abstract resolveMedia(ctx: ContextWithMedia): MediaDef | null;
-    abstract renderContent(ctx: ContextWithMedia): string;
+
+    constructor(
+        region: Region,
+        children: Node[],
+        public id: string,
+        public isHeadless: boolean = false,
+    ) {
+        super(region, children);
+    }
+
+    resolveMedia(ctx: ContextWithMedia): MediaDef | null {
+        return ctx.resolvedMedia.get(this.id) || null;
+    }
+
+    renderContent(ctx: ContextWithMedia): string {
+        if (this.isHeadless) {
+            const media = this.resolveMedia(ctx);
+            return media?.title || '';
+        }
+        return ctx.renderChildren(this);
+    }
 
     render(ctx: ContextWithMedia) {
         const media = this.resolveMedia(ctx);
@@ -165,55 +183,6 @@ export abstract class LinkNode extends Node {
         buffer += this.renderContent(ctx);
         buffer += '</a>';
         return buffer;
-    }
-
-}
-
-export class InlineLinkNode extends LinkNode {
-
-    constructor(
-        region: Region,
-        children: Node[],
-        public href: string,
-    ) {
-        super(region, children);
-    }
-
-    renderContent(ctx: ContextWithMedia) {
-        return ctx.renderChildren(this);
-    }
-
-    resolveMedia() {
-        return {
-            id: '',
-            href: this.href,
-            title: '',
-        };
-    }
-
-}
-
-export class RefLinkNode extends LinkNode {
-
-    constructor(
-        region: Region,
-        children: Node[],
-        public id: string,
-        public headless: boolean,
-    ) {
-        super(region, children);
-    }
-
-    renderContent(ctx: ContextWithMedia) {
-        if (this.headless) {
-            const media = ctx.resolvedMedia.get(this.id) || null;
-            return media ? escapeHtml(media.title || '') : '';
-        }
-        return ctx.renderChildren(this);
-    }
-
-    resolveMedia(ctx: ContextWithMedia) {
-        return ctx.resolvedMedia.get(this.id) || null;
     }
 
 }
