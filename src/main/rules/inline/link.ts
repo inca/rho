@@ -69,21 +69,15 @@ export class LinkRule extends Rule {
             return null;
         }
         cursor.skip();
-        const start = cursor.pos;
-        while (cursor.hasCurrent()) {
-            if (cursor.atCode(CHAR_BACKSLASH)) {
-                cursor.skip(2);
-                continue;
-            }
-            if (cursor.atCode(CHAR_PAREN_RIGHT)) {
-                const href = cursor.subRegion(start, cursor.pos).toString();
-                cursor.skip();
-                const region = cursor.subRegion(regionStart, cursor.pos);
-                return new InlineLinkNode(region, children, href);
-            }
-            cursor.skip();
+        const hrefStart = cursor.pos;
+        const hrefEnd = cursor.scanSeq(CHAR_PAREN_RIGHT);
+        if (hrefEnd == null) {
+            return null;
         }
-        return null;
+        cursor.set(hrefEnd + 1);
+        const href = cursor.subRegion(hrefStart, hrefEnd).toString();
+        const region = cursor.subRegion(regionStart, cursor.pos);
+        return new InlineLinkNode(region, children, href);
     }
 
     protected tryRefLink(children: Node[], cursor: Cursor, regionStart: number): Node | null {
@@ -91,22 +85,16 @@ export class LinkRule extends Rule {
             return null;
         }
         cursor.skip();
-        const start = cursor.pos;
-        while (cursor.hasCurrent()) {
-            if (cursor.atCode(CHAR_BACKSLASH)) {
-                cursor.skip(2);
-                continue;
-            }
-            if (cursor.atCode(CHAR_SQUARE_RIGHT)) {
-                const id = cursor.subRegion(start, cursor.pos).toString();
-                cursor.skip();
-                const region = cursor.subRegion(regionStart, cursor.pos);
-                this.addRefId(id);
-                return new RefLinkNode(region, children, id, false);
-            }
-            cursor.skip();
+        const idStart = cursor.pos;
+        const idEnd = cursor.scanSeq(CHAR_SQUARE_RIGHT);
+        if (idEnd == null) {
+            return null;
         }
-        return null;
+        cursor.set(idEnd + 1);
+        const id = cursor.subRegion(idStart, idEnd).toString();
+        const region = cursor.subRegion(regionStart, cursor.pos);
+        this.addRefId(id);
+        return new RefLinkNode(region, children, id, false);
     }
 
     addRefId(id: string) {
@@ -131,23 +119,15 @@ export class HeadlessLinkRule extends Rule {
         const regionStart = cursor.pos;
         cursor.skip(2);
         const idStart = cursor.pos;
-        while (cursor.hasCurrent()) {
-            if (cursor.atCode(CHAR_BACKSLASH)) {
-                cursor.skip(2);
-                continue;
-            }
-            if (cursor.atNewLine()) {
-                break;
-            }
-            if (cursor.atCode(CHAR_SQUARE_RIGHT) && cursor.atCode(CHAR_SQUARE_RIGHT, 1)) {
-                const id = cursor.subRegion(idStart, cursor.pos).toString();
-                cursor.skip(2);
-                const region = cursor.subRegion(regionStart, cursor.pos);
-                return new RefLinkNode(region, [], id, true);
-            }
-            cursor.skip();
+        const idEnd = cursor.scanSeq(CHAR_SQUARE_RIGHT, CHAR_SQUARE_RIGHT);
+        if (idEnd == null) {
+            return null;
         }
-        return null;
+        cursor.set(idEnd + 2);
+        const id = cursor.subRegion(idStart, idEnd).toString();
+        cursor.skip(2);
+        const region = cursor.subRegion(regionStart, cursor.pos);
+        return new RefLinkNode(region, [], id, true);
     }
 
 }

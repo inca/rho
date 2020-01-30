@@ -6,7 +6,6 @@ import { ContextWithMedia } from '../../context';
 const {
     CHAR_SQUARE_LEFT,
     CHAR_SQUARE_RIGHT,
-    CHAR_BACKSLASH,
     CHAR_EXCLAMATION,
     CHAR_PAREN_LEFT,
     CHAR_PAREN_RIGHT,
@@ -27,21 +26,14 @@ export class ImageRule extends Rule {
         const regionStart = cursor.pos;
         cursor.skip(2);
         const textStart = cursor.pos;
-        while (cursor.hasCurrent()) {
-            // Backslash escapes can be used to skip any square bracket in this context
-            if (cursor.atCode(CHAR_BACKSLASH)) {
-                cursor.skip(2);
-                continue;
-            }
-            if (cursor.atCode(CHAR_SQUARE_RIGHT)) {
-                const text = cursor.subRegion(textStart, cursor.pos).toString();
-                cursor.skip();
-                return this.tryInlineImg(cursor, text, regionStart)
-                    || this.tryRefImg(cursor, text, regionStart);
-            }
-            cursor.skip();
+        const textEnd = cursor.scanSeq(CHAR_SQUARE_RIGHT);
+        if (textEnd == null) {
+            return null;
         }
-        return null;
+        cursor.set(textEnd + 1);
+        const text = cursor.subRegion(textStart, textEnd).toString();
+        return this.tryInlineImg(cursor, text, regionStart)
+            || this.tryRefImg(cursor, text, regionStart);
     }
 
     protected tryInlineImg(cursor: Cursor, text: string, regionStart: number): Node | null {
@@ -49,21 +41,15 @@ export class ImageRule extends Rule {
             return null;
         }
         cursor.skip();
-        const start = cursor.pos;
-        while (cursor.hasCurrent()) {
-            if (cursor.atCode(CHAR_BACKSLASH)) {
-                cursor.skip(2);
-                continue;
-            }
-            if (cursor.atCode(CHAR_PAREN_RIGHT)) {
-                const href = cursor.subRegion(start, cursor.pos).toString();
-                cursor.skip();
-                const region = cursor.subRegion(regionStart, cursor.pos);
-                return new InlineImageNode(region, href, text);
-            }
-            cursor.skip();
+        const hrefStart = cursor.pos;
+        const hrefEnd = cursor.scanSeq(CHAR_PAREN_RIGHT);
+        if (hrefEnd == null) {
+            return null;
         }
-        return null;
+        cursor.set(hrefEnd + 1);
+        const href = cursor.subRegion(hrefStart, hrefEnd).toString();
+        const region = cursor.subRegion(regionStart, cursor.pos);
+        return new InlineImageNode(region, href, text);
     }
 
     protected tryRefImg(cursor: Cursor, text: string, regionStart: number): Node | null {
@@ -71,22 +57,16 @@ export class ImageRule extends Rule {
             return null;
         }
         cursor.skip();
-        const start = cursor.pos;
-        while (cursor.hasCurrent()) {
-            if (cursor.atCode(CHAR_BACKSLASH)) {
-                cursor.skip(2);
-                continue;
-            }
-            if (cursor.atCode(CHAR_SQUARE_RIGHT)) {
-                const id = cursor.subRegion(start, cursor.pos).toString();
-                cursor.skip();
-                const region = cursor.subRegion(regionStart, cursor.pos);
-                this.addRefId(id);
-                return new RefImageNode(region, id, text);
-            }
-            cursor.skip();
+        const idStart = cursor.pos;
+        const idEnd = cursor.scanSeq(CHAR_SQUARE_RIGHT);
+        if (idEnd == null) {
+            return null;
         }
-        return null;
+        const id = cursor.subRegion(idStart, idEnd).toString();
+        cursor.skip();
+        const region = cursor.subRegion(regionStart, cursor.pos);
+        this.addRefId(id);
+        return new RefImageNode(region, id, text);
     }
 
     addRefId(id: string) {

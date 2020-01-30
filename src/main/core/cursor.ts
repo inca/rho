@@ -16,6 +16,7 @@ const {
     CHAR_CR,
     CHAR_MINUS,
     CHAR_UNDERSCORE,
+    CHAR_BACKSLASH,
 } = constants;
 
 /**
@@ -126,6 +127,19 @@ export class Cursor {
      */
     atCode(code: number, offset: number = 0): boolean {
         return this.peekCode(offset) === code;
+    }
+
+    /**
+     * Tests if cursor is at specified sequence of character blocks.
+     * Faster alternative to `at`.
+     */
+    atSeq(...seq: number[]) {
+        for (let i = 0; i < seq.length; i++) {
+            if (seq[i] !== this.peekCode(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -374,6 +388,28 @@ export class Cursor {
         const start = this.pos;
         this.skipToEol().skipNewLine();
         return this.region.subRegion(start, this.pos);
+    }
+
+    /**
+     * Scans forward, returning an index of specified sequence of character codes.
+     * When backslash is encountered, it is skipped along with an adjacent character,
+     * allowing escaping any markers with a backslash.
+     * Returns null if no such sequence is found.
+     * Cursor is not modified.
+     */
+    scanSeq(...seq: number[]): number | null {
+        const cur = this.clone();
+        while (cur.hasCurrent()) {
+            if (cur.atCode(CHAR_BACKSLASH)) {
+                cur.skip(2);
+                continue;
+            }
+            if (cur.atSeq(...seq)) {
+                return cur.pos;
+            }
+            cur.skip();
+        }
+        return null;
     }
 
     debug() {
