@@ -26,37 +26,48 @@ export class LinkRule extends Rule {
         }
         const regionStart = cursor.pos;
         cursor.skip();
-        const codeParser = this.ctx.getParser('inline');
+        const inlineParser = this.ctx.getParser('inline');
         const textStart = cursor.pos;
+        const textEnd = this.findClosingMarker(cursor.clone());
+        if (textEnd == null) {
+            return null;
+        }
+        cursor.set(textEnd + 1);
+        const textRegion = cursor.subRegion(textStart, textEnd);
+        const { children } = inlineParser.parse(textRegion);
+        return this.tryInlineLink(children, cursor, regionStart)
+            || this.tryRefLink(children, cursor, regionStart);
+    }
+
+    protected findClosingMarker(cursor: Cursor): number | null {
         // Find matching square bracket, allowing nested images
         // with ![alt](href) or ![alt][id] syntaxes
-        let nested = 0;
+        let nesting = 0;
         while (cursor.hasCurrent()) {
-            if (cursor.atCode(CHAR_SQUARE_RIGHT) && nested === 0) {
-                // We're at correctly balanced closing bracket now,
-                // so it can be either (href) or [id] after that
-                const textRegion = cursor.subRegion(textStart, cursor.pos);
-                const { children } = codeParser.parse(textRegion);
-                cursor.skip();
-                return this.tryInlineLink(children, cursor, regionStart)
-                    || this.tryRefLink(children, cursor, regionStart);
+            if (cursor.atCode(CHAR_SQUARE_RIGHT) && !nesting) {
+                // We're at correctly balanced closing bracket now
+                return cursor.pos;
             }
             // Backslash escapes can be used to skip any square bracket in this context
             if (cursor.atCode(CHAR_BACKSLASH)) {
                 cursor.skip(2);
                 continue;
             }
-            // Start of image
-            if (cursor.atCode(CHAR_EXCLAMATION) && cursor.atCode(CHAR_SQUARE_LEFT, 1)) {
+            // Start of image: increase nesting
+            if (cursor.atSeq(CHAR_EXCLAMATION, CHAR_SQUARE_LEFT)) {
                 cursor.skip(2);
-                nested += 1;
+                nesting += 1;
                 continue;
             }
-            // Closing nested bracket, reduce nesting
-            // Note: this may produce incorrect results, occasionally
+            // The ][ part of ref image: don't increase nesting, just skip it
+            if (cursor.atSeq(CHAR_SQUARE_RIGHT, CHAR_SQUARE_LEFT) && nesting > 0) {
+                cursor.skip(2);
+                continue;
+            }
+            // Closing nested bracket: decrease nesting
             if (cursor.atCode(CHAR_SQUARE_RIGHT)) {
                 cursor.skip();
-                nested -= 1;
+                nesting -= 1;
                 continue;
             }
             cursor.skip();
@@ -69,21 +80,18 @@ export class LinkRule extends Rule {
             return null;
         }
         cursor.skip();
-        const start = cursor.pos;
-        while (cursor.hasCurrent()) {
-            if (cursor.atCode(CHAR_BACKSLASH)) {
-                cursor.skip(2);
-                continue;
-            }
-            if (cursor.atCode(CHAR_PAREN_RIGHT)) {
-                const href = cursor.subRegion(start, cursor.pos).toString();
-                cursor.skip();
-                const region = cursor.subRegion(regionStart, cursor.pos);
-                return new InlineLinkNode(region, children, href);
-            }
-            cursor.skip();
+        const hrefStart = cursor.pos;
+        const hrefEnd = cursor.scanSeq(CHAR_PAREN_RIGHT);
+        if (hrefEnd == null) {
+            return null;
         }
-        return null;
+        cursor.set(hrefEnd + 1);
+        const href = cursor.subRegion(hrefStart, hrefEnd).toString();
+        const region = cursor.subRegion(regionStart, cursor.pos);
+        const id = this.ctx.getNextInlineId();
+        this.ctx.mediaIds.add(id);
+        this.ctx.resolvedMedia.set(id, { href });
+        return new LinkNode(region, children, id);
     }
 
     protected tryRefLink(children: Node[], cursor: Cursor, regionStart: number): Node | null {
@@ -91,26 +99,16 @@ export class LinkRule extends Rule {
             return null;
         }
         cursor.skip();
-        const start = cursor.pos;
-        while (cursor.hasCurrent()) {
-            if (cursor.atCode(CHAR_BACKSLASH)) {
-                cursor.skip(2);
-                continue;
-            }
-            if (cursor.atCode(CHAR_SQUARE_RIGHT)) {
-                const id = cursor.subRegion(start, cursor.pos).toString();
-                cursor.skip();
-                const region = cursor.subRegion(regionStart, cursor.pos);
-                this.addRefId(id);
-                return new RefLinkNode(region, children, id, false);
-            }
-            cursor.skip();
+        const idStart = cursor.pos;
+        const idEnd = cursor.scanSeq(CHAR_SQUARE_RIGHT);
+        if (idEnd == null) {
+            return null;
         }
-        return null;
-    }
-
-    addRefId(id: string) {
+        cursor.set(idEnd + 1);
+        const id = cursor.subRegion(idStart, idEnd).toString();
+        const region = cursor.subRegion(regionStart, cursor.pos);
         this.ctx.mediaIds.add(id);
+        return new LinkNode(region, children, id);
     }
 
 }
@@ -124,44 +122,53 @@ export class HeadlessLinkRule extends Rule {
     }
 
     protected parseAt(cursor: Cursor): Node | null {
-        if (!cursor.atCode(CHAR_SQUARE_LEFT) && !cursor.atCode(CHAR_SQUARE_LEFT, 1)) {
+        if (!(cursor.atCode(CHAR_SQUARE_LEFT) && cursor.atCode(CHAR_SQUARE_LEFT, 1))) {
             return null;
         }
         // Simply search for end marker, whatever is inside is an id
         const regionStart = cursor.pos;
         cursor.skip(2);
         const idStart = cursor.pos;
-        while (cursor.hasCurrent()) {
-            if (cursor.atCode(CHAR_BACKSLASH)) {
-                cursor.skip(2);
-                continue;
-            }
-            if (cursor.atNewLine()) {
-                break;
-            }
-            if (cursor.atCode(CHAR_SQUARE_RIGHT) && cursor.atCode(CHAR_SQUARE_RIGHT, 1)) {
-                const id = cursor.subRegion(idStart, cursor.pos).toString();
-                cursor.skip(2);
-                const region = cursor.subRegion(regionStart, cursor.pos);
-                return new RefLinkNode(region, [], id, true);
-            }
-            cursor.skip();
+        const idEnd = cursor.scanSeq(CHAR_SQUARE_RIGHT, CHAR_SQUARE_RIGHT);
+        if (idEnd == null) {
+            return null;
         }
-        return null;
+        cursor.set(idEnd + 2);
+        const id = cursor.subRegion(idStart, idEnd).toString();
+        cursor.skip(2);
+        const region = cursor.subRegion(regionStart, cursor.pos);
+        return new LinkNode(region, [], id, true);
     }
 
 }
 
-export abstract class LinkNode extends Node {
+export class LinkNode extends Node {
 
-    abstract resolveMedia(ctx: ContextWithMedia): MediaDef | null;
-    abstract renderContent(ctx: ContextWithMedia): string;
+
+    constructor(
+        region: Region,
+        children: Node[],
+        public id: string,
+        public isHeadless: boolean = false,
+    ) {
+        super(region, children);
+    }
+
+    resolveMedia(ctx: ContextWithMedia): MediaDef | null {
+        return ctx.resolvedMedia.get(this.id) || null;
+    }
+
+    renderContent(ctx: ContextWithMedia): string {
+        if (this.isHeadless) {
+            const media = this.resolveMedia(ctx);
+            return media?.title || '';
+        }
+        return ctx.renderChildren(this);
+    }
 
     render(ctx: ContextWithMedia) {
         const media = this.resolveMedia(ctx);
         if (media == null) {
-            // Unresolved links are omitted by default,
-            // but can be changed to verbatim.
             return '';
         }
         let buffer = '<a';
@@ -176,55 +183,6 @@ export abstract class LinkNode extends Node {
         buffer += this.renderContent(ctx);
         buffer += '</a>';
         return buffer;
-    }
-
-}
-
-export class InlineLinkNode extends LinkNode {
-
-    constructor(
-        region: Region,
-        children: Node[],
-        public href: string,
-    ) {
-        super(region, children);
-    }
-
-    renderContent(ctx: ContextWithMedia) {
-        return ctx.renderChildren(this);
-    }
-
-    resolveMedia() {
-        return {
-            id: '',
-            href: this.href,
-            title: '',
-        };
-    }
-
-}
-
-export class RefLinkNode extends LinkNode {
-
-    constructor(
-        region: Region,
-        children: Node[],
-        public id: string,
-        public headless: boolean,
-    ) {
-        super(region, children);
-    }
-
-    renderContent(ctx: ContextWithMedia) {
-        if (this.headless) {
-            const media = ctx.resolvedMedia.get(this.id) || null;
-            return media ? escapeHtml(media.title || '') : '';
-        }
-        return ctx.renderChildren(this);
-    }
-
-    resolveMedia(ctx: ContextWithMedia) {
-        return ctx.resolvedMedia.get(this.id) || null;
     }
 
 }

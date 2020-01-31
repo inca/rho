@@ -11,6 +11,7 @@ export interface ContextWithMedia extends Context {
     mediaIds: Set<string>;
     resolvedMedia: Map<string, MediaDef>;
     isExternalLink(media: MediaDef): boolean;
+    getNextInlineId(): string;
 }
 
 export class RhoContext extends Context
@@ -23,10 +24,16 @@ export class RhoContext extends Context
         super(processor);
     }
 
+    linkCounter: number = 0;
     mediaIds: Set<string> = new Set();
     resolvedMedia: Map<string, MediaDef> = new Map();
 
     isExternalLink(media: MediaDef): boolean {
         return media.external ?? this.processor.options.externalLinks;
+    }
+
+    getNextInlineId() {
+        this.linkCounter += 1;
+        return '__' + this.linkCounter;
     }
 }
