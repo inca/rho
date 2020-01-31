@@ -122,7 +122,7 @@ export class HeadlessLinkRule extends Rule {
     }
 
     protected parseAt(cursor: Cursor): Node | null {
-        if (!(cursor.atCode(CHAR_SQUARE_LEFT) && cursor.atCode(CHAR_SQUARE_LEFT, 1))) {
+        if (!cursor.atSeq(CHAR_SQUARE_LEFT, CHAR_SQUARE_LEFT)) {
             return null;
         }
         // Simply search for end marker, whatever is inside is an id
@@ -135,7 +135,7 @@ export class HeadlessLinkRule extends Rule {
         }
         cursor.set(idEnd + 2);
         const id = cursor.subRegion(idStart, idEnd).toString();
-        cursor.skip(2);
+        this.ctx.mediaIds.add(id);
         const region = cursor.subRegion(regionStart, cursor.pos);
         return new LinkNode(region, [], id, true);
     }
@@ -143,7 +143,6 @@ export class HeadlessLinkRule extends Rule {
 }
 
 export class LinkNode extends Node {
-
 
     constructor(
         region: Region,

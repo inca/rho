@@ -3,6 +3,7 @@ import {
     RhoProcessor,
     Cursor,
     MediaRule,
+    HeadlessMediaRule,
 } from '../../../../main';
 
 describe('MediaRule', () => {
@@ -83,6 +84,31 @@ describe('MediaRule', () => {
             const node = rule.parse(cursor);
             assert.equal(node?.render(ctx),
                 '<img srcset="/some/img-480 480w, /some/img-800 800w"/>');
+        });
+
+    });
+
+    context('headless media', () => {
+
+        it('renders resolved media', () => {
+            const ctx = processor.createContext();
+            ctx.resolvedMedia.set('img', {
+                href: '/some/img',
+                title: 'My Cool Pic'
+            });
+            const rule = new HeadlessMediaRule(ctx);
+            const cursor = new Cursor('This ![[img]] that', 5);
+            const node = rule.parse(cursor);
+            assert.equal(node?.render(ctx),
+                '<img src="/some/img" alt="My Cool Pic" title="My Cool Pic"/>');
+        });
+
+        it('renders empty string when link is not resolved', () => {
+            const ctx = processor.createContext();
+            const rule = new HeadlessMediaRule(ctx);
+            const cursor = new Cursor('This ![[unknown]] that', 5);
+            const node = rule.parse(cursor);
+            assert.equal(node?.render(ctx), '');
         });
 
     });

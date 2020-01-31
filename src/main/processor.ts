@@ -21,6 +21,7 @@ import {
     LinkRule,
     HeadlessLinkRule,
     MediaRule,
+    HeadlessMediaRule,
 } from './rules';
 import { RhoOptions, RHO_DEFAULT_OPTIONS } from './options';
 import { RhoContext } from './context';
@@ -69,6 +70,7 @@ export class RhoProcessor extends Processor {
             new LinkRule(ctx as RhoContext),
             new HeadlessLinkRule(ctx as RhoContext),
             new MediaRule(ctx as RhoContext),
+            new HeadlessMediaRule(ctx as RhoContext),
             new VerbatimRule(ctx),
         ]);
         this.defineParser('code', ctx => [

@@ -74,6 +74,36 @@ export class MediaRule extends Rule {
 
 }
 
+export class HeadlessMediaRule extends Rule {
+
+    constructor(
+        readonly ctx: ContextWithMedia,
+    ) {
+        super(ctx);
+    }
+
+    protected parseAt(cursor: Cursor): Node | null {
+        if (!cursor.atSeq(CHAR_EXCLAMATION, CHAR_SQUARE_LEFT, CHAR_SQUARE_LEFT)) {
+            return null;
+        }
+        // Simply search for end marker, whatever is inside is an id
+        const regionStart = cursor.pos;
+        cursor.skip(3);
+        const idStart = cursor.pos;
+        const idEnd = cursor.scanSeq(CHAR_SQUARE_RIGHT, CHAR_SQUARE_RIGHT);
+        if (idEnd == null) {
+            return null;
+        }
+        cursor.set(idEnd + 2);
+        const id = cursor.subRegion(idStart, idEnd).toString();
+        this.ctx.mediaIds.add(id);
+        const region = cursor.subRegion(regionStart, cursor.pos);
+        return new MediaNode(region, id);
+    }
+
+}
+
+
 export class MediaNode extends Node {
 
     constructor(
@@ -98,9 +128,7 @@ export class MediaNode extends Node {
         }
         let buffer = '<img';
         buffer += ` src="${escapeHtml(media.href)}"`;
-        if (this.text) {
-            buffer += ` alt="${escapeHtml(this.text)}"`;
-        }
+        buffer += ` alt="${escapeHtml(this.text || media.title || '')}"`;
         buffer += ` title="${escapeHtml(media.title || this.text)}"`;
         buffer += '/>';
         return buffer;
