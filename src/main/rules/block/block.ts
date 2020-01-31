@@ -17,6 +17,9 @@ const {
     CHAR_TAB,
     CHAR_BACKSLASH,
     CHAR_CURLY_LEFT,
+    CHAR_CURLY_RIGHT,
+    CHAR_HASH,
+    CHAR_PERIOD,
 } = constants;
 
 export abstract class BlockRule extends Rule {
@@ -103,10 +106,10 @@ export abstract class BlockRule extends Rule {
             // We're at {
             const start = cursor.pos;
             cursor.skip();
-            const id = this.parseSelectorComponent('#', cursor) || '';
+            const id = this.parseSelectorComponent(CHAR_HASH, cursor) || '';
             const classList: string[] = [];
             while (true) {
-                const cl = this.parseSelectorComponent('.', cursor);
+                const cl = this.parseSelectorComponent(CHAR_PERIOD, cursor);
                 if (cl) {
                     classList.push(cl);
                     continue;
@@ -116,7 +119,7 @@ export abstract class BlockRule extends Rule {
             }
             // Check for valid selector conditions, otherwise discard all the things
             // and continue from where we left
-            if (!cursor.at('}')) {
+            if (!cursor.atCode(CHAR_CURLY_RIGHT)) {
                 continue;
             }
             cursor.skip().skipSpaces();
@@ -143,11 +146,11 @@ export abstract class BlockRule extends Rule {
         return null;
     }
 
-    protected parseSelectorComponent(marker: string, cursor: Cursor): string | null {
-        if (!cursor.at(marker)) {
+    protected parseSelectorComponent(marker: number, cursor: Cursor): string | null {
+        if (!cursor.atCode(marker)) {
             return null;
         }
-        cursor.skip(marker.length);
+        cursor.skip();
         const start = cursor.pos;
         while (cursor.hasCurrent() && cursor.atIdentifier()) {
             cursor.skip();
