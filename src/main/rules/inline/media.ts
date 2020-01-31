@@ -11,7 +11,7 @@ const {
     CHAR_PAREN_RIGHT,
 } = constants;
 
-export class ImageRule extends Rule {
+export class MediaRule extends Rule {
 
     constructor(
         readonly ctx: ContextWithMedia,
@@ -52,7 +52,7 @@ export class ImageRule extends Rule {
         const region = cursor.subRegion(regionStart, cursor.pos);
         this.ctx.mediaIds.add(id);
         this.ctx.resolvedMedia.set(id, { href });
-        return new ImageNode(region, id, text);
+        return new MediaNode(region, id, text);
     }
 
     protected tryRefImg(cursor: Cursor, text: string, regionStart: number): Node | null {
@@ -66,15 +66,15 @@ export class ImageRule extends Rule {
             return null;
         }
         const id = cursor.subRegion(idStart, idEnd).toString();
-        cursor.skip();
+        cursor.set(idEnd + 1);
         const region = cursor.subRegion(regionStart, cursor.pos);
         this.ctx.mediaIds.add(id);
-        return new ImageNode(region, id, text);
+        return new MediaNode(region, id, text);
     }
 
 }
 
-export class ImageNode extends Node {
+export class MediaNode extends Node {
 
     constructor(
         region: Region,
@@ -92,6 +92,9 @@ export class ImageNode extends Node {
         const media = this.resolveMedia(ctx);
         if (media == null) {
             return '';
+        }
+        if (media.customRender) {
+            return media.customRender(this, ctx);
         }
         let buffer = '<img';
         buffer += ` src="${escapeHtml(media.href)}"`;

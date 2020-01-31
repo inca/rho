@@ -35,7 +35,7 @@ describe('LinkRule', () => {
             assert.equal(node?.render(ctx), '<a href="#">foo <strong>bar</strong> <em>baz</em></a>');
         });
 
-        it('allows nested images');
+        it('allows nested media');
 
         it('allows escaped [ inside', () => {
             const cursor = new Cursor('This [foo \\[ bar](#) that', 5);

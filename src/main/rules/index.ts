@@ -14,7 +14,7 @@ export * from './inline/formula';
 export * from './inline/html-comment';
 export * from './inline/html-entity';
 export * from './inline/html-tag';
-export * from './inline/image';
+export * from './inline/media';
 export * from './inline/link';
 export * from './inline/plain-text';
 export * from './inline/strike';

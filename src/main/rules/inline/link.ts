@@ -40,7 +40,7 @@ export class LinkRule extends Rule {
     }
 
     protected findClosingMarker(cursor: Cursor): number | null {
-        // Find matching square bracket, allowing nested images
+        // Find matching square bracket, allowing nested media
         // with ![alt](href) or ![alt][id] syntaxes
         let nesting = 0;
         while (cursor.hasCurrent()) {
@@ -53,13 +53,13 @@ export class LinkRule extends Rule {
                 cursor.skip(2);
                 continue;
             }
-            // Start of image: increase nesting
+            // Start of media: increase nesting
             if (cursor.atSeq(CHAR_EXCLAMATION, CHAR_SQUARE_LEFT)) {
                 cursor.skip(2);
                 nesting += 1;
                 continue;
             }
-            // The ][ part of ref image: don't increase nesting, just skip it
+            // The ][ part of ref media: don't increase nesting, just skip it
             if (cursor.atSeq(CHAR_SQUARE_RIGHT, CHAR_SQUARE_LEFT) && nesting > 0) {
                 cursor.skip(2);
                 continue;
