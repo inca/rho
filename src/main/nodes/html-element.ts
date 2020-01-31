@@ -8,6 +8,7 @@ export class HtmlElementNode extends Node {
         public tagName: string,
         public selector: Selector | null = null,
         public inline: boolean = false,
+        public selfClosing: boolean = false,
     ) {
         super(region, children);
     }
@@ -21,9 +22,13 @@ export class HtmlElementNode extends Node {
         if (this.selector) {
             result += this.selector.render();
         }
-        result += '>';
-        result += content;
-        result += '</' + this.tagName + '>';
+        if (this.selfClosing) {
+            result += '/>';
+        } else {
+            result += '>';
+            result += content;
+            result += '</' + this.tagName + '>';
+        }
         if (!this.inline) {
             result += '\n';
         }

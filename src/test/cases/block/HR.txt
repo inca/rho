@@ -1,0 +1,15 @@
+This is a horizontal ruler.
+
+---
+
+Supports selectors and arbitrary number of minuses:
+
+---------------- {.red}
+
+Only continuous minuses are allowed, so the following is not an HR:
+
+---- - - -
+
+Other characters also not allowed:
+
+--- hello

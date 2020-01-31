@@ -22,6 +22,7 @@ import {
     HeadlessLinkRule,
     MediaRule,
     HeadlessMediaRule,
+    HrRule,
 } from './rules';
 import { RhoOptions, RHO_DEFAULT_OPTIONS } from './options';
 import { RhoContext } from './context';
@@ -47,6 +48,7 @@ export class RhoProcessor extends Processor {
             new CodeBlockRule(ctx),
             new DivBlockRule(ctx),
             new HtmlBlockRule(ctx),
+            new HrRule(ctx),
             new ParagraphRule(ctx),
         ]);
         this.defineParser('list', ctx => [

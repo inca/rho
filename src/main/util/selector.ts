@@ -16,6 +16,6 @@ export class Selector {
         if (this.classList.length) {
             buf.push(`class="${this.classList.join(' ')}"`);
         }
-        return ' ' + buf.join(' ');
+        return buf.length ? ' ' + buf.join(' ') : '';
     }
 }
