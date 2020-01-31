@@ -25,12 +25,12 @@
         - [ ] support gfm-style class
     - [x] div
     - [x] html
-    - [ ] hr
+    - [x] hr
     - [ ] table
     - [x] paragraph
 
 - [x] selectors
-- [ ] integration tests
+- [-] integration tests
 - [ ] benchmarks
 
 - [ ] opt: cache parser lookups in rules
