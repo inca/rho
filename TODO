@@ -40,3 +40,4 @@
     - [ ] cjs
     - [ ] umd
 - [x] linting: replace TSLint with ESLint
+- [ ] live editor

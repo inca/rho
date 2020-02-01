@@ -81,12 +81,12 @@ describe('LinkRule', () => {
             assert.equal(node?.render(ctx), '<a href="https://github.com/inca/rho">link</a>');
         });
 
-        it('renders empty string when link is not resolved', () => {
+        it('renders text content when link is not resolved', () => {
             const ctx = processor.createContext();
             const rule = new LinkRule(ctx);
             const cursor = new Cursor('This [link][unknown] that', 5);
             const node = rule.parse(cursor);
-            assert.equal(node?.render(ctx), '');
+            assert.equal(node?.render(ctx), 'link');
         });
 
         it('renders external link', () => {

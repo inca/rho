@@ -26,7 +26,7 @@ export class MediaRule extends Rule {
         const regionStart = cursor.pos;
         cursor.skip(2);
         const textStart = cursor.pos;
-        const textEnd = cursor.scanSeq(CHAR_SQUARE_RIGHT);
+        const textEnd = cursor.scan(CHAR_SQUARE_RIGHT);
         if (textEnd == null) {
             return null;
         }
@@ -42,7 +42,7 @@ export class MediaRule extends Rule {
         }
         cursor.skip();
         const hrefStart = cursor.pos;
-        const hrefEnd = cursor.scanSeq(CHAR_PAREN_RIGHT);
+        const hrefEnd = cursor.scan(CHAR_PAREN_RIGHT);
         if (hrefEnd == null) {
             return null;
         }
@@ -61,7 +61,7 @@ export class MediaRule extends Rule {
         }
         cursor.skip();
         const idStart = cursor.pos;
-        const idEnd = cursor.scanSeq(CHAR_SQUARE_RIGHT);
+        const idEnd = cursor.scan(CHAR_SQUARE_RIGHT);
         if (idEnd == null) {
             return null;
         }
@@ -90,7 +90,7 @@ export class HeadlessMediaRule extends Rule {
         const regionStart = cursor.pos;
         cursor.skip(3);
         const idStart = cursor.pos;
-        const idEnd = cursor.scanSeq(CHAR_SQUARE_RIGHT, CHAR_SQUARE_RIGHT);
+        const idEnd = cursor.scan(CHAR_SQUARE_RIGHT, CHAR_SQUARE_RIGHT);
         if (idEnd == null) {
             return null;
         }

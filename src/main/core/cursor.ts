@@ -397,9 +397,27 @@ export class Cursor {
      * Returns null if no such sequence is found.
      * Cursor is not modified.
      */
-    scanSeq(...seq: number[]): number | null {
+    scan(...seq: number[]): number | null {
         const cur = this.clone();
         while (cur.hasCurrent()) {
+            if (cur.atCode(CHAR_BACKSLASH)) {
+                cur.skip(2);
+                continue;
+            }
+            if (cur.atSeq(...seq)) {
+                return cur.pos;
+            }
+            cur.skip();
+        }
+        return null;
+    }
+
+    /**
+     * Same as `scan`, but scans only on the current line.
+     */
+    scanLine(...seq: number[]): number | null {
+        const cur = this.clone();
+        while (cur.hasCurrent() && !cur.atNewLine()) {
             if (cur.atCode(CHAR_BACKSLASH)) {
                 cur.skip(2);
                 continue;
