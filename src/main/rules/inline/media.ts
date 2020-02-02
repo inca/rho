@@ -1,6 +1,6 @@
 import { Rule, Cursor, Node, constants, Region } from '../../core';
 import { escapeHtml } from '../../util/escape';
-import { MediaDef } from '../../util/media';
+import { parseHref, MediaDef } from '../../util/media';
 import { ContextWithMedia } from '../../context';
 
 const {
@@ -126,10 +126,23 @@ export class MediaNode extends Node {
         if (media.customRender) {
             return media.customRender(this, ctx);
         }
+        const { src, width, height } = parseHref(media.href);
+        const alt = this.text || media.title;
+        const title = media.title || this.text;
         let buffer = '<img';
-        buffer += ` src="${escapeHtml(media.href)}"`;
-        buffer += ` alt="${escapeHtml(this.text || media.title || '')}"`;
-        buffer += ` title="${escapeHtml(media.title || this.text)}"`;
+        buffer += ` src="${escapeHtml(src)}"`;
+        if (alt) {
+            buffer += ` alt="${escapeHtml(alt)}"`;
+        }
+        if (title) {
+            buffer += ` title="${escapeHtml(title)}"`;
+        }
+        if (width != null) {
+            buffer += ` width="${width}"`;
+        }
+        if (height != null) {
+            buffer += ` height="${height}"`;
+        }
         buffer += '/>';
         return buffer;
     }

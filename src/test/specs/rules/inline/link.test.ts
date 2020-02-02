@@ -49,6 +49,18 @@ describe('LinkRule', () => {
             assert.equal(node?.render(ctx), '<a href="#">foo ] bar</a>');
         });
 
+        it('strips auxiliary attributes', () => {
+            const cursor = new Cursor('This [link](/img|32x32) that', 5);
+            const node = rule.parse(cursor);
+            assert.equal(node?.render(ctx), '<a href="/img">link</a>');
+        });
+
+        it('supports backslash escapes in href', () => {
+            const cursor = new Cursor('This [link](/img\\|32x32) that', 5);
+            const node = rule.parse(cursor);
+            assert.equal(node?.render(ctx), '<a href="/img|32x32">link</a>');
+        });
+
     });
 
     context('ref link', () => {

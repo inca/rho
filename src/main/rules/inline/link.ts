@@ -1,6 +1,6 @@
 import { Rule, Cursor, Node, constants, Region } from '../../core';
 import { escapeHtml } from '../../util/escape';
-import { MediaDef } from '../../util/media';
+import { MediaDef, parseHref } from '../../util/media';
 import { ContextWithMedia } from '../../context';
 
 const {
@@ -170,8 +170,9 @@ export class LinkNode extends Node {
         if (media == null) {
             return this.renderContent(ctx);
         }
+        const { src } = parseHref(media.href);
         let buffer = '<a';
-        buffer += ` href="${escapeHtml(media.href)}"`;
+        buffer += ` href="${escapeHtml(src)}"`;
         if (media.title) {
             buffer += ` title="${escapeHtml(media.title)}"`;
         }

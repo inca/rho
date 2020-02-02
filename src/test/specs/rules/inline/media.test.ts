@@ -31,6 +31,27 @@ describe('MediaRule', () => {
                 '<img src="/img?foo=1&amp;bar=2" alt="alt text" title="alt text"/>');
         });
 
+        it('supports auxiliary width', () => {
+            const cursor = new Cursor('This ![alt text](/img|32) that', 5);
+            const node = rule.parse(cursor);
+            assert.equal(node?.render(ctx),
+                '<img src="/img" alt="alt text" title="alt text" width="32"/>');
+        });
+
+        it('supports auxiliary height', () => {
+            const cursor = new Cursor('This ![alt text](/img|,32) that', 5);
+            const node = rule.parse(cursor);
+            assert.equal(node?.render(ctx),
+                '<img src="/img" alt="alt text" title="alt text" height="32"/>');
+        });
+
+        it('supports auxiliary width and height', () => {
+            const cursor = new Cursor('This ![alt text](/img|32x24) that', 5);
+            const node = rule.parse(cursor);
+            assert.equal(node?.render(ctx),
+                '<img src="/img" alt="alt text" title="alt text" width="32" height="24"/>');
+        });
+
     });
 
     context('ref media', () => {
@@ -61,6 +82,18 @@ describe('MediaRule', () => {
             const cursor = new Cursor('This ![text][id] that', 5);
             const node = rule.parse(cursor);
             assert.equal(node?.render(ctx), '<img src="/some/img" alt="text" title="text"/>');
+        });
+
+        it('supports auxiliary width and height', () => {
+            const ctx = processor.createContext();
+            ctx.resolvedMedia.set('id', {
+                href: '/some/img|32x24',
+            });
+            const rule = new MediaRule(ctx);
+            const cursor = new Cursor('This ![text][id] that', 5);
+            const node = rule.parse(cursor);
+            assert.equal(node?.render(ctx),
+                '<img src="/some/img" alt="text" title="text" width="32" height="24"/>');
         });
 
         it('renders empty string when media is not resolved', () => {
