@@ -23,6 +23,7 @@ import {
     MediaRule,
     HeadlessMediaRule,
     HrRule,
+    IndentedBlock,
 } from './rules';
 import { RhoOptions, RHO_DEFAULT_OPTIONS } from './options';
 import { RhoContext } from './context';
@@ -47,6 +48,7 @@ export class RhoProcessor extends Processor {
             new DelegateRule(ctx, 'list'),
             new CodeBlockRule(ctx),
             new DivBlockRule(ctx),
+            new IndentedBlock(ctx),
             new HtmlBlockRule(ctx),
             new HrRule(ctx),
             new ParagraphRule(ctx),

@@ -79,6 +79,12 @@ export abstract class BlockRule extends Rule {
         return result;
     }
 
+    parseBlockContent(region: Region): Node[] {
+        const parser = this.ctx.getParser('block');
+        const ast = parser.parse(region);
+        return ast.children;
+    }
+
     captureSelector(region: Region, allowMultiple: boolean = false): Selector | null {
         return this.parseSelectorAt(new Cursor(region), allowMultiple);
     }

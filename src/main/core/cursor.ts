@@ -244,6 +244,16 @@ export class Cursor {
     }
 
     /**
+     * Skips whilst positioned within a tainted region.
+     */
+    skipTainted(): this {
+        while (this.atTaint()) {
+            this.skip();
+        }
+        return this;
+    }
+
+    /**
      * Advances cursor forward by `n` characters.
      */
     skip(n: number = 1): this {

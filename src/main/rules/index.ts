@@ -3,8 +3,9 @@ export * from './block/code-block';
 export * from './block/div-block';
 export * from './block/fenced-block';
 export * from './block/heading';
-export * from './block/html-block';
 export * from './block/hr';
+export * from './block/html-block';
+export * from './block/indented-block';
 export * from './block/list';
 export * from './block/paragraph';
 

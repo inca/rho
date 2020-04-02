@@ -1,0 +1,10 @@
+Blocks starting with tilde followed by tagname are transformed into HTML tags.
+
+~figure     {.centered}
+  ![](foo)
+  ![](bar)
+  ![](baz)
+
+  ~figcaption Inline content is supported too.
+
+The content is indentation-based.
