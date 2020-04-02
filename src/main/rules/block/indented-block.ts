@@ -24,7 +24,7 @@ export class IndentedBlock extends BlockRule {
         const contentStart = cursor.pos;
         while (cursor.hasCurrent()) {
             cursor.skipToEndOfBlock().skipBlankLines();
-            if (!cursor.atSpaces(this.indent)) {
+            if (!cursor.atSpaces(this.indent + 2)) {
                 break;
             }
         }

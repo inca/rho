@@ -3,8 +3,9 @@ Blocks starting with tilde followed by tagname are transformed into HTML tags.
 ~figure     {.centered}
   ![](foo)
   ![](bar)
-  ![](baz)
 
   ~figcaption Inline content is supported too.
+
+  ![](baz)
 
 The content is indentation-based.
