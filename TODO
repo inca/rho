@@ -24,6 +24,7 @@
     - [x] code block
         - [ ] support gfm-style class
     - [x] div
+    - [x] indented blocks
     - [x] html
     - [x] hr
     - [ ] table
@@ -33,8 +34,6 @@
 - [-] integration tests
 - [ ] benchmarks
 
-- [ ] opt: cache parser lookups in rules
-    - to confirm
 - [ ] bundles
     - [ ] esm
     - [ ] cjs
