@@ -9,7 +9,9 @@
     "dev:test": "NODE_ENV=test mocha -w --opts=./mocha.opts",
     "check": "eslint . --ext=.js,.ts",
     "test": "NODE_ENV=test mocha --opts=./mocha.opts",
-    "build": "npm run clean && tsc"
+    "build": "npm run clean && tsc",
+    "preversion": "npm run check && npm run build && npm test",
+    "postversion": "npm publish && git push --tags"
   },
   "pre-commit": [
     "check"
