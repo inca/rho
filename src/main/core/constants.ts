@@ -1,5 +1,5 @@
 export const DEFAULT_CONTROL_CHARACTERS =
-    '\\~`!@#$%^&*()-_+="<>{}[]/|'
+    '\\~`!@#$%^&*()-_+="\'<>{}[]/|'
         .split('')
         .map(_ => _.charCodeAt(0));
 
