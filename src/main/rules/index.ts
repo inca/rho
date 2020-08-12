@@ -21,4 +21,5 @@ export * from './inline/media';
 export * from './inline/plain-text';
 export * from './inline/strike';
 export * from './inline/strong';
+export * from './inline/typographics';
 export * from './inline/verbatim';

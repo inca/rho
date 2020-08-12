@@ -24,6 +24,7 @@ import {
     HeadlessMediaRule,
     HrRule,
     IndentedBlock,
+    TypographicsRule,
 } from './rules';
 import { RhoOptions, RHO_DEFAULT_OPTIONS } from './options';
 import { RhoContext } from './context';
@@ -61,6 +62,7 @@ export class RhoProcessor extends Processor {
         ]);
         this.defineParser('inline', ctx => [
             new PlainTextRule(ctx),
+            new TypographicsRule(ctx, this.options),
             new BackslashEscapeRule(ctx),
             new HtmlTagRule(ctx),
             new HtmlCommentRule(ctx),
