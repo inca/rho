@@ -6,9 +6,8 @@
   "scripts": {
     "clean": "rm -rf out/",
     "dev": "npm run clean && tsc -w",
-    "dev:test": "NODE_ENV=test mocha -w --opts=./mocha.opts",
     "check": "eslint . --ext=.js,.ts",
-    "test": "NODE_ENV=test mocha --opts=./mocha.opts",
+    "test": "NODE_ENV=test mocha",
     "build": "npm run clean && tsc",
     "preversion": "npm run check && npm run build && npm test",
     "postversion": "npm publish && git push --tags"
