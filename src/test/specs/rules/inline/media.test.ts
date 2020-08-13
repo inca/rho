@@ -8,7 +8,9 @@ import {
 
 describe('MediaRule', () => {
 
-    const processor = new RhoProcessor();
+    const processor = new RhoProcessor({
+        lazyImages: false
+    });
     const ctx = processor.createContext();
     const rule = new MediaRule(ctx);
 
@@ -144,6 +146,24 @@ describe('MediaRule', () => {
             assert.equal(node?.render(ctx), '');
         });
 
+    });
+
+    context('lazy images', () => {
+        const processor = new RhoProcessor({
+            lazyImages: true
+        });
+        const ctx = processor.createContext();
+        const rule = new MediaRule(ctx);
+
+        it('emits loading="lazy"', () => {
+            const cursor = new Cursor('This ![alt text](/img.png) that', 5);
+            const node = rule.parse(cursor);
+            assert.equal(node?.render(ctx),
+                '<img src="/img.png" alt="alt text" title="alt text" loading="lazy"/>');
+            assert.equal(node?.region?.start, 5);
+            assert.equal(node?.region?.end, 26);
+            assert.equal(cursor.pos, 26);
+        });
     });
 
 });

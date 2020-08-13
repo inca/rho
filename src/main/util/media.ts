@@ -12,6 +12,7 @@ export interface MediaDef {
     href: string;
     title?: string;
     external?: boolean;
+    lazy?: boolean;
     customRender?: (this: MediaDef, node: Node, ctx: ContextWithMedia) => string;
 }
 

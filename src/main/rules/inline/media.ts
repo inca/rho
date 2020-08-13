@@ -143,6 +143,9 @@ export class MediaNode extends Node {
         if (height != null) {
             buffer += ` height="${height}"`;
         }
+        if (ctx.isLazy(media)) {
+            buffer += ' loading="lazy"';
+        }
         buffer += '/>';
         return buffer;
     }

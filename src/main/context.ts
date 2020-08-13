@@ -11,6 +11,7 @@ export interface ContextWithMedia extends Context {
     mediaIds: Set<string>;
     resolvedMedia: Map<string, MediaDef>;
     isExternalLink(media: MediaDef): boolean;
+    isLazy(media: MediaDef): boolean;
     getNextInlineId(): string;
 }
 
@@ -30,6 +31,10 @@ export class RhoContext extends Context
 
     isExternalLink(media: MediaDef): boolean {
         return media.external ?? this.processor.options.externalLinks;
+    }
+
+    isLazy(media: MediaDef): boolean {
+        return media.lazy ?? this.processor.options.lazyImages;
     }
 
     getNextInlineId() {
